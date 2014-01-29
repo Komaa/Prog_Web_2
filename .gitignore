@@ -1,0 +1,9 @@
+/Prog2web/build
+
+/Prog2web/src/conf/
+/Prog2web/dist/
+/Prog2web/build
+/Prog2web/nbproject
+/Prog2web/.DS*
+/Prog2web/nbbuild.xml
+/Prog2web/build.xml
