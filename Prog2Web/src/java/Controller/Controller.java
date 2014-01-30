@@ -109,7 +109,7 @@ public class Controller extends HttpServlet {
                    System.out.println("|||||||||||||||3||||||||||||||||");
                  forward(request, response, "/index.jsp");
                } else{
-                   System.out.println("||||||||||||||4|||||||||||");
+                  // System.out.println("||||||||||||||4|||||||||||");
 //             System.out.println("FILES:");
                     Enumeration files = multi.getFileNames();
                     while (files.hasMoreElements()) {
@@ -129,18 +129,19 @@ public class Controller extends HttpServlet {
 //                System.out.println("f.length(): " + f.length());
                         }
                     }
-                   
+                    System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
+                       
                     if (originalFilename == null) {
                         originalFilename = "noimage.jpg";
-                         
-                    } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("jpg"))||(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("png"))) {
+                        
+                    } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg"))&&(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
                          System.out.println("||||||||||||||4|||||||||||");
-                          System.out.println(originalFilename.substring(originalFilename.lastIndexOf(".")));
-                        String source = realPath + "tmp/" + originalFilename;
+                           String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
                         afile.delete();
                         forward(request, response, "/index.jsp");
                     }else{
+                        System.out.println("||||||||||||||5|||||||||||");
                         String source = realPath + "tmp/" + originalFilename;
 //                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
                         String destination = realPath + "img/" + originalFilename;
