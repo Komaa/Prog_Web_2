@@ -108,7 +108,7 @@ public class Utente {
     
     public void insertUtente() throws SQLException{
         
-        PreparedStatement stm = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar) VALUES ('?','?','?','?','?')");
+        PreparedStatement stm = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar) VALUES ('?','?','?',?,'?')");
         stm.setString(1, username);
         stm.setString(2, password);
         stm.setString(3, email);
