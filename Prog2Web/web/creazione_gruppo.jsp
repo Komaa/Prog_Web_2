@@ -1,23 +1,22 @@
 <%-- 
-    Document   : home
-    Created on : Jan 29, 2014, 4:08:57 PM
+    Document   : creazione_gruppo
+    Created on : Jan 30, 2014, 12:31:30 AM
     Author     : HaoIlMito
 --%>
-
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="utf-8"></meta>
-            <title>
-                Welcome!
-            </title>
-            <link rel="stylesheet" href="./bootstrap/css/bootstrap.css"></link>
-        </head>
-        <body>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Servlet Welcome_page</title>
+        <meta charset=utf-8>
+        <title>Welcome!</title>
+        <link href=./bootstrap/css/bootstrap.css rel="stylesheet">
+    </head> 
+<body>    
             <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
                 <div class="container">
                     <div class="navbar-header">
@@ -74,39 +73,48 @@
             <br></br>
             <div class="section-background">
                 <div class="section-title">
-                    <h1></h1>
-                    <h1>
+                    <h1>Crea gruppo!</h1>
+                    <div class="section-content clearfix">Qui puoi creare il tuo gruppo personale, basta inserire il nome nel riquadro sottostante</div>
+                </div>          
+            </div>       
+</div>
+<div class="row" style="padding-top: 50px">
 
-                        Benvenuto <c:out value="${user.username}"/>  
+    <div class="container .col-md-6 .col-md-offset-3">
 
-                    </h1>
-                    <div class="section-content clearfix">
+        <div class="panel panel-primary">
 
-                        Qui puoi trovare informazioni sui gruppi che ti ha…
+            <div class="panel-heading">
 
-                    </div>
-                    <div class="section-content clearfix">
-
-                        Clicca su Creazione gruppo o gruppi per utilizzare…
-
-                    </div>
-                </div>
+                <h3 class="panel-title">Crea Gruppo</h3>
             </div>
-            <div class="container span4 offset4">
-                <h1>
+<div class="panel-body">
 
-                    Inviti ai gruppi
+    <form class="form-horizontal" name="input" action="crea_gruppo" method="post">
 
-                </h1>
-                <hr>
+        <div class="control-group">
 
-                <c:forEach var="invito" items="${listainviti}">
-                     Key: <c:out value="${invito.key}"/>
-                     Value: <c:out value="${invito.value}"/>
-                </c:forEach>
+            <label class="control-label" for="titolo_gruppo">Nome gruppo</label>
 
+            <input type="text" name="titolo_gruppo">
+
+            </br>
+
+            <div class="control-group">
+                <label class="control-label" for="amministratore_gruppo: ">Amministratore</label><c:out value="${user.username}"/>  
+                <input id="amministratore_gruppo" type="hidden" name="amministratore" value="${user.username}">
+                <input id="action" type="hidden" name="action" value="1">
             </div>
-        </body>
-    </html>
+               </br><hr>
+            <button class="btn btn-success" type="submit" name="crea!" value="">crea!</button>
+    </form>
 
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+<script src=./bootstrap/js/bootstrap.min.js></script>
+</body>
+</html>
 
