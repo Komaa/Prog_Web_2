@@ -131,9 +131,11 @@ public class Controller extends HttpServlet {
                     }
                    
                     if (originalFilename == null) {
-                        originalFilename = "noimage";
+                        originalFilename = "noimage.jpg";
                          
                     } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("jpg"))||(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("png"))) {
+                         System.out.println("||||||||||||||4|||||||||||");
+                          System.out.println(originalFilename.substring(originalFilename.lastIndexOf(".")));
                         String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
                         afile.delete();
