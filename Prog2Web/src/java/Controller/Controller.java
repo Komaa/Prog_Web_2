@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 public class Controller extends HttpServlet {
     static public String realPath;
     Database dbmanager = new Database();
+    HttpSession session;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,8 +38,9 @@ public class Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        
         int cmd = Integer.parseInt(request.getParameter("cmd"));
-        HttpSession session = request.getSession(true);
+        HashMap<Integer, String> listainviti;
         Utente u = null;
        // realPath = getServletContext().getRealPath("/");
         switch (cmd) {
@@ -51,14 +53,21 @@ public class Controller extends HttpServlet {
                 u.setPassword(password);
                 id = u.check_user();
                  //u.aggiornadatalogin();
+                if(id>-1){
+                session = request.getSession(true);
                 u = Utente.loadUtente(id, dbmanager.con);
                 session.setAttribute("user_id", u.getCod());
-                HashMap<Integer, String> listainviti=u.loadInviti();
+                listainviti=u.loadInviti();
                 request.setAttribute("listainviti", listainviti);
                 request.setAttribute("user", u);
                 forward(request, response, "/home.jsp");
+                }else{
+                 forward(request, response, "/index.jsp");
+                }
+                
                 break;
-            case 2:                     //LOGOUT              
+            case 2:                     //LOGOUT 
+                session = request.getSession(true);
                 session.invalidate();
                 forward(request, response, "/index.jsp");
                 break;
@@ -67,12 +76,14 @@ public class Controller extends HttpServlet {
                 break;
             case 4:                     //REGISTRAZIONE
                 break;
-            case 5:                     //GESTISCI_ACCOUNT            
+            case 5:                     //GESTISCI_ACCOUNT     
+                session = request.getSession(true);
                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("user", u);
                 forward(request, response, "/gestione.jsp");
                 break;
             case 6:                     //CAMBIA_PASSWORD
+                session = request.getSession(true);
                 String pass = request.getParameter("pass");
                 String pass1 = request.getParameter("pass1");
                 String pass2 = request.getParameter("pass2");
@@ -95,6 +106,10 @@ public class Controller extends HttpServlet {
             case 7:                     //CAMBIA_AVATAR
                 break;
             case 8:                     //TASTO_CREA_GRUPPO      
+                session = request.getSession(true);
+                 id=(Integer)session.getAttribute("user_id");
+                 u = Utente.loadUtente(id, dbmanager.con);
+                 request.setAttribute("user", u);
                 forward(request, response, "/creazione_gruppo.jsp");
                 break;
             case 9:                     //CREA_GRUPPO    
@@ -102,6 +117,7 @@ public class Controller extends HttpServlet {
                 if(titolo.equals("")){
                     forward(request, response, "/creazione_gruppo.jsp");    
                 }else{
+                    session = request.getSession(true);
                     int tipo= Integer.parseInt(request.getParameter("tipo")); 
                     Gruppo gruppo=new Gruppo(dbmanager.con);
                     gruppo.setTitolo(titolo);
@@ -123,6 +139,7 @@ public class Controller extends HttpServlet {
                 
                 break;
             case 13:                     //ELENCO GRUPPI
+                session = request.getSession(true);
                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("listagruppi", u.listaGruppi());
                 request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
@@ -139,6 +156,7 @@ public class Controller extends HttpServlet {
 
                 break;
             case 16:                     //TASTO_HOME
+                 session = request.getSession(true);
                  id=(Integer)session.getAttribute("user_id");
                  u = Utente.loadUtente(id, dbmanager.con);
                  listainviti=u.loadInviti();
