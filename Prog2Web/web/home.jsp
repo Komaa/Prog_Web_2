@@ -84,7 +84,7 @@
                     <h1></h1>
                     <h1>
 
-                        Benvenuto <c:out value="${user.username}"/>  
+                        <img src="./img/${user.avatar}" style="max-height: 300px; max-width: 300px">Benvenuto <c:out value="${user.username}"/>  ultimo login: <c:out value="${user.data}"/> 
 
                     </h1>
                     <div class="section-content clearfix">
@@ -107,11 +107,15 @@
                 </h1>
                 <hr>
                 <table class="table table-striped"> 
-                    <th>
-                         <tr><td>Accetta / Rifiuta</td> <td>Nome gruppo</td></tr>
-                    </th>
+                    <tr><th>Accetta / Rifiuta</th> <th>Nome gruppo</th></tr>
                 <c:forEach var="invito" items="${listainviti}">
-                    <tr> <td> Key: <c:out value="${invito.key}"/></td> <td> Value: <c:out value="${invito.value}"/></td></tr>
+                    <tr> 
+                        <td>
+                            <a href="Controller?cmd=18&user_id=<c:out value="${invita.cod}"/>&cod_gruppo=<c:out value="${invito.key}"/>" class="btn btn-success" role="button">Accetta</a>
+                            <a href="Controller?cmd=17&user_id=<c:out value="${invita.cod}"/>&cod_gruppo=<c:out value="${invito.key}"/>" class="btn btn-danger" role="button">Rifiuta</a>
+                        </td> 
+                        <td><c:out value="${invito.value}"/></td>
+                    </tr>
                 </c:forEach>
                 </table>
             </div>

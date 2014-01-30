@@ -98,7 +98,7 @@
                                     <label for="Password" class="col-sm-3 control-label">  
                                         Avatar</label>  
                                     <div class="col-sm-9">  
-                                        <input name="image" type="file"/>
+                                        <input name="image" size="10485760" type="file"/>
                                     </div>  
                                 </div> 
                                 
