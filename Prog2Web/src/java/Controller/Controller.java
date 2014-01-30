@@ -171,12 +171,20 @@ public class Controller extends HttpServlet {
                  id=(Integer)session.getAttribute("user_id");  
                  u = Utente.loadUtente(id, dbmanager.con);
                  u.valuta_invito(cod_gruppo, 3);
+                 listainviti=u.loadInviti();
+                 request.setAttribute("listainviti", listainviti);
+                 request.setAttribute("user", u);
+                 forward(request, response, "/home.jsp");
                  break;
             case 18:                    //ACCETTA_INVITO
                  cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
                  id=(Integer)session.getAttribute("user_id");  
                  u = Utente.loadUtente(id, dbmanager.con);
                  u.valuta_invito(cod_gruppo, 2);
+                 listainviti=u.loadInviti();
+                 request.setAttribute("listainviti", listainviti);
+                 request.setAttribute("user", u);
+                 forward(request, response, "/home.jsp");
                  break;
                 
         }
