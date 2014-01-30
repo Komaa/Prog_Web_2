@@ -100,13 +100,13 @@ public class Controller extends HttpServlet {
                 String password1 = multi.getParameter("password1");
                 String email = multi.getParameter("email");             
                 if ((username.equals(""))||(password.equals(""))||(password1.equals(""))||(email.equals(""))) {
-                    System.out.println("||||||||||||||||1|||||||||||||||");
+                //    System.out.println("||||||||||||||||1|||||||||||||||");
                     forward(request, response, "/index.jsp");
                } else if(!password.equals(password1)){
-                 System.out.println("|||||||||||||||||2||||||||||||||||");
+               //  System.out.println("|||||||||||||||||2||||||||||||||||");
                  forward(request, response, "/index.jsp");
                } else if(!email.matches(emailPattern)){
-                   System.out.println("|||||||||||||||3||||||||||||||||");
+               //    System.out.println("|||||||||||||||3||||||||||||||||");
                  forward(request, response, "/index.jsp");
                } else{
                   // System.out.println("||||||||||||||4|||||||||||");
@@ -129,19 +129,19 @@ public class Controller extends HttpServlet {
 //                System.out.println("f.length(): " + f.length());
                         }
                     }
-                    System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
+               //     System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
                        
                     if (originalFilename == null) {
                         originalFilename = "noimage.jpg";
                         
                     } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg"))&&(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
-                         System.out.println("||||||||||||||4|||||||||||");
+                       //  System.out.println("||||||||||||||4|||||||||||");
                            String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
                         afile.delete();
                         forward(request, response, "/index.jsp");
                     }else{
-                        System.out.println("||||||||||||||5|||||||||||");
+                       // System.out.println("||||||||||||||5|||||||||||");
                         String source = realPath + "tmp/" + originalFilename;
 //                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
                         String destination = realPath + "img/" + originalFilename;
@@ -212,23 +212,12 @@ public class Controller extends HttpServlet {
                  }
                 break;
             case 7:                     //CAMBIA_AVATAR
-//                     u = new Utente(dbmanager.con);
-//                String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+                 id=(Integer)session.getAttribute("user_id");
+                 u = Utente.loadUtente(id, dbmanager.con);
 //                String dirName = realPath + "tmp";
 //                String originalFilename=null;
-//                MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
-//
-//                username = multi.getParameter("username");
-//                password = multi.getParameter("password");
-//                String password1 = multi.getParameter("password1");
-//                String email = multi.getParameter("email");             
-//                if ((username.equals(""))||(password.equals(""))||(password1.equals(""))||(email.equals(""))) {
-//                 forward(request, response, "/index.jsp");
-//               } else if(password.equals(password1)){
-//                 forward(request, response, "/index.jsp");
-//               } else if(!email.matches(emailPattern)){
-//                 forward(request, response, "/index.jsp");
-//               } else{
+//                MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());             
+
 ////             System.out.println("FILES:");
 //                    Enumeration files = multi.getFileNames();
 //                    while (files.hasMoreElements()) {

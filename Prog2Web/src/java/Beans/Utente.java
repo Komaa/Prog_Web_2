@@ -109,13 +109,17 @@ public class Utente {
     
     public void insertUtente() throws SQLException{
        // System.out.println(con+"\n"+username+password+email+" "+avatar);
-        PreparedStatement stm2 = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar) VALUES (?,?,?,?,?)");
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+        PreparedStatement stm2 = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar, data_accesso) VALUES (?,?,?,?,?,?)");
         try{
             stm2.setString(1, username);
         stm2.setString(2, password);
         stm2.setString(3, email);
          stm2.setInt(4, 0);
          stm2.setString(5, avatar);
+         stm2.setString(6, currentTime);
 //      
            stm2.executeUpdate();
            } finally {
