@@ -30,7 +30,7 @@ public class Utente {
     
     public Utente(Connection conne){
         con=conne;
-        System.out.println("!!!!!!!!!!!!!!!"+con);
+ 
     }
     /**
      * @return the username
@@ -108,16 +108,19 @@ public class Utente {
     
     
     public void insertUtente() throws SQLException{
-        System.out.println(con+"\n"+username+password+email+" "+avatar);
-        PreparedStatement stm2 = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar) VALUES ('?','?','?',?,'?')");
-        stm2.setString(1, username);
+       // System.out.println(con+"\n"+username+password+email+" "+avatar);
+        PreparedStatement stm2 = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar) VALUES (?,?,?,?,?)");
+        try{
+            stm2.setString(1, username);
         stm2.setString(2, password);
         stm2.setString(3, email);
          stm2.setInt(4, 0);
          stm2.setString(5, avatar);
-      
+//      
            stm2.executeUpdate();
-           
+           } finally {
+                        stm2.close();
+                    }
     }
     
     public void aggiornadatalogin() throws SQLException{

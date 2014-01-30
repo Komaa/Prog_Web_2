@@ -88,7 +88,7 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/index.jsp");
                 break;
             case 4:                     //REGISTRAZIONE
-                System.out.println("+++++++++++++++++"+dbmanager.con);
+                
                 u = new Utente(dbmanager.con);
                 String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
                 String dirName = realPath + "tmp";
