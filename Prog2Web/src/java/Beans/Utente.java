@@ -112,7 +112,7 @@ public class Utente {
         stm.setString(1, username);
         stm.setString(2, password);
         stm.setString(3, email);
-         stm.setString(4, "noavatar");
+         stm.setString(4, avatar);
       
             int rs = stm.executeUpdate();
            
