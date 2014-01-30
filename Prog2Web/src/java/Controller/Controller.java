@@ -60,7 +60,7 @@ public class Controller extends HttpServlet {
                 break;
             case 2:                     //LOGOUT              
                 session.invalidate();
-                forward(request, response, "/login.jsp");
+                forward(request, response, "/index.jsp");
                 break;
             case 3:                     //TASTO_REGISTRAZIONE
                 forward(request, response, "/registrazione.jsp");
@@ -127,11 +127,20 @@ public class Controller extends HttpServlet {
                 Gruppo gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("commenti", gruppo.listaCommenti());
-                  forward(request, response, "/gruppo.jsp");
+                forward(request, response, "/gruppo.jsp");
                 break;
             case 15:                     //INSERISCI_COMMENTO
 
                 break;
+            case 16:                     //TASTO_HOME
+                 session.setAttribute("user_id", u.getCod());
+                  listainviti=u.loadInviti();
+                 request.setAttribute("listainviti", listainviti);
+                 request.setAttribute("user", u);
+                 forward(request, response, "/home.jsp");
+            case 17:
+                
+            case 18:
                 
                 
         }
