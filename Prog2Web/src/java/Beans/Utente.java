@@ -9,10 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 /**
  *
@@ -147,8 +150,9 @@ public class Utente {
         int rs = stm.executeUpdate();
     }
     
-   static public Utente loadUtente(int id,Connection con) throws SQLException {
+   static public Utente loadUtente(int id,Connection con) throws SQLException, ParseException {
        Utente utente=new Utente(con);
+       String app;
         PreparedStatement stm = con.prepareStatement("select * from utenti where id_utenti=?");
         stm.setString(1, String.valueOf(id));
        
@@ -161,7 +165,10 @@ public class Utente {
                     utente.email=rs.getString("email");
                     utente.tipo=rs.getInt("tipo");
                     utente.avatar=rs.getString("avatar");      
-                    utente.data=rs.getDate("data_accesso");      
+                    app=rs.getString("data_accesso");  
+                    
+                    Date date = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").parse(app);
+                    utente.data=date;
                //     utente.data = new Date(rs.getInt("data_account")); 
                 }
             } finally {
@@ -291,6 +298,20 @@ public class Utente {
 
         }
 
+    }
+
+    /**
+     * @return the data
+     */
+    public Date getData() {
+        return data;
+    }
+
+    /**
+     * @param data the data to set
+     */
+    public void setData(Date data) {
+        this.data = data;
     }
        
        
