@@ -84,14 +84,10 @@
                 </div>          
             </div>       
 </div>
-                <form action="Controller?cmd=10" method="post">
-                    Nome gruppo: <input id="titolo_gruppo" type="text" name="titolo" value="<c:out value="${gruppo.titolo}"/>">
-                    <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> </br>
-                    <button type="submit" class="btn btn-success">Cambia titolo</button>
-                </form>
                 
+                <br><br>
                     
-                 <form action="Controller?cmd=10" method="post">
+                <form action="Controller?cmd=10" method="post">
                     Nome gruppo: <input id="titolo_gruppo" type="text" name="titolo" value="<c:out value="${gruppo.titolo}"/>">
                     <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> </br>
                     <button type="submit" class="btn btn-success">Cambia titolo</button>
@@ -105,26 +101,14 @@
 
                 <!-- sul form modifica titolo / modifica tipo gruppo -> passa anche un hidden con l' id_gruppo e il campo titolo si chiamerà titolo e il campo tipo è tipo (10 cambio titolo) (11 cambia tipo)  se invito, invio anche l'id_utente, id_gruppo-->
                 
-                <table class="table table-striped"> 
-
-                    <tr><th>Id Gruppo</th> <th>Nome gruppo</th> <th>Forum</th> <th>Amministra</th></tr>
-  
-                <c:forEach var="lista_gruppi" items="${listagruppi}">
-                    <tr> 
-                        <td><c:out value="${lista_gruppi.id_gruppo}"/></td>
-                        <td><c:out value="${lista_gruppi.titolo}"/></td>
-                        <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${lista_gruppi.id_gruppo}"/>" class="btn btn-success" role="button">Entra!</a></td>
-                        <td><a href="Controller?cmd=19&cod_gruppo=<c:out value="${lista_gruppi.id_gruppo}"/>" class="btn btn-success" role="button">Amministra</a></td>
-                    </tr>
-                </c:forEach>
-                </table>  
-                <br><h1>Pubblici</h1> <br>
+                <br><h1>Persone da poter invitare</h1> <br>
                 <table class="table table-striped">
                 <tr><th>Nome utente</th> <th>codice</th> <th>Invita</th></tr>
                 <c:forEach var="invita" items="${invitabili}">
                     <tr> 
-                        <td> Key: <c:out value="${invita.username}"/></td> 
-                        <td> Value: <c:out value="${invita.cod}"/></td>
+                        <td><c:out value="${invita.username}"/></td> 
+                        <td><c:out value="${invita.cod}"/></td>
+                        <td> <a href="Controller?cmd=12&id_utente=<c:out value="${invita.cod}"/>&cod_gruppo=<c:out value="${gruppo.id_gruppo}"/>" class="btn btn-success" role="button">Invita</a> </td>
                     </tr>
                 </c:forEach>
                 </table>
