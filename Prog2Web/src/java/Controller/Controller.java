@@ -165,14 +165,16 @@ public class Controller extends HttpServlet {
                             }
 
                         }
+                      
                     }
-                }
-                u.setUsername(username);
+                      u.setUsername(username);
                 u.setPassword(password);
                 u.setEmail(email);
                 u.setAvatar(originalFilename);
                 u.insertUtente();
-                forward(request, response, "/index.jsp");    
+                forward(request, response, "/index.jsp");   
+                }
+                 
                 break;
             case 5:                     //GESTISCI_ACCOUNT     
                 
@@ -202,6 +204,91 @@ public class Controller extends HttpServlet {
                  }
                 break;
             case 7:                     //CAMBIA_AVATAR
+                     u = new Utente(dbmanager.con);
+                String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+                String dirName = realPath + "tmp";
+                String originalFilename=null;
+                MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+
+                username = multi.getParameter("username");
+                password = multi.getParameter("password");
+                String password1 = multi.getParameter("password1");
+                String email = multi.getParameter("email");             
+                if ((username.equals(""))||(password.equals(""))||(password1.equals(""))||(email.equals(""))) {
+                 forward(request, response, "/index.jsp");
+               } else if(password.equals(password1)){
+                 forward(request, response, "/index.jsp");
+               } else if(!email.matches(emailPattern)){
+                 forward(request, response, "/index.jsp");
+               } else{
+//             System.out.println("FILES:");
+                    Enumeration files = multi.getFileNames();
+                    while (files.hasMoreElements()) {
+                        String namepi = (String) files.nextElement();
+                        String filename = multi.getFilesystemName(namepi);
+                        originalFilename = multi.getOriginalFileName(namepi);
+                        String type = multi.getContentType(namepi);
+                        File f = multi.getFile(namepi);
+//                System.out.println("name: " + namepi);
+//                System.out.println("filename: " + filename);
+//                System.out.println("originalFilename: " + originalFilename);
+//                System.out.println("type: " + type);
+                        if (f != null) {
+//                System.out.println("f.toString(): " + f.toString());
+//                System.out.println("f.getName(): " + f.getName());
+//                System.out.println("f.exists(): " + f.exists());
+//                System.out.println("f.length(): " + f.length());
+                        }
+                    }
+                   
+                    if (originalFilename == null) {
+                        originalFilename = "noimage";
+                        
+                    } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("jpg"))||(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("png"))) {
+                        String source = realPath + "tmp/" + originalFilename;
+                        File afile = new File(source);
+                        afile.delete();
+                        forward(request, response, "/index.jsp");
+                    }else{
+                        String source = realPath + "tmp/" + originalFilename;
+//                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
+                        String destination = realPath + "img/" + originalFilename;
+//                System.out.println("destinationNNNNNNNNNNNNNNNNNNN:"+ destination);
+                        File afile = new File(source);
+                        File bfile = new File(destination);
+                        if (!(bfile.exists())) {
+                            InputStream inStream = null;
+                            OutputStream outStream = null;
+
+                            try {
+
+                                inStream = new FileInputStream(afile);
+                                outStream = new FileOutputStream(bfile);
+
+                                byte[] buffer = new byte[1024];
+                                int length;
+                                //copy the file content in bytes 
+                                while ((length = inStream.read(buffer)) > 0) {
+                                    outStream.write(buffer, 0, length);
+                                }
+                                inStream.close();
+                                outStream.close();
+
+                                //delete the original file
+                                afile.delete();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                }
+                u.setUsername(username);
+                u.setPassword(password);
+                u.setEmail(email);
+                u.setAvatar(originalFilename);
+                u.insertUtente();
+                forward(request, response, "/index.jsp");    
                 break;
             case 8:                     //TASTO_CREA_GRUPPO      
                 
