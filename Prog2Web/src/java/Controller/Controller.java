@@ -65,7 +65,7 @@ public class Controller extends HttpServlet {
                 u.setUsername(username);
                 u.setPassword(password);
                 id = u.check_user();
-                 //u.aggiornadatalogin();
+                u.aggiornadatalogin();
                 if(id>-1){
                 
                 u = Utente.loadUtente(id, dbmanager.con);

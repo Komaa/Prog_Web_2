@@ -128,10 +128,11 @@ public class Utente {
     }
     
     public void aggiornadatalogin() throws SQLException{
-        data=new Date();
-        java.sql.Timestamp timeStampDate = new Timestamp(data.getTime());
+         java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
      PreparedStatement stm = con.prepareStatement("UPDATE utenti SET data_account='?' WHERE id_utenti='?'");
-        stm.setString(1, String.valueOf(timeStampDate));
+        stm.setString(1, String.valueOf(currentTime));
         stm.setString(2, String.valueOf(cod));
       
         int rs = stm.executeUpdate();
@@ -160,7 +161,7 @@ public class Utente {
                     utente.email=rs.getString("email");
                     utente.tipo=rs.getInt("tipo");
                     utente.avatar=rs.getString("avatar");      
-             //       utente.data=rs.getDate("data_account");      
+                    utente.data=rs.getDate("data_accesso");      
                //     utente.data = new Date(rs.getInt("data_account")); 
                 }
             } finally {
