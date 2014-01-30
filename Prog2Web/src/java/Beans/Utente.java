@@ -262,47 +262,26 @@ public class Utente {
         return listinviti;
     }
       
-//      public void accetto_invito(int id_gruppo) throws SQLException {
-//        // STATO 1: INVITATO
-//        // STATO 2: ACCETTO
-//        // STATO 3: RIFIUTATO
-//        PreparedStatement stm = con.prepareStatement("UPDATE gruppi_utenti SET stato=? where gruppo=? and utente=? and stato=?");
-//        try {
-//
-//            stm.setString(1, "2");
-//            stm.setString(2, titolo_gruppo);
-//            stm.setString(3, username);
-//            stm.setString(4, "1");
-//
-//            //executeUpdate è per le query di inserimento!
-//            stm.executeUpdate();
-//        } finally {
-//            stm.close();
-//
-//        }
-//
-//    }
-//
-//    void rifiuto_invito(String titolo_gruppo, String username) throws SQLException {
-//
-//        // STATO 1: INVITATO
-//        // STATO 2: ACCETTO
-//        // STATO 3: RIFIUTATO
-//        PreparedStatement stm = con.prepareStatement("UPDATE gruppi_utenti SET stato=? where gruppo=? and utente=? and stato=?");
-//        try {
-//
-//            stm.setString(1, "3");
-//            stm.setString(2, titolo_gruppo);
-//            stm.setString(3, username);
-//            stm.setString(4, "1");
-//
-//            //executeUpdate è per le query di inserimento!
-//            stm.executeUpdate();
-//        } finally {
-//            stm.close();
-//
-//        }
-//    }
+      public void valuta_invito(int id_gruppo,int stato) throws SQLException {
+        // STATO 1: INVITATO
+        // STATO 2: ACCETTO
+        // STATO 3: RIFIUTATO
+        PreparedStatement stm = con.prepareStatement("UPDATE gruppi_utenti SET stato=? where id_gruppo=? and id_utente=? and stato=?");
+        try {
+
+            stm.setInt(1, stato);
+            stm.setInt(2, id_gruppo);
+            stm.setInt(3, cod);
+            stm.setInt(4, 1);
+
+            //executeUpdate è per le query di inserimento!
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+
+        }
+
+    }
        
        
 }

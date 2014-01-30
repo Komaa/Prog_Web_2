@@ -42,6 +42,7 @@ public class Controller extends HttpServlet {
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         HashMap<Integer, String> listainviti;
         Utente u = null;
+        session= request.getSession(true);
        // realPath = getServletContext().getRealPath("/");
         switch (cmd) {
             case 1:             //LOGIN
@@ -54,7 +55,7 @@ public class Controller extends HttpServlet {
                 id = u.check_user();
                  //u.aggiornadatalogin();
                 if(id>-1){
-                session = request.getSession(true);
+                
                 u = Utente.loadUtente(id, dbmanager.con);
                 session.setAttribute("user_id", u.getCod());
                 listainviti=u.loadInviti();
@@ -67,7 +68,7 @@ public class Controller extends HttpServlet {
                 
                 break;
             case 2:                     //LOGOUT 
-                session = request.getSession(true);
+               
                 session.invalidate();
                 forward(request, response, "/index.jsp");
                 break;
@@ -77,13 +78,13 @@ public class Controller extends HttpServlet {
             case 4:                     //REGISTRAZIONE
                 break;
             case 5:                     //GESTISCI_ACCOUNT     
-                session = request.getSession(true);
+                
                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("user", u);
                 forward(request, response, "/gestione.jsp");
                 break;
             case 6:                     //CAMBIA_PASSWORD
-                session = request.getSession(true);
+               
                 String pass = request.getParameter("pass");
                 String pass1 = request.getParameter("pass1");
                 String pass2 = request.getParameter("pass2");
@@ -106,7 +107,7 @@ public class Controller extends HttpServlet {
             case 7:                     //CAMBIA_AVATAR
                 break;
             case 8:                     //TASTO_CREA_GRUPPO      
-                session = request.getSession(true);
+                
                  id=(Integer)session.getAttribute("user_id");
                  u = Utente.loadUtente(id, dbmanager.con);
                  request.setAttribute("user", u);
@@ -117,7 +118,7 @@ public class Controller extends HttpServlet {
                 if(titolo.equals("")){
                     forward(request, response, "/creazione_gruppo.jsp");    
                 }else{
-                    session = request.getSession(true);
+                    
                     int tipo= Integer.parseInt(request.getParameter("tipo")); 
                     Gruppo gruppo=new Gruppo(dbmanager.con);
                     gruppo.setTitolo(titolo);
@@ -139,7 +140,7 @@ public class Controller extends HttpServlet {
                 
                 break;
             case 13:                     //ELENCO GRUPPI
-                session = request.getSession(true);
+               
                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("listagruppi", u.listaGruppi());
                 request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
@@ -156,17 +157,27 @@ public class Controller extends HttpServlet {
 
                 break;
             case 16:                     //TASTO_HOME
-                 session = request.getSession(true);
+                 
                  id=(Integer)session.getAttribute("user_id");
                  u = Utente.loadUtente(id, dbmanager.con);
                  listainviti=u.loadInviti();
                  request.setAttribute("listainviti", listainviti);
                  request.setAttribute("user", u);
                  forward(request, response, "/home.jsp");
+                
+                 break;
             case 17:                    //RIFIUTA_INVITO
-                
+                 cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                 id=(Integer)session.getAttribute("user_id");  
+                 u = Utente.loadUtente(id, dbmanager.con);
+                 u.valuta_invito(cod_gruppo, 3);
+                 break;
             case 18:                    //ACCETTA_INVITO
-                
+                 cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                 id=(Integer)session.getAttribute("user_id");  
+                 u = Utente.loadUtente(id, dbmanager.con);
+                 u.valuta_invito(cod_gruppo, 2);
+                 break;
                 
         }
     }
