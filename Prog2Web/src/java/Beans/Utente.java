@@ -29,7 +29,7 @@ public class Utente {
     private String avatar;
     private HashMap<Integer,String> inviti=new HashMap<Integer,String>();
     public transient Connection con;
-    private String data;
+    private Date data;
     
     public Utente(Connection conne){
         con=conne;
@@ -150,7 +150,7 @@ public class Utente {
         int rs = stm.executeUpdate();
     }
     
-   static public Utente loadUtente(int id,Connection con) throws SQLException, ParseException {
+   static public Utente loadUtente(int id,Connection con) throws SQLException {
        Utente utente=new Utente(con);
        String app;
         PreparedStatement stm = con.prepareStatement("select * from utenti where id_utenti=?");
@@ -165,9 +165,11 @@ public class Utente {
                     utente.email=rs.getString("email");
                     utente.tipo=rs.getInt("tipo");
                     utente.avatar=rs.getString("avatar");      
-                    utente.setData(rs.getString("data_accesso")); 
-                            
-//     utente.data = new Date(rs.getInt("data_account")); 
+                    app=rs.getString("data_accesso");  
+                    System.out.println(app);
+              //      Date date = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").parse(app);
+                //    utente.data=date;
+               //     utente.data = new Date(rs.getInt("data_account")); 
                 }
             } finally {
                 rs.close();
@@ -301,18 +303,16 @@ public class Utente {
     /**
      * @return the data
      */
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
     /**
      * @param data the data to set
      */
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
-
-  
        
        
 }
