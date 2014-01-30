@@ -24,7 +24,7 @@ public class Utente {
     private String email;
     private int tipo, cod;
     private String avatar;
-    private HashMap<Integer,String> inviti;
+    private HashMap<Integer,String> inviti=new HashMap<Integer,String>();
     public transient Connection con;
     private Date data;
     
@@ -164,8 +164,8 @@ public class Utente {
    
    
         PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti where id_utente=? and stato=?");
-        stm.setString(1, String.valueOf(cod));
-        stm.setString(2, "1");
+        stm.setInt(1, cod);
+        stm.setInt(2, 1);
         try {
             ResultSet rs = stm.executeQuery();
             try {
@@ -239,7 +239,7 @@ public class Utente {
         }
         return listinviti;
     }
-     
+    
       public HashMap<Integer,String> listaaggGruppi() throws SQLException {
        
        HashMap<Integer,String> listinviti = new HashMap<Integer,String>();

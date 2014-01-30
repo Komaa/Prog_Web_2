@@ -7,3 +7,5 @@
 /Prog2web/.DS*
 /Prog2web/nbbuild.xml
 /Prog2web/build.xml
+/Prog2Web/nbproject/private/
+/Prog2Web/build/

@@ -14,14 +14,15 @@ import java.util.Date;
  */
 public class Comment {
 
-    private String text, id_utente, id_gruppo, data, allegato;
+    private String text, id_gruppo, data, allegato;
+    private Utente utente;
 
     public Comment() {
     }
 
-    public Comment(String text, String id_utente, String id_gruppo, String data, String allegato) {
+    public Comment(String text, Utente utente, String id_gruppo, String data, String allegato) {
         this.text = text;
-        this.id_utente = id_utente;
+        this.utente = utente;
         this.id_gruppo = id_gruppo;
         this.data = data;
         this.allegato = allegato;
@@ -37,9 +38,6 @@ public class Comment {
         this.text = text;
     }
 
-    public void setId_utente(String id_utente) {
-        this.id_utente = id_utente;
-    }
 
     public void setId_gruppo(String id_gruppo) {
         this.id_gruppo = id_gruppo;
@@ -57,9 +55,6 @@ public class Comment {
         return text;
     }
 
-    public String getId_utente() {
-        return id_utente;
-    }
 
     public String getId_gruppo() {
         return id_gruppo;
@@ -71,6 +66,20 @@ public class Comment {
 
     public String getAllegato() {
         return allegato;
+    }
+
+    /**
+     * @return the utente
+     */
+    public Utente getUtente() {
+        return utente;
+    }
+
+    /**
+     * @param utente the utente to set
+     */
+    public void setUtente(Utente utente) {
+        this.utente = utente;
     }
 
 }

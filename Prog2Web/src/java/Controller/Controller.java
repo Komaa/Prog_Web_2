@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Controller;
+import Beans.Gruppo;
 import Beans.Utente;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,7 +42,7 @@ public class Controller extends HttpServlet {
         Utente u = null;
        // realPath = getServletContext().getRealPath("/");
         switch (cmd) {
-            case 1:
+            case 1:             //LOGIN
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
                 int id;
@@ -57,90 +58,82 @@ public class Controller extends HttpServlet {
                 request.setAttribute("user", u);
                 forward(request, response, "/home.jsp");
                 break;
-            case 2:
-                //---------------------Upload eventuale file
-//                String dirName = realPath + "tmp";
-//
-//                MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
-//
-//                action = multi.getParameter("action");
-//                messaggio = multi.getParameter("messaggio");
-//                messaggio = messaggio.replaceAll("<", "");
-//                messaggio = messaggio.replaceAll(">", "");    
-//                utente = multi.getParameter("utente");
-//                titolo_gruppo = multi.getParameter("Accedi");
-//                if (messaggio.equals("")) {
-//                    out.println(Stampa.header("Forum del gruppo: " + titolo_gruppo));
-//                    out.println(Stampa.section_content("Questo è il forum del vostro gruppo, condividete!"));
-//                    out.println(Stampa.div(2));
-//                    out.println(Stampa.alert("danger", "E' obbligatorio inserire un commento!"));
-//
-//                } else {
-////             System.out.println("FILES:");
-//                    Enumeration files = multi.getFileNames();
-//                    while (files.hasMoreElements()) {
-//                        namepi = (String) files.nextElement();
-//                        filename = multi.getFilesystemName(namepi);
-//                        originalFilename = multi.getOriginalFileName(namepi);
-//                        String type = multi.getContentType(namepi);
-//                        File f = multi.getFile(namepi);
-////                System.out.println("name: " + namepi);
-////                System.out.println("filename: " + filename);
-////                System.out.println("originalFilename: " + originalFilename);
-////                System.out.println("type: " + type);
-//                        if (f != null) {
-////                System.out.println("f.toString(): " + f.toString());
-////                System.out.println("f.getName(): " + f.getName());
-////                System.out.println("f.exists(): " + f.exists());
-////                System.out.println("f.length(): " + f.length());
-//                        }
-//                    }
-//                    if (originalFilename != null) {
-//                        String source = realPath + "tmp/" + originalFilename;
-////                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
-//                        String destination = realPath + "groupsfolder/" + titolo_gruppo + "/" + originalFilename;
-////                System.out.println("destinationNNNNNNNNNNNNNNNNNNN:"+ destination);
-//                        File afile = new File(source);
-//                        File bfile = new File(destination);
-//                        if (!(bfile.exists())) {
-//                            InputStream inStream = null;
-//                            OutputStream outStream = null;
-//
-//                            try {
-//
-//                                inStream = new FileInputStream(afile);
-//                                outStream = new FileOutputStream(bfile);
-//
-//                                byte[] buffer = new byte[1024];
-//                                int length;
-//                                //copy the file content in bytes 
-//                                while ((length = inStream.read(buffer)) > 0) {
-//                                    outStream.write(buffer, 0, length);
-//                                }
-//                                inStream.close();
-//                                outStream.close();
-//
-//                                //delete the original file
-//                                afile.delete();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                        } else {
-//                            out.println(Stampa.header("Forum del gruppo: " + titolo_gruppo));
-//                            out.println(Stampa.section_content("Questo è il forum del vostro gruppo, condividete!"));
-//                            out.println(Stampa.div(2));
-//                            out.println(Stampa.alert("danger", "Il file che hai caricato è già presente"));
-//                            stampa = false;
-//                            afile.delete();
-//                        }
-//                    } else {
-//                        originalFilename = "noallegato";
-//                    }
-//                }
-//                //----------FINE UPLOAD-----
-//            }
-            
+            case 2:                     //LOGOUT              
+                session.invalidate();
+                forward(request, response, "/login.jsp");
+                break;
+            case 3:                     //TASTO_REGISTRAZIONE
+                forward(request, response, "/registrazione.jsp");
+                break;
+            case 4:                     //REGISTRAZIONE
+                break;
+            case 5:                     //GESTISCI_ACCOUNT            
+                u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                request.setAttribute("user", u);
+                forward(request, response, "/gestione.jsp");
+                break;
+            case 6:                     //CAMBIA_PASSWORD
+                String pass1 = request.getParameter("pass1");
+                String pass2 = request.getParameter("pass2");
+                 u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                if(pass1.equals(pass2)){
+                    u.setPassword(pass1);
+                    u.updateUtente();
+                    request.setAttribute("user", u);
+                    forward(request, response, "/gestione.jsp");      
+                }else{
+                request.setAttribute("user", u);
+                forward(request, response, "/gestione.jsp");    
+                }
+                break;
+            case 7:                     //CAMBIA_AVATAR
+                break;
+            case 8:                     //TASTO_CREA_GRUPPO      
+                forward(request, response, "/creazione_gruppo.jsp");
+                break;
+            case 9:                     //CREA_GRUPPO    
+                String titolo = request.getParameter("titolo");
+                if(titolo.equals("")){
+                    forward(request, response, "/creazione_gruppo.jsp");    
+                }else{
+                    int tipo= Integer.parseInt(request.getParameter("tipo")); 
+                    Gruppo gruppo=new Gruppo(dbmanager.con);
+                    gruppo.setTitolo(titolo);
+                    gruppo.setId_amministratore((int) session.getAttribute("user_id"));
+                    gruppo.setTipo(tipo);
+                    gruppo.insertGruppo();
+                    request.setAttribute("gruppo", gruppo);
+                    request.setAttribute("invitabili", gruppo.invitabili());
+                    forward(request, response, "/gestisci_gruppo.jsp");
+                }
+                break;
+            case 10:                     //CAMBIA_TITOLO
+                
+                break;
+            case 11:                     //CAMBIA_FLAG
+                
+                break;    
+            case 12:                     //INVITA UTENTE
+                
+                break;
+            case 13:                     //ELENCO GRUPPI
+                u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                request.setAttribute("listagruppi", u.listaGruppi());
+                request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
+                forward(request, response, "/gruppi.jsp");
+                break;
+            case 14:                     //ENTRA_GRUPPO
+                int cod_gruppo= Integer.parseInt(request.getParameter("tipo")); 
+                Gruppo gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                request.setAttribute("gruppo", gruppo);
+                request.setAttribute("commenti", gruppo.listaCommenti());
+                  forward(request, response, "/gruppo.jsp");
+                break;
+            case 15:                     //INSERISCI_COMMENTO
+
+                break;
+                
+                
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

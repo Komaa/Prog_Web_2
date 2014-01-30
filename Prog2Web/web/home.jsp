@@ -113,7 +113,7 @@
 
                 <c:forEach var="invito" items="${listainviti}">
                      Key: <c:out value="${invito.key}"/>
-                     Value: <c:out value="${entry.value}"/>
+                     Value: <c:out value="${invito.value}"/>
                 </c:forEach>
 
             </div>

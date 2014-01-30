@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -24,13 +25,13 @@ import java.util.HashSet;
 public class Gruppo {
     private String titolo; //0 per pubblico, 1 per privato
     private int id_amministratore;
-    private int tipo;
-    HashSet<Integer> componenti;
-    ArrayList<Comment> messaggi;
+    private int tipo,aperto;
+    private HashSet<Integer> componenti;
+    private ArrayList<Comment> messaggi;
     public transient Connection con;
     private int id_gruppo;
     
-    Gruppo(Connection conne){
+    public Gruppo(Connection conne){
         con=conne;
     }
     /**
@@ -80,15 +81,18 @@ public class Gruppo {
                     Date data_creazione = Calendar.getInstance().getTime();
                     SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd");
                     String creationDate = ft.format(data_creazione);
+                   
 
                     //non esiste e quindi si può creare!
-                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,amministratore,data) VALUES (?,?,?)");
+                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)");
                     try {
                         val = false;
 
                         stm2.setString(1, titolo);
                         stm2.setInt(2, id_amministratore);
                         stm2.setString(3, creationDate);
+                        stm2.setInt(4, tipo);
+                        stm2.setInt(5, 0);
                         //executeUpdate è per le query di inserimento!
                         stm2.executeUpdate();
                     } finally {
@@ -102,7 +106,7 @@ public class Gruppo {
         try {
 
             stm.setString(1, titolo);
-            stm.setString(2, String.valueOf(id_gruppo));
+            stm.setString(2, String.valueOf(getId_gruppo()));
 
             //executeUpdate è per le query di inserimento!
             stm.executeUpdate();
@@ -119,22 +123,47 @@ public class Gruppo {
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
-                    gruppo.id_gruppo=rs.getInt("id_utenti");
+                    gruppo.setId_gruppo(rs.getInt("id_gruppo"));
                     gruppo.titolo=rs.getString("nome_gruppo");
-                    gruppo.id_amministratore=rs.getInt("amministratore");                                                                    
+                    gruppo.setId_amministratore(rs.getInt("id_amministratore")); 
+                    gruppo.tipo=rs.getInt("tipo");
+                    gruppo.setAperto(rs.getInt("aperto"));
+                   
                 }
             } finally {
                 rs.close();
             }
             return gruppo;
     }
+   
+   
+      static public HashMap<Integer,String> listaGruppiaperti(Connection con) throws SQLException {
+       
+       HashMap<Integer,String> listgruppi = new HashMap<Integer,String>();
+        PreparedStatement stm = con.prepareStatement("select * from gruppi where tipo=?");
+        stm.setInt(1, 0);
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    listgruppi.put(rs.getInt("id_gruppo"), Gruppo.loadGruppo(rs.getInt("id_gruppo"), con).getTitolo());
+    
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return listgruppi;
+    }
     
    public ArrayList<Utente> invitabili() throws SQLException{
         String tmp;
         ArrayList<Utente> listautenti = new ArrayList<Utente>();
         PreparedStatement stm = con.prepareStatement("select utenti.id_utenti from utenti where id_utenti!=? && utenti.id_utenti NOT IN (select gruppi_utenti.id_utente FROM gruppi_utenti WHERE id_gruppo=?)");
-        stm.setInt(1, id_amministratore);
-        stm.setInt(2, id_gruppo);
+        stm.setInt(1, getId_amministratore());
+        stm.setInt(2, getId_gruppo());
 
         try {
             ResultSet rs = stm.executeQuery();
@@ -157,12 +186,12 @@ public class Gruppo {
         Comment commento;
         ArrayList<Comment> listaCommenti = new ArrayList<Comment>();
         PreparedStatement stm = con.prepareStatement("select * from comments where id_gruppo=? ORDER BY data DESC");
-        stm.setInt(1, id_gruppo);
+        stm.setInt(1, getId_gruppo());
         try {
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
-                    commento = new Comment(rs.getString("commenti"), rs.getString("id_utente"), rs.getString("id_gruppo"), rs.getString("data"), rs.getString("allegato"));
+                    commento = new Comment(rs.getString("commenti"), Utente.loadUtente(rs.getInt("id_utente"), con), rs.getString("id_gruppo"), rs.getString("data"), rs.getString("allegato"));
                     listaCommenti.add(commento);
                 }
             } finally {
@@ -190,8 +219,8 @@ public class Gruppo {
         try {
             val = false;
 
-            stm.setInt(1, id_amministratore);
-            stm.setInt(2, id_gruppo);
+            stm.setInt(1, getId_amministratore());
+            stm.setInt(2, getId_gruppo());
             stm.setString(3, "2");
             //executeUpdate è per le query di inserimento!
             stm.executeUpdate();
@@ -215,7 +244,7 @@ public class Gruppo {
         PreparedStatement stm = con.prepareStatement("INSERT INTO gruppi_utenti (utente,gruppo,stato) VALUES (?,?,?)");
         try {
             stm.setInt(1, id_utente);
-            stm.setInt(2, id_gruppo);
+            stm.setInt(2, getId_gruppo());
             stm.setString(3, "1");
             //executeUpdate è per le query di inserimento!
             stm.executeUpdate();
@@ -236,7 +265,7 @@ public class Gruppo {
         PreparedStatement stm = con.prepareStatement("INSERT INTO comments (id_utente, id_gruppo, data, commenti, allegato)VALUES (?, ?, ?, ?, ?)");
         try {
             stm.setString(1, cod_utente);
-            stm.setInt(2, id_gruppo);
+            stm.setInt(2, getId_gruppo());
             stm.setString(3, creationDate);
             stm.setString(4, messaggio);
             stm.setString(5, originalFilename);
@@ -251,7 +280,7 @@ public class Gruppo {
         String tmp;
         ArrayList<String> listautenti = new ArrayList<String>();
         PreparedStatement stm = con.prepareStatement("select gruppi_utenti.utente FROM gruppi_utenti WHERE gruppo=? && stato = ?");
-        stm.setInt(1, id_gruppo);
+        stm.setInt(1, getId_gruppo());
         stm.setString(2, "2");
 
         try {
@@ -276,7 +305,7 @@ public class Gruppo {
 
         PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti where gruppo=? and utente=? and stato=2");
         try {
-            stm.setInt(1, id_gruppo);
+            stm.setInt(1, getId_gruppo());
             stm.setInt(2, id_utente);
             ResultSet rs = stm.executeQuery();
             try {
@@ -298,7 +327,7 @@ public class Gruppo {
 
         int commenti = 0;
         PreparedStatement stm = con.prepareStatement("select COUNT(*) from comments where id_gruppo=?");
-        stm.setInt(1, id_gruppo);
+        stm.setInt(1, getId_gruppo());
         try {
             ResultSet rs = stm.executeQuery();
             try {
@@ -314,6 +343,76 @@ public class Gruppo {
 
         return commenti;
 
+    }
+
+    /**
+     * @return the id_amministratore
+     */
+    public int getId_amministratore() {
+        return id_amministratore;
+    }
+
+    /**
+     * @param id_amministratore the id_amministratore to set
+     */
+    public void setId_amministratore(int id_amministratore) {
+        this.id_amministratore = id_amministratore;
+    }
+
+    /**
+     * @return the aperto
+     */
+    public int getAperto() {
+        return aperto;
+    }
+
+    /**
+     * @param aperto the aperto to set
+     */
+    public void setAperto(int aperto) {
+        this.aperto = aperto;
+    }
+
+    /**
+     * @return the componenti
+     */
+    public HashSet<Integer> getComponenti() {
+        return componenti;
+    }
+
+    /**
+     * @param componenti the componenti to set
+     */
+    public void setComponenti(HashSet<Integer> componenti) {
+        this.componenti = componenti;
+    }
+
+    /**
+     * @return the messaggi
+     */
+    public ArrayList<Comment> getMessaggi() {
+        return messaggi;
+    }
+
+    /**
+     * @param messaggi the messaggi to set
+     */
+    public void setMessaggi(ArrayList<Comment> messaggi) {
+        this.messaggi = messaggi;
+    }
+
+    /**
+     * @return the id_gruppo
+     */
+    public int getId_gruppo() {
+        return id_gruppo;
+    }
+
+    /**
+     * @param id_gruppo the id_gruppo to set
+     */
+    public void setId_gruppo(int id_gruppo) {
+        this.id_gruppo = id_gruppo;
     }
     
 }
