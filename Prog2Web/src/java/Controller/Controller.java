@@ -127,7 +127,7 @@ public class Controller extends HttpServlet {
                    
                     if (originalFilename == null) {
                         originalFilename = "noimage";
-                        
+                         System.out.println("||||||||||||||||||||||||||||||||||||");
                     } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("jpg"))||(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("png"))) {
                         String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
