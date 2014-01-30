@@ -27,7 +27,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="welcome_page">
+                        <a class="navbar-brand" href="Controller?cmd=16">
 
                             Progetto Web
 
@@ -36,30 +36,37 @@
                     <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                         <ul class="nav navbar-nav">
                             <li>
-                                <a href="home">
+                                <a href="Controller?cmd=16">
 
                                      Home
 
                                 </a>
                             </li>
                             <li>
-                                <a href="Creazione_gruppo">
+                                <a href="Controller?cmd=8">
 
                                      Creazione gruppo
 
                                 </a>
                             </li>
                             <li>
-                                <a href="Gruppi">
+                                <a href="Controller?cmd=13">
 
                                      Gruppi
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="Controller?cmd=5">
+
+                                     Gestisci account
 
                                 </a>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="Logout">
+                                <a href="Controller?cmd=2">
                                     <button class="btn btn-sm btn-danger">
 
                                         Logout
