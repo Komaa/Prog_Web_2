@@ -106,12 +106,14 @@
 
                 </h1>
                 <hr>
-
+                <table class="table table-striped"> 
+                    <th>
+                         <tr><td>Accetta / Rifiuta</td> <td>Nome gruppo</td></tr>
+                    </th>
                 <c:forEach var="invito" items="${listainviti}">
-                     Key: <c:out value="${invito.key}"/>
-                     Value: <c:out value="${invito.value}"/>
+                    <tr> <td> Key: <c:out value="${invito.key}"/></td> <td> Value: <c:out value="${invito.value}"/></td></tr>
                 </c:forEach>
-
+                </table>
             </div>
         </body>
     </html>

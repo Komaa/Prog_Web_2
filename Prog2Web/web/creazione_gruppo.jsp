@@ -80,7 +80,7 @@
             <br></br>
             <div class="section-background">
                 <div class="section-title">
-                    <h1>Crea gruppo!</h1>
+                    <h1>Crea gruppo!</h1> 
                     <div class="section-content clearfix">Qui puoi creare il tuo gruppo personale, basta inserire il nome nel riquadro sottostante</div>
                 </div>          
             </div>       
@@ -97,23 +97,23 @@
             </div>
 <div class="panel-body">
 
-    <form class="form-horizontal" name="input" action="crea_gruppo" method="post">
+    <form class="form-horizontal" name="input" action="Controller?cmd=9" method="post">
 
         <div class="control-group">
 
             <label class="control-label" for="titolo_gruppo">Nome gruppo</label>
 
-            <input type="text" name="titolo_gruppo">
+            <input type="text" name="titolo">
 
             </br>
 
             <div class="control-group">
-                <label class="control-label" for="amministratore_gruppo: ">Amministratore</label><c:out value="${user.username}"/>  
-                <input id="amministratore_gruppo" type="hidden" name="amministratore" value="${user.username}">
-                <input id="action" type="hidden" name="action" value="1">
+                <label class="control-label" for="amministratore_gruppo: ">Amministratore: </label><c:out value="${user.username}"/>  <br>
+                <input type="radio" name="tipo" value="0">Pubblico 
+                <input type="radio" name="tipo" value="1">Privato
             </div>
                </br><hr>
-            <button class="btn btn-success" type="submit" name="crea!" value="">crea!</button>
+               <button class="btn btn-success" type="submit" name="crea!" value="">crea!</button>
     </form>
 
         </div>
