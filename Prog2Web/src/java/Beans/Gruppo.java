@@ -214,11 +214,11 @@ public class Gruppo {
         // STATO 3: RIFIUTATO
         //bisognerà mettere un campo per vedere se l'utente è in attessa di accettare l'invito o meno nel where
         //al momento ho messo uno stato "1" se sono invitati
-        PreparedStatement stm = con.prepareStatement("INSERT INTO gruppi_utenti (utente,gruppo,stato) VALUES (?,?,?)");
+        PreparedStatement stm = con.prepareStatement("INSERT INTO gruppi_utenti (id_utente,id_gruppo,stato) VALUES (?,?,?)");
         try {
             stm.setInt(1, id_utente);
             stm.setInt(2, getId_gruppo());
-            stm.setString(3, "1");
+            stm.setString(3, "2");
             //executeUpdate è per le query di inserimento!
             stm.executeUpdate();
             val = true;
