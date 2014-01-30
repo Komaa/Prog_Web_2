@@ -165,11 +165,7 @@ public class Utente {
                     utente.email=rs.getString("email");
                     utente.tipo=rs.getInt("tipo");
                     utente.avatar=rs.getString("avatar");      
-                   utente.data=rs.getTimestamp("data_accesso");  
-                    System.out.println(utente.data);
-              //      Date date = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").parse(app);
-                //    utente.data=date;
-               //     utente.data = new Date(rs.getInt("data_account")); 
+             
                 }
             } finally {
                 rs.close();

@@ -56,6 +56,7 @@ public class Controller extends HttpServlet {
         int cod_gruppo,cod_utente,intapp;
         session= request.getSession(true);
        // realPath = getServletContext().getRealPath("/");
+        
         switch (cmd) {
             case 1:             //LOGIN
                 String username = request.getParameter("username");
