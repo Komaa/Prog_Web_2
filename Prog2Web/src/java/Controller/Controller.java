@@ -101,7 +101,7 @@ public class Controller extends HttpServlet {
                 if ((username.equals(""))||(password.equals(""))||(password1.equals(""))||(email.equals(""))) {
                     System.out.println("||||||||||||||||1|||||||||||||||");
                     forward(request, response, "/index.jsp");
-               } else if(password.equals(password1)){
+               } else if(!password.equals(password1)){
                  System.out.println("|||||||||||||||||2||||||||||||||||");
                  forward(request, response, "/index.jsp");
                } else if(!email.matches(emailPattern)){
