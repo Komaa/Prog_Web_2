@@ -171,7 +171,7 @@ public class Controller extends HttpServlet {
                         }
                       
                     }
-                      u.setUsername(username);
+                u.setUsername(username);
                 u.setPassword(password);
                 u.setEmail(email);
                 u.setAvatar(originalFilename);
