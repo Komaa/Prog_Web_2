@@ -98,10 +98,10 @@ public class Gruppo {
                     } finally {
                         stm2.close();
                     }
-                    PreparedStatement stm3 = con.prepareStatement("SELECT MAX(id_gruppo) FROM gruppi");
+                    PreparedStatement stm3 = con.prepareStatement("SELECT MAX(id_gruppo) AS id FROM gruppi");
                     ResultSet rs = stm3.executeQuery();
             
-                    return rs.getInt("id_gruppo");
+                    return rs.getInt("id");
    
                    
                 }
