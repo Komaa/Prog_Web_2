@@ -68,7 +68,7 @@ public class Controller extends HttpServlet {
             case 4:                     //REGISTRAZIONE
                 break;
             case 5:                     //GESTISCI_ACCOUNT            
-                u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("user", u);
                 forward(request, response, "/gestione.jsp");
                 break;
@@ -76,7 +76,7 @@ public class Controller extends HttpServlet {
                 String pass = request.getParameter("pass");
                 String pass1 = request.getParameter("pass1");
                 String pass2 = request.getParameter("pass2");
-                 u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                  if(pass.equals(u.getPassword())){
                 if(pass1.equals(pass2)){
                     u.setPassword(pass1);
