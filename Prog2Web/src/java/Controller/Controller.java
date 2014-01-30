@@ -42,6 +42,9 @@ public class Controller extends HttpServlet {
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         HashMap<Integer, String> listainviti;
         Utente u = null;
+        Gruppo gruppo=null;
+        String stringapp;
+        int cod_gruppo,cod_utente,intapp;
         session= request.getSession(true);
        // realPath = getServletContext().getRealPath("/");
         switch (cmd) {
@@ -120,7 +123,7 @@ public class Controller extends HttpServlet {
                 }else{
                     
                     int tipo= Integer.parseInt(request.getParameter("tipo")); 
-                    Gruppo gruppo=new Gruppo(dbmanager.con);
+                    gruppo=new Gruppo(dbmanager.con);
                     gruppo.setTitolo(titolo);
                     gruppo.setId_amministratore((Integer) session.getAttribute("user_id"));
                     gruppo.setTipo(tipo);
@@ -131,10 +134,26 @@ public class Controller extends HttpServlet {
                 }
                 break;
             case 10:                     //CAMBIA_TITOLO
-                
+                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                stringapp= request.getParameter("titolo"); 
+                if(!stringapp.equals("")){
+                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                gruppo.setTitolo(stringapp);
+                gruppo.updateGruppo();
+                request.setAttribute("gruppo", gruppo);
+                request.setAttribute("invitabili", gruppo.invitabili());
+                forward(request, response, "/gestisci_gruppo.jsp");
+                }
                 break;
             case 11:                     //CAMBIA_FLAG
-                
+                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                intapp= Integer.parseInt(request.getParameter("tipo")); 
+                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                gruppo.setTipo(intapp);
+                gruppo.updateGruppo();
+                request.setAttribute("gruppo", gruppo);
+                request.setAttribute("invitabili", gruppo.invitabili());
+                forward(request, response, "/gestisci_gruppo.jsp");
                 break;    
             case 12:                     //INVITA UTENTE
                 
@@ -147,8 +166,8 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/gruppi.jsp");
                 break;
             case 14:                     //ENTRA_GRUPPO
-                int cod_gruppo= Integer.parseInt(request.getParameter("tipo")); 
-                Gruppo gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("commenti", gruppo.listaCommenti());
                 forward(request, response, "/gruppo.jsp");
