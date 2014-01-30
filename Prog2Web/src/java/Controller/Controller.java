@@ -73,9 +73,11 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/gestione.jsp");
                 break;
             case 6:                     //CAMBIA_PASSWORD
+                String pass = request.getParameter("pass");
                 String pass1 = request.getParameter("pass1");
                 String pass2 = request.getParameter("pass2");
                  u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                 if(pass.equals(u.getPassword())){
                 if(pass1.equals(pass2)){
                     u.setPassword(pass1);
                     u.updateUtente();
@@ -85,6 +87,10 @@ public class Controller extends HttpServlet {
                 request.setAttribute("user", u);
                 forward(request, response, "/gestione.jsp");    
                 }
+                }else{
+                     request.setAttribute("user", u);
+                forward(request, response, "/gestione.jsp");   
+                 }
                 break;
             case 7:                     //CAMBIA_AVATAR
                 break;
@@ -99,7 +105,7 @@ public class Controller extends HttpServlet {
                     int tipo= Integer.parseInt(request.getParameter("tipo")); 
                     Gruppo gruppo=new Gruppo(dbmanager.con);
                     gruppo.setTitolo(titolo);
-                    gruppo.setId_amministratore((int) session.getAttribute("user_id"));
+                    gruppo.setId_amministratore((Integer) session.getAttribute("user_id"));
                     gruppo.setTipo(tipo);
                     gruppo.insertGruppo();
                     request.setAttribute("gruppo", gruppo);
@@ -117,7 +123,7 @@ public class Controller extends HttpServlet {
                 
                 break;
             case 13:                     //ELENCO GRUPPI
-                u = Utente.loadUtente((int)session.getAttribute("user_id"), dbmanager.con);
+                u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("listagruppi", u.listaGruppi());
                 request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
                 forward(request, response, "/gruppi.jsp");
@@ -138,9 +144,9 @@ public class Controller extends HttpServlet {
                  request.setAttribute("listainviti", listainviti);
                  request.setAttribute("user", u);
                  forward(request, response, "/home.jsp");
-            case 17:
+            case 17:                    //RIFIUTA_INVITO
                 
-            case 18:
+            case 18:                    //ACCETTA_INVITO
                 
                 
         }
