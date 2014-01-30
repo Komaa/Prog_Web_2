@@ -115,8 +115,8 @@ public class Utente {
          stm.setInt(4, 0);
          stm.setString(5, avatar);
       
-            int rs = stm.executeUpdate();
-           
+           stm.executeUpdate();
+           stm.close();
     }
     
     public void aggiornadatalogin() throws SQLException{
