@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,7 +85,7 @@ public class Gruppo {
                    
 
                     //non esiste e quindi si può creare!
-                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)",numero);
+                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
                    
                     try {
                         val = false;
@@ -95,7 +96,11 @@ public class Gruppo {
                         stm2.setInt(4, tipo);
                         stm2.setInt(5, 0);
                         //executeUpdate è per le query di inserimento!
-                        stm2.executeUpdate(); numero = stm2.executeUpdate();
+                        stm2.executeUpdate(); 
+                        ResultSet rs = stm2.getGeneratedKeys();
+                        if (rs.next()){
+                        numero=rs.getInt(1);
+                        }
                     } finally {
                         stm2.close();
                     }
