@@ -66,7 +66,7 @@ public class Gruppo {
     
     
     public int insertGruppo() throws SQLException{
-        
+       int numero=0; 
        boolean val = false;
 
                     String dirName = Controller.Controller.realPath + "groupsfolder/" + titolo;
@@ -84,7 +84,8 @@ public class Gruppo {
                    
 
                     //non esiste e quindi si può creare!
-                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)");
+                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)",numero);
+                   
                     try {
                         val = false;
 
@@ -94,15 +95,12 @@ public class Gruppo {
                         stm2.setInt(4, tipo);
                         stm2.setInt(5, 0);
                         //executeUpdate è per le query di inserimento!
-                        stm2.executeUpdate();
+                        stm2.executeUpdate(); numero = stm2.executeUpdate();
                     } finally {
                         stm2.close();
                     }
-                    PreparedStatement stm3 = con.prepareStatement("SELECT MAX(id_gruppo) AS id FROM gruppi");
-                    ResultSet rs = stm3.executeQuery();
-            
-                    return rs.getInt("id");
-   
+                
+                return numero;
                    
                 }
                
