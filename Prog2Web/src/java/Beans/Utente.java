@@ -218,9 +218,9 @@ public class Utente {
         this.inviti = inviti;
     }
     
-     public HashMap<Integer,String> listaGruppi() throws SQLException {
+     public ArrayList<Gruppo> listaGruppi() throws SQLException {
        
-       HashMap<Integer,String> listinviti = new HashMap<Integer,String>();
+       ArrayList<Gruppo> listinviti = new ArrayList<Gruppo>();
         PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti where id_utente=? and stato=?");
         stm.setInt(1, cod);
         stm.setString(2, "2");
@@ -228,7 +228,7 @@ public class Utente {
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
-                    listinviti.put(rs.getInt("id_gruppo"), Gruppo.loadGruppo(rs.getInt("id_gruppo"), con).getTitolo());
+                    listinviti.add(Gruppo.loadGruppo(rs.getInt("id_gruppo"), con));
     
                 }
             } finally {

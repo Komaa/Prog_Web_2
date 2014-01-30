@@ -6,9 +6,15 @@
 package Controller;
 import Beans.Gruppo;
 import Beans.Utente;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,6 +45,7 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         
+        realPath = getServletContext().getRealPath("/");
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         HashMap<Integer, String> listainviti;
         Utente u = null;
@@ -79,6 +86,108 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/registrazione.jsp");
                 break;
             case 4:                     //REGISTRAZIONE
+                u = new Utente(dbmanager.con);
+               
+                String dirName = realPath + "tmp";
+
+                MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+
+                action = multi.getParameter("action");
+                messaggio = multi.getParameter("messaggio");
+                messaggio = messaggio.replaceAll("<", "");
+                messaggio = messaggio.replaceAll(">", "");    
+                utente = multi.getParameter("utente");
+                titolo_gruppo = multi.getParameter("Accedi");
+                if (messaggio.equals("")) {
+                    out.println(Stampa.header("Forum del gruppo: " + titolo_gruppo));
+                    out.println(Stampa.section_content("Questo è il forum del vostro gruppo, condividete!"));
+                    out.println(Stampa.div(2));
+                    out.println(Stampa.alert("danger", "E' obbligatorio inserire un commento!"));
+
+                } else {
+//             System.out.println("FILES:");
+                    Enumeration files = multi.getFileNames();
+                    while (files.hasMoreElements()) {
+                        namepi = (String) files.nextElement();
+                        filename = multi.getFilesystemName(namepi);
+                        originalFilename = multi.getOriginalFileName(namepi);
+                        String type = multi.getContentType(namepi);
+                        File f = multi.getFile(namepi);
+//                System.out.println("name: " + namepi);
+//                System.out.println("filename: " + filename);
+//                System.out.println("originalFilename: " + originalFilename);
+//                System.out.println("type: " + type);
+                        if (f != null) {
+//                System.out.println("f.toString(): " + f.toString());
+//                System.out.println("f.getName(): " + f.getName());
+//                System.out.println("f.exists(): " + f.exists());
+//                System.out.println("f.length(): " + f.length());
+                        }
+                    }
+                    if (originalFilename != null) {
+                        String source = realPath + "tmp/" + originalFilename;
+//                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
+                        String destination = realPath + "groupsfolder/" + titolo_gruppo + "/" + originalFilename;
+//                System.out.println("destinationNNNNNNNNNNNNNNNNNNN:"+ destination);
+                        File afile = new File(source);
+                        File bfile = new File(destination);
+                        if (!(bfile.exists())) {
+                            InputStream inStream = null;
+                            OutputStream outStream = null;
+
+                            try {
+
+                                inStream = new FileInputStream(afile);
+                                outStream = new FileOutputStream(bfile);
+
+                                byte[] buffer = new byte[1024];
+                                int length;
+                                //copy the file content in bytes 
+                                while ((length = inStream.read(buffer)) > 0) {
+                                    outStream.write(buffer, 0, length);
+                                }
+                                inStream.close();
+                                outStream.close();
+
+                                //delete the original file
+                                afile.delete();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            out.println(Stampa.header("Forum del gruppo: " + titolo_gruppo));
+                            out.println(Stampa.section_content("Questo è il forum del vostro gruppo, condividete!"));
+                            out.println(Stampa.div(2));
+                            out.println(Stampa.alert("danger", "Il file che hai caricato è già presente"));
+                            stampa = false;
+                            afile.delete();
+                        }
+                    } else {
+                        originalFilename = "noallegato";
+                    }
+                }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 break;
             case 5:                     //GESTISCI_ACCOUNT     
                 
@@ -156,11 +265,18 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/gestisci_gruppo.jsp");
                 break;    
             case 12:                     //INVITA UTENTE
-                
+                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                intapp= Integer.parseInt(request.getParameter("id_utente")); 
+                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                gruppo.inserisci_utente(intapp);
+                request.setAttribute("gruppo", gruppo);
+                request.setAttribute("invitabili", gruppo.invitabili());
+                forward(request, response, "/gestisci_gruppo.jsp");
                 break;
             case 13:                     //ELENCO GRUPPI
                
                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
+                request.setAttribute("user", u);
                 request.setAttribute("listagruppi", u.listaGruppi());
                 request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
                 forward(request, response, "/gruppi.jsp");
@@ -205,6 +321,13 @@ public class Controller extends HttpServlet {
                  request.setAttribute("user", u);
                  forward(request, response, "/home.jsp");
                  break;
+            case 19:                    //GESTISCI_GRUPPO
+                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
+                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                request.setAttribute("gruppo", gruppo);
+                request.setAttribute("invitabili", gruppo.invitabili());
+                forward(request, response, "/gestisci_gruppo.jsp");
+                break;
                 
         }
     }
