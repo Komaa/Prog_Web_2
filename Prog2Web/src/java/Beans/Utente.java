@@ -131,7 +131,7 @@ public class Utente {
          java.util.Date dt = new java.util.Date();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(dt);
-     PreparedStatement stm = con.prepareStatement("UPDATE utenti SET data_account=? WHERE id_utenti=?");
+     PreparedStatement stm = con.prepareStatement("UPDATE utenti SET data_accesso=? WHERE id_utenti=?");
         stm.setString(1, String.valueOf(currentTime));
         stm.setString(2, String.valueOf(cod));
       
