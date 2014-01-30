@@ -228,7 +228,7 @@ public class Gruppo {
         try {
             stm.setInt(1, id_utente);
             stm.setInt(2, getId_gruppo());
-            stm.setString(3, "2");
+            stm.setString(3, "1");
             //executeUpdate è per le query di inserimento!
             stm.executeUpdate();
             val = true;
