@@ -306,7 +306,7 @@ public class Controller extends HttpServlet {
                     gruppo.setId_amministratore((Integer) session.getAttribute("user_id"));
                     gruppo.setTipo(tipo);
                     gruppo.setId_gruppo(gruppo.insertGruppo());
-                    gruppo.inserisci_utente(gruppo.getId_amministratore());
+                    gruppo.inserisci_admin(gruppo.getId_amministratore());
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("invitabili", gruppo.invitabili());
                     forward(request, response, "/gestisci_gruppo.jsp");
@@ -338,7 +338,7 @@ public class Controller extends HttpServlet {
                 cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
                 intapp= Integer.parseInt(request.getParameter("id_utente")); 
                 gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
-                gruppo.inserisci_utente(intapp);
+                gruppo.invita_utente(intapp);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("invitabili", gruppo.invitabili());
                 forward(request, response, "/gestisci_gruppo.jsp");
