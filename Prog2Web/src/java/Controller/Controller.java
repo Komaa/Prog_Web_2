@@ -236,7 +236,7 @@ public class Controller extends HttpServlet {
                     gruppo.setTitolo(titolo);
                     gruppo.setId_amministratore((Integer) session.getAttribute("user_id"));
                     gruppo.setTipo(tipo);
-                    gruppo.insertGruppo();
+                    gruppo.setId_gruppo(gruppo.insertGruppo());
                     gruppo.inserisci_utente(gruppo.getId_amministratore());
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("invitabili", gruppo.invitabili());

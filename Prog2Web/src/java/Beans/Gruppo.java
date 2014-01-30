@@ -65,7 +65,7 @@ public class Gruppo {
     }
     
     
-    public void insertGruppo() throws SQLException{
+    public int insertGruppo() throws SQLException{
         
        boolean val = false;
 
@@ -98,8 +98,15 @@ public class Gruppo {
                     } finally {
                         stm2.close();
                     }
-               
+                    PreparedStatement stm3 = con.prepareStatement("SELECT MAX(id_gruppo) FROM gruppi");
+                    ResultSet rs = stm3.executeQuery();
+            
+                    return rs.getInt("id_gruppo");
+   
+                   
                 }
+               
+                
     
     public void updateGruppo() throws SQLException{
         PreparedStatement stm = con.prepareStatement("UPDATE gruppi SET nome_gruppo=? where id_gruppo=?");
