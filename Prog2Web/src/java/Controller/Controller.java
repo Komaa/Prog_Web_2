@@ -139,8 +139,9 @@ public class Controller extends HttpServlet {
 
                 break;
             case 16:                     //TASTO_HOME
-                 session.setAttribute("user_id", u.getCod());
-                  listainviti=u.loadInviti();
+                 id=(Integer)session.getAttribute("user_id");
+                 u = Utente.loadUtente(id, dbmanager.con);
+                 listainviti=u.loadInviti();
                  request.setAttribute("listainviti", listainviti);
                  request.setAttribute("user", u);
                  forward(request, response, "/home.jsp");
