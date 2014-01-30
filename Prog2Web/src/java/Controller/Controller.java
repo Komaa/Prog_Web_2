@@ -99,12 +99,16 @@ public class Controller extends HttpServlet {
                 String password1 = multi.getParameter("password1");
                 String email = multi.getParameter("email");             
                 if ((username.equals(""))||(password.equals(""))||(password1.equals(""))||(email.equals(""))) {
-                 forward(request, response, "/index.jsp");
+                    System.out.println("||||||||||||||||1|||||||||||||||");
+                    forward(request, response, "/index.jsp");
                } else if(password.equals(password1)){
+                 System.out.println("|||||||||||||||||2||||||||||||||||");
                  forward(request, response, "/index.jsp");
                } else if(!email.matches(emailPattern)){
+                   System.out.println("|||||||||||||||3||||||||||||||||");
                  forward(request, response, "/index.jsp");
                } else{
+                   System.out.println("||||||||||||||4|||||||||||");
 //             System.out.println("FILES:");
                     Enumeration files = multi.getFileNames();
                     while (files.hasMoreElements()) {
@@ -127,7 +131,7 @@ public class Controller extends HttpServlet {
                    
                     if (originalFilename == null) {
                         originalFilename = "noimage";
-                         System.out.println("||||||||||||||||||||||||||||||||||||");
+                         
                     } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("jpg"))||(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals("png"))) {
                         String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
