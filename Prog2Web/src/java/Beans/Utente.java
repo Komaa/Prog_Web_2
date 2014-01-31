@@ -142,7 +142,7 @@ public class Utente {
     }
     
     public void updateUtente() throws SQLException{
-        PreparedStatement stm = con.prepareStatement("UPDATE utenti SET password='?', avatar='?' WHERE id_utenti='?'");
+        PreparedStatement stm = con.prepareStatement("UPDATE utenti SET password=?, avatar=? WHERE id_utenti=?");
         stm.setString(1, password);
         stm.setString(2, avatar);
         stm.setString(3, String.valueOf(cod));

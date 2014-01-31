@@ -13,106 +13,114 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-         <link rel="stylesheet" href="./bootstrap/css/bootstrap.css"></link>
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.css"></link>
     </head>
     <body>
-            <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button class="navbar-toggle" data-target=".bs-navbar-collapse" data-toggle="collapse" type="button">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="Controller?cmd=16">
+        <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" data-target=".bs-navbar-collapse" data-toggle="collapse" type="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="Controller?cmd=16">
 
-                            Progetto Web
+                        Progetto Web
 
-                        </a>
-                    </div>
-                    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <a href="Controller?cmd=16">
-
-                                     Home
-
-                                </a>
-                            </li>
-                            <li>
-                                <a href="Controller?cmd=8">
-
-                                     Creazione gruppo
-
-                                </a>
-                            </li>
-                            <li>
-                                <a href="Controller?cmd=13">
-
-                                     Gruppi
-
-                                </a>
-                            </li>
-                            <li>
-                                <a href="Controller?cmd=5">
-
-                                     Gestisci account
-
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="Controller?cmd=2">
-                                    <button class="btn btn-sm btn-danger">
-
-                                        Logout
-
-                                    </button>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    </a>
                 </div>
-            </header>
-            <br></br>
-            <div class="section-background">
-                <div class="section-title">
-                    <h1>Gruppi!</h1>
-                    <div class="section-content clearfix">Qui puoi modificare </div>
-                </div>          
-            </div>       
-</div>
-                
-                <br><br>
-                    
-                <form action="Controller?cmd=10" method="post">
-                    Nome gruppo: <input id="titolo_gruppo" type="text" name="titolo" value="<c:out value="${gruppo.titolo}"/>">
-                    <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> </br>
-                    <button type="submit" class="btn btn-success">Cambia titolo</button>
-                </form>
-                </br>
-                
-                <form action="GeneraPdf" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>;
-                
-                </br>
+                <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="Controller?cmd=16">
 
+                                Home
 
-                <!-- sul form modifica titolo / modifica tipo gruppo -> passa anche un hidden con l' id_gruppo e il campo titolo si chiamerà titolo e il campo tipo è tipo (10 cambio titolo) (11 cambia tipo)  se invito, invio anche l'id_utente, id_gruppo-->
-                
-                <br><h1>Persone da poter invitare</h1> <br>
-                <table class="table table-striped">
-                <tr><th>Nome utente</th> <th>codice</th> <th>Invita</th></tr>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Controller?cmd=8">
+
+                                Creazione gruppo
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Controller?cmd=13">
+
+                                Gruppi
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Controller?cmd=5">
+
+                                Gestisci account
+
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="Controller?cmd=2">
+                                <button class="btn btn-sm btn-danger">
+
+                                    Logout
+
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <br></br>
+        <div class="section-background">
+            <div class="section-title">
+                <h1>Gruppi!</h1>
+                <div class="section-content clearfix">Qui puoi modificare </div>
+            </div>          
+        </div>       
+    </div>
+
+    <br><br>
+
+    <form action="Controller?cmd=10" method="post">
+        Nome gruppo: <input id="titolo_gruppo" type="text" name="titolo" value="<c:out value="${gruppo.titolo}"/>">
+        <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> </br>
+        <button type="submit" class="btn btn-success">Cambia titolo</button>
+    </form>
+    </br>
+
+    <form action="GeneraPdf" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>;
+
+    </br>
+
+    <form class="form-horizontal" name="input" action="Controller?cmd=11" method="post">
+        <div class="control-group">
+            <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>">
+            <input type="radio" name="tipo" value="0">Pubblico 
+            <input type="radio" name="tipo" value="1">Privato
+        </div>
+        </br><hr>
+        <button class="btn btn-success" type="submit" name="crea!" value="">Modifica tipo</button>
+    </form>
+    <!-- sul form modifica titolo / modifica tipo gruppo -> passa anche un hidden con l' id_gruppo e il campo titolo si chiamerà titolo e il campo tipo è tipo (10 cambio titolo) (11 cambia tipo)  se invito, invio anche l'id_utente, id_gruppo-->
+
+    <br><h1>Persone da poter invitare</h1> <br>
+    <table class="table table-striped">
+        <tr><th>Nome utente</th> <th>codice</th> <th>Invita</th></tr>
                 <c:forEach var="invita" items="${invitabili}">
-                    <tr> 
-                        <td><c:out value="${invita.username}"/></td> 
-                        <td><c:out value="${invita.cod}"/></td>
-                        <td> <a href="Controller?cmd=12&id_utente=<c:out value="${invita.cod}"/>&cod_gruppo=<c:out value="${gruppo.id_gruppo}"/>" class="btn btn-success" role="button">Invita</a> </td>
-                    </tr>
-                </c:forEach>
-                </table>
-                
+            <tr> 
+                <td><c:out value="${invita.username}"/></td> 
+                <td><c:out value="${invita.cod}"/></td>
+                <td> <a href="Controller?cmd=12&id_utente=<c:out value="${invita.cod}"/>&cod_gruppo=<c:out value="${gruppo.id_gruppo}"/>" class="btn btn-success" role="button">Invita</a> </td>
+            </tr>
+        </c:forEach>
+    </table>
+
 
 
 

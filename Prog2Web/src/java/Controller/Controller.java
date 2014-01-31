@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Controller;
+
 import Beans.Gruppo;
 import Beans.Utente;
 import com.oreilly.servlet.MultipartRequest;
@@ -27,14 +28,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author pietro
  */
 public class Controller extends HttpServlet {
+
     static public String realPath;
     Database dbmanager = new Database();
     HttpSession session;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,17 +50,17 @@ public class Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        
+
         realPath = getServletContext().getRealPath("/");
         int cmd = Integer.parseInt(request.getParameter("cmd"));
         HashMap<Integer, String> listainviti;
         Utente u = null;
-        Gruppo gruppo=null;
+        Gruppo gruppo = null;
         String stringapp;
-        int cod_gruppo,cod_utente,intapp;
-        session= request.getSession(true);
+        int cod_gruppo, cod_utente, intapp;
+        session = request.getSession(true);
        // realPath = getServletContext().getRealPath("/");
-        
+
         switch (cmd) {
             case 1:             //LOGIN
                 String username = request.getParameter("username");
@@ -67,21 +71,21 @@ public class Controller extends HttpServlet {
                 u.setPassword(password);
                 id = u.check_user();
                 u.aggiornadatalogin();
-                if(id>-1){
-                
-                u = Utente.loadUtente(id, dbmanager.con);
-                session.setAttribute("user_id", u.getCod());
-                listainviti=u.loadInviti();
-                request.setAttribute("listainviti", listainviti);
-                request.setAttribute("user", u);
-                forward(request, response, "/home.jsp");
-                }else{
-                 forward(request, response, "/index.jsp");
+                if (id > -1) {
+
+                    u = Utente.loadUtente(id, dbmanager.con);
+                    session.setAttribute("user_id", u.getCod());
+                    listainviti = u.loadInviti();
+                    request.setAttribute("listainviti", listainviti);
+                    request.setAttribute("user", u);
+                    forward(request, response, "/home.jsp");
+                } else {
+                    forward(request, response, "/index.jsp");
                 }
-                
+
                 break;
             case 2:                     //LOGOUT 
-               
+
                 session.invalidate();
                 forward(request, response, "/index.jsp");
                 break;
@@ -89,28 +93,28 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/index.jsp");
                 break;
             case 4:                     //REGISTRAZIONE
-                
+
                 u = new Utente(dbmanager.con);
                 String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
                 String dirName = realPath + "tmp";
-                String originalFilename=null;
+                String originalFilename = null;
                 MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
                 username = multi.getParameter("username");
                 password = multi.getParameter("password");
                 String password1 = multi.getParameter("password1");
-                String email = multi.getParameter("email");             
-                if ((username.equals(""))||(password.equals(""))||(password1.equals(""))||(email.equals(""))) {
-                //    System.out.println("||||||||||||||||1|||||||||||||||");
+                String email = multi.getParameter("email");
+                if ((username.equals("")) || (password.equals("")) || (password1.equals("")) || (email.equals(""))) {
+                    //    System.out.println("||||||||||||||||1|||||||||||||||");
                     forward(request, response, "/index.jsp");
-               } else if(!password.equals(password1)){
-               //  System.out.println("|||||||||||||||||2||||||||||||||||");
-                 forward(request, response, "/index.jsp");
-               } else if(!email.matches(emailPattern)){
-               //    System.out.println("|||||||||||||||3||||||||||||||||");
-                 forward(request, response, "/index.jsp");
-               } else{
-                  // System.out.println("||||||||||||||4|||||||||||");
+                } else if (!password.equals(password1)) {
+                    //  System.out.println("|||||||||||||||||2||||||||||||||||");
+                    forward(request, response, "/index.jsp");
+                } else if (!email.matches(emailPattern)) {
+                    //    System.out.println("|||||||||||||||3||||||||||||||||");
+                    forward(request, response, "/index.jsp");
+                } else {
+                    // System.out.println("||||||||||||||4|||||||||||");
 //             System.out.println("FILES:");
                     Enumeration files = multi.getFileNames();
                     while (files.hasMoreElements()) {
@@ -131,18 +135,18 @@ public class Controller extends HttpServlet {
                         }
                     }
                //     System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
-                       
+
                     if (originalFilename == null) {
                         originalFilename = "noimage.jpg";
-                        
-                    } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg"))&&(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
-                       //  System.out.println("||||||||||||||4|||||||||||");
-                           String source = realPath + "tmp/" + originalFilename;
+
+                    } else if ((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg")) && (!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
+                        //  System.out.println("||||||||||||||4|||||||||||");
+                        String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
                         afile.delete();
                         forward(request, response, "/index.jsp");
-                    }else{
-                       // System.out.println("||||||||||||||5|||||||||||");
+                    } else {
+                        // System.out.println("||||||||||||||5|||||||||||");
                         String source = realPath + "tmp/" + originalFilename;
 //                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
                         String destination = realPath + "img/" + originalFilename;
@@ -174,47 +178,47 @@ public class Controller extends HttpServlet {
                             }
 
                         }
-                      
+
                     }
-                u.setUsername(username);
-                u.setPassword(password);
-                u.setEmail(email);
-                u.setAvatar(originalFilename);
-                u.insertUtente();
-                forward(request, response, "/index.jsp");   
+                    u.setUsername(username);
+                    u.setPassword(password);
+                    u.setEmail(email);
+                    u.setAvatar(originalFilename);
+                    u.insertUtente();
+                    forward(request, response, "/index.jsp");
                 }
-                 
+
                 break;
             case 5:                     //GESTISCI_ACCOUNT     
-                
-                u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
+
+                u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("user", u);
                 forward(request, response, "/gestione.jsp");
                 break;
             case 6:                     //CAMBIA_PASSWORD
-               
+
                 String pass = request.getParameter("pass");
                 String pass1 = request.getParameter("pass1");
                 String pass2 = request.getParameter("pass2");
-                 u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
-                 if(pass.equals(u.getPassword())){
-                if(pass1.equals(pass2)){
-                    u.setPassword(pass1);
-                    u.updateUtente();
+                u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
+                if (pass.equals(u.getPassword())) {
+                    if (pass1.equals(pass2)) {
+                        u.setPassword(pass1);
+                        u.updateUtente();
+                        request.setAttribute("user", u);
+                        forward(request, response, "/gestione.jsp");
+                    } else {
+                        request.setAttribute("user", u);
+                        forward(request, response, "/gestione.jsp");
+                    }
+                } else {
                     request.setAttribute("user", u);
-                    forward(request, response, "/gestione.jsp");      
-                }else{
-                request.setAttribute("user", u);
-                forward(request, response, "/gestione.jsp");    
+                    forward(request, response, "/gestione.jsp");
                 }
-                }else{
-                     request.setAttribute("user", u);
-                forward(request, response, "/gestione.jsp");   
-                 }
                 break;
             case 7:                     //CAMBIA_AVATAR
-                 id=(Integer)session.getAttribute("user_id");
-                 u = Utente.loadUtente(id, dbmanager.con);
+                id = (Integer) session.getAttribute("user_id");
+                u = Utente.loadUtente(id, dbmanager.con);
 //                String dirName = realPath + "tmp";
 //                String originalFilename=null;
 //                MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());             
@@ -289,20 +293,20 @@ public class Controller extends HttpServlet {
 //                forward(request, response, "/index.jsp");    
                 break;
             case 8:                     //TASTO_CREA_GRUPPO      
-                
-                 id=(Integer)session.getAttribute("user_id");
-                 u = Utente.loadUtente(id, dbmanager.con);
-                 request.setAttribute("user", u);
+
+                id = (Integer) session.getAttribute("user_id");
+                u = Utente.loadUtente(id, dbmanager.con);
+                request.setAttribute("user", u);
                 forward(request, response, "/creazione_gruppo.jsp");
                 break;
             case 9:                     //CREA_GRUPPO    
                 String titolo = request.getParameter("titolo");
-                if(titolo.equals("")){
-                    forward(request, response, "/creazione_gruppo.jsp");    
-                }else{
-                    
-                    int tipo= Integer.parseInt(request.getParameter("tipo")); 
-                    gruppo=new Gruppo(dbmanager.con);
+                if (titolo.equals("")) {
+                    forward(request, response, "/creazione_gruppo.jsp");
+                } else {
+
+                    int tipo = Integer.parseInt(request.getParameter("tipo"));
+                    gruppo = new Gruppo(dbmanager.con);
                     gruppo.setTitolo(titolo);
                     gruppo.setId_amministratore((Integer) session.getAttribute("user_id"));
                     gruppo.setTipo(tipo);
@@ -314,47 +318,47 @@ public class Controller extends HttpServlet {
                 }
                 break;
             case 10:                     //CAMBIA_TITOLO
-                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                stringapp= request.getParameter("titolo"); 
-                if(!stringapp.equals("")){
-                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
-                gruppo.setTitolo(stringapp);
-                gruppo.updateGruppo();
-                request.setAttribute("gruppo", gruppo);
-                request.setAttribute("invitabili", gruppo.invitabili());
-                forward(request, response, "/gestisci_gruppo.jsp");
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                stringapp = request.getParameter("titolo");
+                if (!stringapp.equals("")) {
+                    gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                    gruppo.setTitolo(stringapp);
+                    gruppo.updateGruppo();
+                    request.setAttribute("gruppo", gruppo);
+                    request.setAttribute("invitabili", gruppo.invitabili());
+                    forward(request, response, "/gestisci_gruppo.jsp");
                 }
                 break;
             case 11:                     //CAMBIA_FLAG
-                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                intapp= Integer.parseInt(request.getParameter("tipo")); 
-                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                intapp = Integer.parseInt(request.getParameter("tipo"));
+                gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 gruppo.setTipo(intapp);
                 gruppo.updateGruppo();
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("invitabili", gruppo.invitabili());
                 forward(request, response, "/gestisci_gruppo.jsp");
-                break;    
+                break;
             case 12:                     //INVITA UTENTE
-                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                intapp= Integer.parseInt(request.getParameter("id_utente")); 
-                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                intapp = Integer.parseInt(request.getParameter("id_utente"));
+                gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 gruppo.invita_utente(intapp);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("invitabili", gruppo.invitabili());
                 forward(request, response, "/gestisci_gruppo.jsp");
                 break;
             case 13:                     //ELENCO GRUPPI
-               
-                u = Utente.loadUtente((Integer)session.getAttribute("user_id"), dbmanager.con);
+
+                u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("user", u);
                 request.setAttribute("listagruppi", u.listaGruppi());
                 request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
                 forward(request, response, "/gruppi.jsp");
                 break;
             case 14:                     //ENTRA_GRUPPO
-                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("commenti", gruppo.listaCommenti());
                 forward(request, response, "/gruppo.jsp");
@@ -363,43 +367,43 @@ public class Controller extends HttpServlet {
 
                 break;
             case 16:                     //TASTO_HOME
-                 
-                 id=(Integer)session.getAttribute("user_id");
-                 u = Utente.loadUtente(id, dbmanager.con);
-                 listainviti=u.loadInviti();
-                 request.setAttribute("listainviti", listainviti);
-                 request.setAttribute("user", u);
-                 forward(request, response, "/home.jsp");
-                
-                 break;
+
+                id = (Integer) session.getAttribute("user_id");
+                u = Utente.loadUtente(id, dbmanager.con);
+                listainviti = u.loadInviti();
+                request.setAttribute("listainviti", listainviti);
+                request.setAttribute("user", u);
+                forward(request, response, "/home.jsp");
+
+                break;
             case 17:                    //RIFIUTA_INVITO
-                 cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                 id=(Integer)session.getAttribute("user_id");  
-                 u = Utente.loadUtente(id, dbmanager.con);
-                 u.valuta_invito(cod_gruppo, 3);
-                 listainviti=u.loadInviti();
-                 request.setAttribute("listainviti", listainviti);
-                 request.setAttribute("user", u);
-                 forward(request, response, "/home.jsp");
-                 break;
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                id = (Integer) session.getAttribute("user_id");
+                u = Utente.loadUtente(id, dbmanager.con);
+                u.valuta_invito(cod_gruppo, 3);
+                listainviti = u.loadInviti();
+                request.setAttribute("listainviti", listainviti);
+                request.setAttribute("user", u);
+                forward(request, response, "/home.jsp");
+                break;
             case 18:                    //ACCETTA_INVITO
-                 cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                 id=(Integer)session.getAttribute("user_id");  
-                 u = Utente.loadUtente(id, dbmanager.con);
-                 u.valuta_invito(cod_gruppo, 2);
-                 listainviti=u.loadInviti();
-                 request.setAttribute("listainviti", listainviti);
-                 request.setAttribute("user", u);
-                 forward(request, response, "/home.jsp");
-                 break;
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                id = (Integer) session.getAttribute("user_id");
+                u = Utente.loadUtente(id, dbmanager.con);
+                u.valuta_invito(cod_gruppo, 2);
+                listainviti = u.loadInviti();
+                request.setAttribute("listainviti", listainviti);
+                request.setAttribute("user", u);
+                forward(request, response, "/home.jsp");
+                break;
             case 19:                    //GESTISCI_GRUPPO
-                cod_gruppo= Integer.parseInt(request.getParameter("cod_gruppo")); 
-                gruppo= Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("invitabili", gruppo.invitabili());
                 forward(request, response, "/gestisci_gruppo.jsp");
                 break;
-                
+
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -420,6 +424,7 @@ public class Controller extends HttpServlet {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -437,6 +442,7 @@ public class Controller extends HttpServlet {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * Returns a short description of the servlet.
      *
@@ -446,6 +452,7 @@ public class Controller extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
     private void forward(HttpServletRequest request, HttpServletResponse response, String page) throws ServletException, IOException {
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher(page);
