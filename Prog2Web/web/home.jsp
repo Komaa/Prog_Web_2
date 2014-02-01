@@ -63,6 +63,17 @@
 
                                 </a>
                             </li>
+                            
+
+                            <c:if test="${user.tipo == 1}">
+                            <li>
+                                <a href="Controller?cmd=20">
+
+                                     Moderazione
+
+                                </a>
+                            </li>
+                            </c:if>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>

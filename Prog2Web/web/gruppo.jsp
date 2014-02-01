@@ -126,21 +126,21 @@
                 </div>
                 <div id="forum">
                     <div class="panel-body">
-                        <c:forEach var="commenti" items="${listaCommenti}">
+                        <c:forEach var="comment" items="${commenti}">
                         <div class="comments">
                             
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"><c:out value="${commenti.user.avatar}"/>Autore: <c:out value="${commenti.user.username}"/> scritto in data: " <c:out value="${commenti.date}"/></div>
+                                    <h3 class="panel-title"></div>
                                 <div class="panel-body" style="min-height:100px">
 
                                     <h4>
-                                       <c:out value="${commenti.messaggi}"/>
+                                       <c:out value="${comment.messaggi.commenti}"/>
 
                                     </h4>
                                 </div>
                                 <div class="panel-footer">
-                                    Allegato: <a href="<c:out value="${commenti.allegato}"/>"><c:out value="${commenti.allegato}"/></a>
+                                    Allegato: <a href="<c:out value="${ciccio}"/>"><c:out value="${allegato}"/></a>
                                     <br><br>
 
                                     <br><br>

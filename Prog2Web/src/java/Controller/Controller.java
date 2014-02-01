@@ -516,7 +516,13 @@ public class Controller extends HttpServlet {
                 request.setAttribute("invitabili", gruppo.invitabili());
                 forward(request, response, "/gestisci_gruppo.jsp");
                 break;
-
+            case 20:                    //PAGINA MODERAZIONE
+                u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
+                request.setAttribute("user", u);
+                request.setAttribute("listagruppi", u.listaGruppi());
+                request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
+                forward(request, response, "/moderazione.jsp");
+                break;
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
