@@ -472,6 +472,7 @@ public class Controller extends HttpServlet {
 
                     Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                     commento.insertComment(dbmanager.con);
+                    request.setAttribute("user", u);
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("commenti", gruppo.listaCommenti());
                     forward(request, response, "/gruppo.jsp");

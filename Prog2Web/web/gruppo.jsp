@@ -93,7 +93,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title"><img src="./img/${user.avatar}" style="max-height: 50px; max-width: 50px"> <c:out value="${user.username}"/> scrivi un post!</h3></div>
                 <div class="panel-body">
-  <!--SCRIVERE IL COMANDO QUI  -->                  <form class="form-horizontal" name="input" action="SCRIVERE COMANDO QUI" ENCTYPE="multipart/form-data" method="post">
+                    <form class="form-horizontal" name="input" action="Controller?cmd=15" ENCTYPE="multipart/form-data" method="post">
                         <div class="control-group">
                             <div class="insert_comment">
                                 <h4>Messaggio</h4><br>
@@ -102,9 +102,10 @@
                             <div class="control-group">
                                 <br>
                                 <input type="file" name=file></input><hr>
-
                             </div>
                             </br>
+                            <input type="hidden" name="user_id" value="<c:out value="${user.cod}"/>"> 
+                            <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> 
                             <div class="control-group">
                                 <button class="btn btn-success" name="commenta">commenta</button>
                                 <button type="reset" class="btn btn-danger">Cancella!</button>
@@ -112,27 +113,49 @@
                     </form>
 
                 </div>
-                </div>
             </div>
         </div>
-                    <div class="container .col-md-6 .col-md-offset-3">   
-                        <div class="panel-group">
-                            <div class="panel panel-primary">
+    </div>
+    <div class="container .col-md-6 .col-md-offset-3">   
+        <div class="panel-group">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>
+                        Qui sotto ci sono tutti i post del gruppo!
+                    </h4>
+                </div>
+                <div id="forum">
+                    <div class="panel-body">
+                        <c:forEach var="commenti" items="${listaCommenti}">
+                        <div class="comments">
+                            
+                            <div class="panel panel-info">
                                 <div class="panel-heading">
+                                    <h3 class="panel-title"><c:out value="${commenti.user.avatar}"/>Autore: <c:out value="${commenti.user.username}"/> scritto in data: " <c:out value="${commenti.date}"/></div>
+                                <div class="panel-body" style="min-height:100px">
+
                                     <h4>
-                                        Qui sotto ci sono tutti i post del gruppo!
+                                       <c:out value="${commenti.messaggi}"/>
+
                                     </h4>
                                 </div>
-                                <div id="forum">
-                                    <div class="panel-body">
+                                <div class="panel-footer">
+                                    Allegato: <a href="<c:out value="${commenti.allegato}"/>"><c:out value="${commenti.allegato}"/></a>
+                                    <br><br>
+
+                                    <br><br>
+
+                                </div>                                
+                            </div>   
 
 
 
 
+                        </div>
+                        </c:forEach>
+                    </div>
 
-
-
-                                    </div>
-                                    <script src=./bootstrap/js/bootstrap.min.js></script>
-                                    </body>
-                                    </html>
+                </div>
+                <script src=./bootstrap/js/bootstrap.min.js></script>
+                </body>
+                </html>
