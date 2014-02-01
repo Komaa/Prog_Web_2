@@ -105,7 +105,7 @@
             <input type="radio" name="tipo" value="1">Privato
         </div>
         </br><hr>
-        <button class="btn btn-success" type="submit" name="crea!" value="">Modifica tipo</button>
+        <button class="btn btn-success" type="submit">Modifica tipo</button>
     </form>
     <!-- sul form modifica titolo / modifica tipo gruppo -> passa anche un hidden con l' id_gruppo e il campo titolo si chiamerà titolo e il campo tipo è tipo (10 cambio titolo) (11 cambia tipo)  se invito, invio anche l'id_utente, id_gruppo-->
 

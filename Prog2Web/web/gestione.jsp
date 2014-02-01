@@ -147,7 +147,7 @@
             </h1>
             <hr>
 
-            <form class="form-horizontal" method="post" action="Controller?cmd=7" role="form">  
+            <form class="form-horizontal" method="post" action="Controller?cmd=7" role="form" enctype="multipart/form-data">  
                 <div class="form-group">  
                     <label for="image" class="col-sm-3 control-label">  
                         Avatar</label>  

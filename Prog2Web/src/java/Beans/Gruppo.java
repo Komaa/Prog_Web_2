@@ -112,11 +112,12 @@ public class Gruppo {
                 
     
     public void updateGruppo() throws SQLException{
-        PreparedStatement stm = con.prepareStatement("UPDATE gruppi SET nome_gruppo=? where id_gruppo=?");
+        PreparedStatement stm = con.prepareStatement("UPDATE gruppi SET nome_gruppo=?,tipo=? where id_gruppo=?");
         try {
 
             stm.setString(1, titolo);
-            stm.setString(2, String.valueOf(getId_gruppo()));
+            stm.setInt(2, tipo);
+            stm.setString(3, String.valueOf(getId_gruppo()));
 
             //executeUpdate è per le query di inserimento!
             stm.executeUpdate();
