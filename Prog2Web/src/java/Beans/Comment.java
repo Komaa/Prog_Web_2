@@ -34,22 +34,22 @@ public class Comment {
         this.allegato = allegato;
     }
 
-    public void insertComment(Connection con) throws SQLException{
-       
-         Timestamp currentTimestamp= new Timestamp(data.getTime());
-        
+    public void insertComment(Connection con) throws SQLException {
+
+        Timestamp currentTimestamp = new Timestamp(data.getTime());
+
         PreparedStatement stm2 = con.prepareStatement("INSERT INTO comments (id_utente, id_gruppo, data, commenti, allegato) VALUES (?,?,?,?,?)");
-        try{
+        try {
             stm2.setInt(1, utente.getCod());
-        stm2.setInt(2, id_gruppo);
-        stm2.setTimestamp(3, currentTimestamp);
-         stm2.setString(4, text);
-         stm2.setString(5, allegato);
+            stm2.setInt(2, id_gruppo);
+            stm2.setTimestamp(3, currentTimestamp);
+            stm2.setString(4, text);
+            stm2.setString(5, allegato);
 //      
-           stm2.executeUpdate();
-           } finally {
-                        stm2.close();
-                    }
+            stm2.executeUpdate();
+        } finally {
+            stm2.close();
+        }
     }
 
     public void setText(String text) {

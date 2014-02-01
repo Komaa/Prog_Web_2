@@ -61,10 +61,10 @@ public class Controller extends HttpServlet {
         Utente u = null;
         Gruppo gruppo = null;
         String stringapp, dirName = realPath + "tmp";
-         String originalFilename = null;
+        String originalFilename = null;
         int cod_gruppo, cod_utente, intapp;
         session = request.getSession(true);
-       // realPath = getServletContext().getRealPath("/");
+        // realPath = getServletContext().getRealPath("/");
 
         switch (cmd) {
             case 1:             //LOGIN
@@ -102,8 +102,7 @@ public class Controller extends HttpServlet {
 
                 u = new Utente(dbmanager.con);
                 String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-                
-               
+
                 MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
                 username = multi.getParameter("username");
@@ -140,15 +139,15 @@ public class Controller extends HttpServlet {
 //                System.out.println("f.length(): " + f.length());
                         }
                     }
-               //     System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
-                           if (originalFilename == null) {
+                    //     System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
+                    if (originalFilename == null) {
                         originalFilename = "noimage.jpg";
-                         u.setUsername(username);
+                        u.setUsername(username);
                         u.setPassword(password);
                         u.setEmail(email);
                         u.setAvatar(originalFilename);
-                     u.insertUtente();
-                    forward(request, response, "/index.jsp");
+                        u.insertUtente();
+                        forward(request, response, "/index.jsp");
 
                     } else if ((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg")) && (!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
                         //  System.out.println("||||||||||||||4|||||||||||");
@@ -189,14 +188,14 @@ public class Controller extends HttpServlet {
                             }
 
                         }
-                    u.setUsername(username);
-                    u.setPassword(password);
-                    u.setEmail(email);
-                    u.setAvatar(originalFilename);
-                    u.insertUtente();
-                    forward(request, response, "/index.jsp");
+                        u.setUsername(username);
+                        u.setPassword(password);
+                        u.setEmail(email);
+                        u.setAvatar(originalFilename);
+                        u.insertUtente();
+                        forward(request, response, "/index.jsp");
                     }
-                   
+
                 }
 
                 break;
@@ -230,80 +229,79 @@ public class Controller extends HttpServlet {
             case 7:                     //CAMBIA_AVATAR
                 id = (Integer) session.getAttribute("user_id");
                 u = Utente.loadUtente(id, dbmanager.con);
-            
-                originalFilename=null;
-                multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());             
+
+                originalFilename = null;
+                multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
 //             System.out.println("FILES:");
-                    Enumeration files = multi.getFileNames();
-                    while (files.hasMoreElements()) {
-                        String namepi = (String) files.nextElement();
-                        String filename = multi.getFilesystemName(namepi);
-                        originalFilename = multi.getOriginalFileName(namepi);
-                        String type = multi.getContentType(namepi);
-                        File f = multi.getFile(namepi);
+                Enumeration files = multi.getFileNames();
+                while (files.hasMoreElements()) {
+                    String namepi = (String) files.nextElement();
+                    String filename = multi.getFilesystemName(namepi);
+                    originalFilename = multi.getOriginalFileName(namepi);
+                    String type = multi.getContentType(namepi);
+                    File f = multi.getFile(namepi);
 //                System.out.println("name: " + namepi);
 //                System.out.println("filename: " + filename);
 //                System.out.println("originalFilename: " + originalFilename);
 //                System.out.println("type: " + type);
-                        if (f != null) {
+                    if (f != null) {
 //                System.out.println("f.toString(): " + f.toString());
 //                System.out.println("f.getName(): " + f.getName());
 //                System.out.println("f.exists(): " + f.exists());
 //                System.out.println("f.length(): " + f.length());
-                        }
                     }
+                }
                    //System.out.println(originalFilename+"!!!!"+originalFilename.substring(originalFilename.lastIndexOf("."))+"!!!!");
- 
-                    if (originalFilename == null) {
-                        forward(request, response, "/gestione.jsp");
-                       
-                    } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg"))&&(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
-                     
-                        String source = realPath + "tmp/" + originalFilename;
-                        File afile = new File(source);
-                        afile.delete();
-                        forward(request, response, "/gestione.jsp");
-                    }else{
-                       
-                        String source = realPath + "tmp/" + originalFilename;
+
+                if (originalFilename == null) {
+                    forward(request, response, "/gestione.jsp");
+
+                } else if ((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg")) && (!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
+
+                    String source = realPath + "tmp/" + originalFilename;
+                    File afile = new File(source);
+                    afile.delete();
+                    forward(request, response, "/gestione.jsp");
+                } else {
+
+                    String source = realPath + "tmp/" + originalFilename;
 //                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
-                        String destination = realPath + "img/" + originalFilename;
+                    String destination = realPath + "img/" + originalFilename;
 //                System.out.println("destinationNNNNNNNNNNNNNNNNNNN:"+ destination);
-                        File afile = new File(source);
-                        File bfile = new File(destination);
-                        if (!(bfile.exists())) {
-                            InputStream inStream = null;
-                            OutputStream outStream = null;
+                    File afile = new File(source);
+                    File bfile = new File(destination);
+                    if (!(bfile.exists())) {
+                        InputStream inStream = null;
+                        OutputStream outStream = null;
 
-                            try {
+                        try {
 
-                                inStream = new FileInputStream(afile);
-                                outStream = new FileOutputStream(bfile);
+                            inStream = new FileInputStream(afile);
+                            outStream = new FileOutputStream(bfile);
 
-                                byte[] buffer = new byte[1024];
-                                int length;
-                                //copy the file content in bytes 
-                                while ((length = inStream.read(buffer)) > 0) {
-                                    outStream.write(buffer, 0, length);
-                                }
-                                inStream.close();
-                                outStream.close();
-
-                                //delete the original file
-                                afile.delete();
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                            byte[] buffer = new byte[1024];
+                            int length;
+                            //copy the file content in bytes 
+                            while ((length = inStream.read(buffer)) > 0) {
+                                outStream.write(buffer, 0, length);
                             }
+                            inStream.close();
+                            outStream.close();
 
+                            //delete the original file
+                            afile.delete();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    
-                
-                File immcancfile = new File(realPath + "img/" + u.getAvatar());
-                immcancfile.delete();
-                u.setAvatar(originalFilename);
-                u.updateUtente();
-                forward(request, response, "/gestione.jsp");    
+
+                    }
+
+                    File immcancfile = new File(realPath + "img/" + u.getAvatar());
+                    immcancfile.delete();
+                    u.setAvatar(originalFilename);
+                    u.updateUtente();
+                    forward(request, response, "/gestione.jsp");
                 }
                 break;
             case 8:                     //TASTO_CREA_GRUPPO      
@@ -336,13 +334,13 @@ public class Controller extends HttpServlet {
                 stringapp = request.getParameter("titolo");
                 if (!stringapp.equals("")) {
                     gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
-                    String dirOldName= realPath+"groupsfolder/" + gruppo.getTitolo();
-                    String dirNName= realPath+"groupsfolder/" + stringapp;
-                 
+                    String dirOldName = realPath + "groupsfolder/" + gruppo.getTitolo();
+                    String dirNName = realPath + "groupsfolder/" + stringapp;
+
                     File theDir = new File(dirOldName);
                     File theNDir = new File(dirNName);
                     if (theDir.exists()) {
-                    boolean result = theDir.renameTo(theNDir);  
+                        boolean result = theDir.renameTo(theNDir);
                     }
                     gruppo.setTitolo(stringapp);
                     gruppo.updateGruppo();
@@ -354,7 +352,7 @@ public class Controller extends HttpServlet {
             case 11:                     //CAMBIA_FLAG
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
                 intapp = Integer.parseInt(request.getParameter("tipo"));
-                System.out.println(intapp+"!!!!!!!!!!!!!!!!!!!!!!");
+                System.out.println(intapp + "!!!!!!!!!!!!!!!!!!!!!!");
                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 gruppo.setTipo(intapp);
                 gruppo.updateGruppo();
@@ -388,22 +386,21 @@ public class Controller extends HttpServlet {
                 break;
             case 15:                     //INSERISCI_COMMENTO
                 u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
-                
+
                 //---------------------Upload eventuale file
                 dirName = realPath + "tmp";
 
                 multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
-               
                 String messaggio = multi.getParameter("messaggio");
                 messaggio = messaggio.replaceAll("<", "");
-                messaggio = messaggio.replaceAll(">", "");    
+                messaggio = messaggio.replaceAll(">", "");
                 cod_gruppo = Integer.parseInt(multi.getParameter("cod_gruppo"));
                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 if (messaggio.equals("")) {
                     request.setAttribute("gruppo", gruppo);
-                request.setAttribute("commenti", gruppo.listaCommenti());
-                forward(request, response, "/gruppo.jsp");
+                    request.setAttribute("commenti", gruppo.listaCommenti());
+                    forward(request, response, "/gruppo.jsp");
                 } else {
 //             System.out.println("FILES:");
                     files = multi.getFileNames();
@@ -457,26 +454,26 @@ public class Controller extends HttpServlet {
 
                         } else {
                             afile.delete();
-                            Date date= new java.util.Date();
+                            Date date = new java.util.Date();
                             originalFilename = "noallegato";
-                             Comment commento=new Comment(messaggio, u, cod_gruppo, date, originalFilename);
-                    commento.insertComment(dbmanager.con);
-                      request.setAttribute("gruppo", gruppo);
-                      request.setAttribute("commenti", gruppo.listaCommenti());
-                      forward(request, response, "/gruppo.jsp");
-                forward(request, response, "/gruppo.jsp");
+                            Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
+                            commento.insertComment(dbmanager.con);
+                            request.setAttribute("gruppo", gruppo);
+                            request.setAttribute("commenti", gruppo.listaCommenti());
+                            forward(request, response, "/gruppo.jsp");
+                            forward(request, response, "/gruppo.jsp");
                         }
                     } else {
                         originalFilename = "noallegato";
                     }
-                    Date date= new java.util.Date();
-                    
-                    Comment commento=new Comment(messaggio, u, cod_gruppo, date, originalFilename);
+                    Date date = new java.util.Date();
+
+                    Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                     commento.insertComment(dbmanager.con);
-                      request.setAttribute("gruppo", gruppo);
-                      request.setAttribute("commenti", gruppo.listaCommenti());
-                      forward(request, response, "/gruppo.jsp");
-                         
+                    request.setAttribute("gruppo", gruppo);
+                    request.setAttribute("commenti", gruppo.listaCommenti());
+                    forward(request, response, "/gruppo.jsp");
+
                 }
                 break;
             case 16:                     //TASTO_HOME

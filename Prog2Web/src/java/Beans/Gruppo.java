@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Beans;
 
 import java.io.File;
@@ -25,17 +24,19 @@ import java.util.HashSet;
  * @author pietro
  */
 public class Gruppo {
+
     private String titolo; //0 per pubblico, 1 per privato
     private int id_amministratore;
-    private int tipo,aperto;
+    private int tipo, aperto;
     private HashSet<Integer> componenti;
     private ArrayList<Comment> messaggi;
     public transient Connection con;
     private int id_gruppo;
-    
-    public Gruppo(Connection conne){
-        con=conne;
+
+    public Gruppo(Connection conne) {
+        con = conne;
     }
+
     /**
      * @return the titolo
      */
@@ -50,8 +51,6 @@ public class Gruppo {
         this.titolo = titolo;
     }
 
-
-
     /**
      * @return the tipo
      */
@@ -65,54 +64,50 @@ public class Gruppo {
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
-    
-    
-    public int insertGruppo() throws SQLException{
-       int numero=0; 
-       boolean val = false;
 
-                    String dirName = Controller.Controller.realPath + "groupsfolder/" + titolo;
-                    File theDir = new File(dirName);
-                    if (!theDir.exists()) {
-                        System.out.println("creating directory: " + dirName);
-                        boolean result = theDir.mkdirs();
-                        if (result) {
-                            System.out.println("DIR created");
-                        }
-                    }
-                    Date data_creazione = Calendar.getInstance().getTime();
-                    SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd");
-                    String creationDate = ft.format(data_creazione);
-                   
+    public int insertGruppo() throws SQLException {
+        int numero = 0;
+        boolean val = false;
 
-                    //non esiste e quindi si può creare!
-                    PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-                   
-                    try {
-                        val = false;
+        String dirName = Controller.Controller.realPath + "groupsfolder/" + titolo;
+        File theDir = new File(dirName);
+        if (!theDir.exists()) {
+            System.out.println("creating directory: " + dirName);
+            boolean result = theDir.mkdirs();
+            if (result) {
+                System.out.println("DIR created");
+            }
+        }
+        Date data_creazione = Calendar.getInstance().getTime();
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy/MM/dd");
+        String creationDate = ft.format(data_creazione);
 
-                        stm2.setString(1, titolo);
-                        stm2.setInt(2, id_amministratore);
-                        stm2.setString(3, creationDate);
-                        stm2.setInt(4, tipo);
-                        stm2.setInt(5, 0);
-                        //executeUpdate è per le query di inserimento!
-                        stm2.executeUpdate(); 
-                        ResultSet rs = stm2.getGeneratedKeys();
-                        if (rs.next()){
-                        numero=rs.getInt(1);
-                        }
-                    } finally {
-                        stm2.close();
-                    }
-                
-                return numero;
-                   
-                }
-               
-                
-    
-    public void updateGruppo() throws SQLException{
+        //non esiste e quindi si può creare!
+        PreparedStatement stm2 = con.prepareStatement("INSERT INTO gruppi (nome_gruppo,id_amministratore,data,tipo,aperto) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+
+        try {
+            val = false;
+
+            stm2.setString(1, titolo);
+            stm2.setInt(2, id_amministratore);
+            stm2.setString(3, creationDate);
+            stm2.setInt(4, tipo);
+            stm2.setInt(5, 0);
+            //executeUpdate è per le query di inserimento!
+            stm2.executeUpdate();
+            ResultSet rs = stm2.getGeneratedKeys();
+            if (rs.next()) {
+                numero = rs.getInt(1);
+            }
+        } finally {
+            stm2.close();
+        }
+
+        return numero;
+
+    }
+
+    public void updateGruppo() throws SQLException {
         PreparedStatement stm = con.prepareStatement("UPDATE gruppi SET nome_gruppo=?,tipo=? where id_gruppo=?");
         try {
 
@@ -126,32 +121,31 @@ public class Gruppo {
             stm.close();
         }
     }
-    
-   static public Gruppo loadGruppo(int id,Connection con) throws SQLException {
-       Gruppo gruppo=new Gruppo(con);
+
+    static public Gruppo loadGruppo(int id, Connection con) throws SQLException {
+        Gruppo gruppo = new Gruppo(con);
         PreparedStatement stm = con.prepareStatement("select * from gruppi where id_gruppo=?");
         stm.setString(1, String.valueOf(id));
-       
-            ResultSet rs = stm.executeQuery();
-            try {
-                while (rs.next()) {
-                    gruppo.setId_gruppo(rs.getInt("id_gruppo"));
-                    gruppo.titolo=rs.getString("nome_gruppo");
-                    gruppo.setId_amministratore(rs.getInt("id_amministratore")); 
-                    gruppo.tipo=rs.getInt("tipo");
-                    gruppo.setAperto(rs.getInt("aperto"));
-                   
-                }
-            } finally {
-                rs.close();
+
+        ResultSet rs = stm.executeQuery();
+        try {
+            while (rs.next()) {
+                gruppo.setId_gruppo(rs.getInt("id_gruppo"));
+                gruppo.titolo = rs.getString("nome_gruppo");
+                gruppo.setId_amministratore(rs.getInt("id_amministratore"));
+                gruppo.tipo = rs.getInt("tipo");
+                gruppo.setAperto(rs.getInt("aperto"));
+
             }
-            return gruppo;
+        } finally {
+            rs.close();
+        }
+        return gruppo;
     }
-   
-   
-      static public HashMap<Integer,String> listaGruppiaperti(Connection con) throws SQLException {
-       
-       HashMap<Integer,String> listgruppi = new HashMap<Integer,String>();
+
+    static public HashMap<Integer, String> listaGruppiaperti(Connection con) throws SQLException {
+
+        HashMap<Integer, String> listgruppi = new HashMap<Integer, String>();
         PreparedStatement stm = con.prepareStatement("select * from gruppi where tipo=?");
         stm.setInt(1, 0);
         try {
@@ -159,7 +153,7 @@ public class Gruppo {
             try {
                 while (rs.next()) {
                     listgruppi.put(rs.getInt("id_gruppo"), Gruppo.loadGruppo(rs.getInt("id_gruppo"), con).getTitolo());
-    
+
                 }
             } finally {
                 rs.close();
@@ -169,8 +163,8 @@ public class Gruppo {
         }
         return listgruppi;
     }
-    
-   public ArrayList<Utente> invitabili() throws SQLException{
+
+    public ArrayList<Utente> invitabili() throws SQLException {
         String tmp;
         ArrayList<Utente> listautenti = new ArrayList<Utente>();
         PreparedStatement stm = con.prepareStatement("select utenti.id_utenti from utenti where id_utenti!=? && utenti.id_utenti NOT IN (select gruppi_utenti.id_utente FROM gruppi_utenti WHERE id_gruppo=?)");
@@ -188,11 +182,11 @@ public class Gruppo {
             }
         } finally {
             stm.close();
-        }              
+        }
         return listautenti;
-       
-   }
-   
+
+    }
+
     public ArrayList<Comment> listaCommenti() throws SQLException {
 
         Comment commento;
@@ -203,7 +197,7 @@ public class Gruppo {
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
-                    Timestamp tm=rs.getTimestamp("data");
+                    Timestamp tm = rs.getTimestamp("data");
                     Date date = new Date(tm.getTime());
                     commento = new Comment(rs.getString("commenti"), Utente.loadUtente(rs.getInt("id_utente"), con), rs.getInt("id_gruppo"), date, rs.getString("allegato"));
                     listaCommenti.add(commento);
@@ -218,7 +212,7 @@ public class Gruppo {
         return listaCommenti;
 
     }
-    
+
     public boolean invita_utente(int id_utente) throws SQLException {
 
         boolean val = false;
@@ -243,7 +237,7 @@ public class Gruppo {
 
         return val;
     }
-    
+
     public boolean inserisci_admin(int id_utente) throws SQLException {
 
         boolean val = false;
@@ -268,7 +262,7 @@ public class Gruppo {
 
         return val;
     }
-    
+
     void addcomment(String messaggio, String cod_utente, String originalFilename) throws SQLException {
         Date data_creazione = Calendar.getInstance().getTime();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -286,8 +280,7 @@ public class Gruppo {
         }
     }
 
-    
-     public ArrayList<String> listaUtentiGruppo() throws SQLException {
+    public ArrayList<String> listaUtentiGruppo() throws SQLException {
         String tmp;
         ArrayList<String> listautenti = new ArrayList<String>();
         PreparedStatement stm = con.prepareStatement("select gruppi_utenti.utente FROM gruppi_utenti WHERE gruppo=? && stato = ?");
@@ -310,9 +303,8 @@ public class Gruppo {
         return listautenti;
 
     }
-     
-     
-       boolean checkusertogroup(int id_utente) throws SQLException {
+
+    boolean checkusertogroup(int id_utente) throws SQLException {
 
         PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti where gruppo=? and utente=? and stato=2");
         try {
@@ -333,8 +325,8 @@ public class Gruppo {
         }
 
     }
-       
-       public int contaCommenti() throws SQLException {
+
+    public int contaCommenti() throws SQLException {
 
         int commenti = 0;
         PreparedStatement stm = con.prepareStatement("select COUNT(*) from comments where id_gruppo=?");
@@ -425,5 +417,5 @@ public class Gruppo {
     public void setId_gruppo(int id_gruppo) {
         this.id_gruppo = id_gruppo;
     }
-    
+
 }
