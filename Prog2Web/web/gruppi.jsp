@@ -93,7 +93,7 @@
                 <tr> 
                     <td><c:out value="${lista_gruppi.id_gruppo}"/></td>
                     <td><c:out value="${lista_gruppi.titolo}"/></td>
-                    <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${lista_gruppi.id_gruppo}"/>" class="btn btn-success" role="button">Entra!</a></td>
+                    <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${lista_gruppi.id_gruppo}"/>&user_id=<c:out value="${user.cod}"/>" class="btn btn-success" role="button">Entra!</a></td>
                     <c:choose>
                         <c:when test="${user.cod == lista_gruppi.id_amministratore}"><td><a href="Controller?cmd=19&cod_gruppo=<c:out value="${lista_gruppi.id_gruppo}"/>" class="btn btn-success" role="button">Amministra</a></td></c:when>
                     </c:choose>

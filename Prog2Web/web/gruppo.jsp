@@ -79,7 +79,7 @@
         <br></br>
         <div class="section-background">
             <div class="section-title">
-                <h1>Forum</h1>
+                <h1>Forum del gruppo <c:out value="${gruppo.titolo}"/></h1>
                 <div class="section-content clearfix">Qui puoi trovare i post degli altri utenti o scrivere il tuo! </div>
             </div>          
         </div>       
@@ -101,7 +101,7 @@
                             </div>
                             <div class="control-group">
                                 <br>
-                                <input type="file" name=file></input><hr>;
+                                <input type="file" name=file></input><hr>
 
                             </div>
                             </br>

@@ -378,8 +378,10 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/gruppi.jsp");
                 break;
             case 14:                     //ENTRA_GRUPPO
+                u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                request.setAttribute("user", u);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("commenti", gruppo.listaCommenti());
                 forward(request, response, "/gruppo.jsp");
