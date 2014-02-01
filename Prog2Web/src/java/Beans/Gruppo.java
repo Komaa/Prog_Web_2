@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -202,7 +203,9 @@ public class Gruppo {
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
-                    commento = new Comment(rs.getString("commenti"), Utente.loadUtente(rs.getInt("id_utente"), con), rs.getString("id_gruppo"), rs.getString("data"), rs.getString("allegato"));
+                    Timestamp tm=rs.getTimestamp("data");
+                    Date date = new Date(tm.getTime());
+                    commento = new Comment(rs.getString("commenti"), Utente.loadUtente(rs.getInt("id_utente"), con), rs.getInt("id_gruppo"), date, rs.getString("allegato"));
                     listaCommenti.add(commento);
                 }
             } finally {

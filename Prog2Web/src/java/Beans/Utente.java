@@ -112,17 +112,16 @@ public class Utente {
     
     public void insertUtente() throws SQLException{
        // System.out.println(con+"\n"+username+password+email+" "+avatar);
-        java.util.Date dt = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(dt);
-        PreparedStatement stm2 = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar, data_accesso) VALUES (?,?,?,?,?,?)");
+      
+       
+        PreparedStatement stm2 = con.prepareStatement("INSERT INTO utenti (username, password, email, tipo, avatar) VALUES (?,?,?,?,?)");
         try{
             stm2.setString(1, username);
         stm2.setString(2, password);
         stm2.setString(3, email);
          stm2.setInt(4, 0);
          stm2.setString(5, avatar);
-         stm2.setString(6, currentTime);
+         
 //      
            stm2.executeUpdate();
            } finally {
@@ -131,12 +130,13 @@ public class Utente {
     }
     
     public void aggiornadatalogin() throws SQLException{
-         java.util.Date dt = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(dt);
+         data = new java.util.Date();
+    
+       Timestamp currentTimestamp= new Timestamp(data.getTime());
+       
      PreparedStatement stm = con.prepareStatement("UPDATE utenti SET data_accesso=? WHERE id_utenti=?");
-        stm.setString(1, String.valueOf(currentTime));
-        stm.setString(2, String.valueOf(cod));
+        stm.setTimestamp(1, currentTimestamp);
+        stm.setInt(2,cod);
       
         int rs = stm.executeUpdate();
     }
@@ -153,6 +153,7 @@ public class Utente {
    static public Utente loadUtente(int id,Connection con) throws SQLException {
        Utente utente=new Utente(con);
        String app;
+       Timestamp loginutente;
         PreparedStatement stm = con.prepareStatement("select * from utenti where id_utenti=?");
         stm.setString(1, String.valueOf(id));
        
@@ -165,7 +166,8 @@ public class Utente {
                     utente.email=rs.getString("email");
                     utente.tipo=rs.getInt("tipo");
                     utente.avatar=rs.getString("avatar");      
-             
+                    loginutente=rs.getTimestamp("data_accesso");
+                    utente.data=new Date(loginutente.getTime());
                 }
             } finally {
                 rs.close();

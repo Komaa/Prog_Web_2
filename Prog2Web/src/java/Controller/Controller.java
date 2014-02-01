@@ -5,8 +5,10 @@
  */
 package Controller;
 
+import Beans.Comment;
 import Beans.Gruppo;
 import Beans.Utente;
+import static Controller.Controller.realPath;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import java.io.File;
@@ -17,6 +19,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -56,7 +60,8 @@ public class Controller extends HttpServlet {
         HashMap<Integer, String> listainviti;
         Utente u = null;
         Gruppo gruppo = null;
-        String stringapp, dirName = realPath + "tmp";;
+        String stringapp, dirName = realPath + "tmp";
+         String originalFilename = null;
         int cod_gruppo, cod_utente, intapp;
         session = request.getSession(true);
        // realPath = getServletContext().getRealPath("/");
@@ -70,6 +75,7 @@ public class Controller extends HttpServlet {
                 u.setUsername(username);
                 u.setPassword(password);
                 id = u.check_user();
+                u.setCod(id);
                 u.aggiornadatalogin();
                 if (id > -1) {
 
@@ -97,7 +103,7 @@ public class Controller extends HttpServlet {
                 u = new Utente(dbmanager.con);
                 String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
                 
-                String originalFilename = null;
+               
                 MultipartRequest multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
                 username = multi.getParameter("username");
@@ -251,15 +257,15 @@ public class Controller extends HttpServlet {
  
                     if (originalFilename == null) {
                         forward(request, response, "/gestione.jsp");
-                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaa");
+                       
                     } else if((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg"))&&(!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
-                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                     
                         String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
                         afile.delete();
                         forward(request, response, "/gestione.jsp");
                     }else{
-                        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+                       
                         String source = realPath + "tmp/" + originalFilename;
 //                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
                         String destination = realPath + "img/" + originalFilename;
@@ -330,6 +336,14 @@ public class Controller extends HttpServlet {
                 stringapp = request.getParameter("titolo");
                 if (!stringapp.equals("")) {
                     gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                    String dirOldName= realPath+"groupsfolder/" + gruppo.getTitolo();
+                    String dirNName= realPath+"groupsfolder/" + stringapp;
+                 
+                    File theDir = new File(dirOldName);
+                    File theNDir = new File(dirNName);
+                    if (theDir.exists()) {
+                    boolean result = theDir.renameTo(theNDir);  
+                    }
                     gruppo.setTitolo(stringapp);
                     gruppo.updateGruppo();
                     request.setAttribute("gruppo", gruppo);
@@ -373,7 +387,97 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/gruppo.jsp");
                 break;
             case 15:                     //INSERISCI_COMMENTO
+                u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
+                
+                //---------------------Upload eventuale file
+                dirName = realPath + "tmp";
 
+                multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+
+               
+                String messaggio = multi.getParameter("messaggio");
+                messaggio = messaggio.replaceAll("<", "");
+                messaggio = messaggio.replaceAll(">", "");    
+                cod_gruppo = Integer.parseInt(multi.getParameter("cod_gruppo"));
+                gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                if (messaggio.equals("")) {
+                    request.setAttribute("gruppo", gruppo);
+                request.setAttribute("commenti", gruppo.listaCommenti());
+                forward(request, response, "/gruppo.jsp");
+                } else {
+//             System.out.println("FILES:");
+                    files = multi.getFileNames();
+                    while (files.hasMoreElements()) {
+                        String namepi = (String) files.nextElement();
+                        String filename = multi.getFilesystemName(namepi);
+                        originalFilename = multi.getOriginalFileName(namepi);
+                        String type = multi.getContentType(namepi);
+                        File f = multi.getFile(namepi);
+//                System.out.println("name: " + namepi);
+//                System.out.println("filename: " + filename);
+//                System.out.println("originalFilename: " + originalFilename);
+//                System.out.println("type: " + type);
+                        if (f != null) {
+//                System.out.println("f.toString(): " + f.toString());
+//                System.out.println("f.getName(): " + f.getName());
+//                System.out.println("f.exists(): " + f.exists());
+//                System.out.println("f.length(): " + f.length());
+                        }
+                    }
+                    if (originalFilename != null) {
+                        String source = realPath + "tmp/" + originalFilename;
+//                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
+                        String destination = realPath + "groupsfolder/" + gruppo.getTitolo() + "/" + originalFilename;
+//                System.out.println("destinationNNNNNNNNNNNNNNNNNNN:"+ destination);
+                        File afile = new File(source);
+                        File bfile = new File(destination);
+                        if (!(bfile.exists())) {
+                            InputStream inStream = null;
+                            OutputStream outStream = null;
+
+                            try {
+
+                                inStream = new FileInputStream(afile);
+                                outStream = new FileOutputStream(bfile);
+
+                                byte[] buffer = new byte[1024];
+                                int length;
+                                //copy the file content in bytes 
+                                while ((length = inStream.read(buffer)) > 0) {
+                                    outStream.write(buffer, 0, length);
+                                }
+                                inStream.close();
+                                outStream.close();
+
+                                //delete the original file
+                                afile.delete();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            afile.delete();
+                            Date date= new java.util.Date();
+                            originalFilename = "noallegato";
+                             Comment commento=new Comment(messaggio, u, cod_gruppo, date, originalFilename);
+                    commento.insertComment(dbmanager.con);
+                      request.setAttribute("gruppo", gruppo);
+                      request.setAttribute("commenti", gruppo.listaCommenti());
+                      forward(request, response, "/gruppo.jsp");
+                forward(request, response, "/gruppo.jsp");
+                        }
+                    } else {
+                        originalFilename = "noallegato";
+                    }
+                    Date date= new java.util.Date();
+                    
+                    Comment commento=new Comment(messaggio, u, cod_gruppo, date, originalFilename);
+                    commento.insertComment(dbmanager.con);
+                      request.setAttribute("gruppo", gruppo);
+                      request.setAttribute("commenti", gruppo.listaCommenti());
+                      forward(request, response, "/gruppo.jsp");
+                         
+                }
                 break;
             case 16:                     //TASTO_HOME
 
