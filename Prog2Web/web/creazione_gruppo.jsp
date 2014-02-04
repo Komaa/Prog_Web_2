@@ -109,7 +109,7 @@
 
             <div class="control-group">
                 <label class="control-label" for="amministratore_gruppo: ">Amministratore: </label><c:out value="${user.username}"/>  <br>
-                <input type="radio" name="tipo" value="0">Pubblico 
+                <input type="radio" name="tipo" value="0"  checked="checked">Pubblico 
                 <input type="radio" name="tipo" value="1">Privato
             </div>
                </br><hr>

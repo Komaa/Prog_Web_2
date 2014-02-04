@@ -94,14 +94,14 @@
     </form>
     </br>
 
-    <form action="GeneraPdf" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>;
-
-    </br>
+    <form action="GeneraPdf" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>
+    
+    <br>
 
     <form class="form-horizontal" name="input" action="Controller?cmd=11" method="post">
         <div class="control-group">
             <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>">
-            <input type="radio" name="tipo" value="0">Pubblico 
+            <input type="radio" name="tipo" value="0"  checked="checked">Pubblico 
             <input type="radio" name="tipo" value="1">Privato
         </div>
         </br><hr>

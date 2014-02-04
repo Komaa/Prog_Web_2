@@ -131,16 +131,21 @@
                             
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"></div>
+                                    <h3 class="panel-title"><c:out value="${comment.utente.avatar}"/> Autore: <c:out value="${comment.utente.username}"/>  scritto in data: <c:out value="${comment.data}"/>
+                                </div>
                                 <div class="panel-body" style="min-height:100px">
 
                                     <h4>
-                                       <c:out value="${comment.messaggi.commenti}"/>
+                                       <c:out value="${comment.text}"/>
 
                                     </h4>
                                 </div>
                                 <div class="panel-footer">
-                                    Allegato: <a href="<c:out value="${ciccio}"/>"><c:out value="${allegato}"/></a>
+                                    <c:choose>
+                                        <c:when test="${comment.allegato == 'noallegato'}">Allegato: no allegato</c:when>
+                                        <c:otherwise>Allegato: <a href="groupsfolder/<c:out value="${gruppo.titolo}"/>/<c:out value="${comment.allegato}"/>"><c:out value="${comment.allegato}"/></a></c:otherwise>
+                                    </c:choose>
+                                    
                                     <br><br>
 
                                     <br><br>

@@ -108,7 +108,7 @@
                 <tr> 
                     <td><c:out value="${lista_gruppi.key}"/></td>
                     <td><c:out value="${lista_gruppi.value}"/></td>
-                    <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${key}"/>" class="btn btn-success" role="button">Entra!</a></td>               
+                    <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${lista_gruppi.key}"/>" class="btn btn-success" role="button">Entra!</a></td>               
                 </tr>
             </c:forEach>
         </table>

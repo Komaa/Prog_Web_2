@@ -15,7 +15,11 @@
         <title>Moderazione</title>
         <meta charset=utf-8>
         <link href=./bootstrap/css/bootstrap.css rel="stylesheet">
-
+        <link href=./css/demo_page.css rel="stylesheet">
+        <link href=./css/demo_table.css rel="stylesheet">
+        <link href=./css/jquery.dataTables.css rel="stylesheet">
+        <script src="./js/jquery.js" type="text/javascript"></script>
+        <script src="./js/jquery.dataTables.js" type="text/javascript"></script>
     </head> 
     <body>  
         <script>
