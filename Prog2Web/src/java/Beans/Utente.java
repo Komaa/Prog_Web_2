@@ -251,7 +251,9 @@ public class Utente {
         PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti where id_utente=? and stato=?");
         stm.setInt(1, cod);
         stm.setString(2, "2");
+        
         try {
+            System.out.println(stm);
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
