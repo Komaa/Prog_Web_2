@@ -267,27 +267,27 @@ public class Utente {
         return listinviti;
     }
 
-    public HashMap<Integer, String> listaaggGruppi() throws SQLException {
-
-        HashMap<Integer, String> listinviti = new HashMap<Integer, String>();
-        PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti,utenti where id_utente=?, stato=? and utenti.data_account<");
-        stm.setInt(1, cod);
-        stm.setString(2, "2");
-        try {
-            ResultSet rs = stm.executeQuery();
-            try {
-                while (rs.next()) {
-                    listinviti.put(rs.getInt("id_gruppo"), Gruppo.loadGruppo(rs.getInt("id_gruppo"), con).getTitolo());
-
-                }
-            } finally {
-                rs.close();
-            }
-        } finally {
-            stm.close();
-        }
-        return listinviti;
-    }
+//    public HashMap<Integer, String> listaaggGruppi() throws SQLException {
+//
+//        HashMap<Integer, String> listinviti = new HashMap<Integer, String>();
+//        PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti,utenti where id_utente=?, stato=? and utenti.data_account<");
+//        stm.setInt(1, cod);
+//        stm.setString(2, "2");
+//        try {
+//            ResultSet rs = stm.executeQuery();
+//            try {
+//                while (rs.next()) {
+//                    listinviti.put(rs.getInt("id_gruppo"), Gruppo.loadGruppo(rs.getInt("id_gruppo"), con).getTitolo());
+//
+//                }
+//            } finally {
+//                rs.close();
+//            }
+//        } finally {
+//            stm.close();
+//        }
+//        return listinviti;
+//    }
 
     public void valuta_invito(int id_gruppo, int stato) throws SQLException {
         // STATO 1: INVITATO
@@ -323,5 +323,27 @@ public class Utente {
     public void setData(Date data) {
         this.data = data;
     }
+
+    public HashMap<Integer, String> getaggiornamentigruppi() throws SQLException {
+        
+        HashMap<Integer, String> listagg = new HashMap<Integer, String>();
+        PreparedStatement stm = con.prepareStatement("select comments.id_gruppo from comments,utenti where comments.data>utenti.data_accesso AND utenti.id_utenti=?");
+        stm.setInt(1, cod);
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    listagg.put(rs.getInt("id_gruppo"), Gruppo.loadGruppo(rs.getInt("id_gruppo"), con).getTitolo());
+
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        return listagg;
+        }
 
 }

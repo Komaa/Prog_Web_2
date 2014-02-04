@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -57,7 +58,7 @@ public class Controller extends HttpServlet {
 
         realPath = getServletContext().getRealPath("/");
         int cmd = Integer.parseInt(request.getParameter("cmd"));
-        HashMap<Integer, String> listainviti;
+        HashMap<Integer, String> listainviti,listaagggruppi;
         Utente u = null;
         Gruppo gruppo = null;
         String stringapp, dirName = realPath + "tmp";
@@ -75,14 +76,17 @@ public class Controller extends HttpServlet {
                 u.setUsername(username);
                 u.setPassword(password);
                 id = u.check_user();
-                u.setCod(id);
-                u.aggiornadatalogin();
+               
                 if (id > -1) {
 
+                    u.setCod(id);
                     u = Utente.loadUtente(id, dbmanager.con);
+                    listaagggruppi=u.getaggiornamentigruppi();
+                    u.aggiornadatalogin();
                     session.setAttribute("user_id", u.getCod());
                     listainviti = u.loadInviti();
                     request.setAttribute("listainviti", listainviti);
+                    request.setAttribute("listaaggruppi", listaagggruppi);
                     request.setAttribute("user", u);
                     forward(request, response, "/home.jsp");
                 } else {
@@ -193,6 +197,12 @@ public class Controller extends HttpServlet {
                         u.setEmail(email);
                         u.setAvatar(originalFilename);
                         u.insertUtente();
+                        try {
+                            MailUtility.sendMail(u.getEmail(),"Conferma mail", "Conferma la tua mail stronzo!");
+                        } catch (MessagingException ex) {
+                            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
                         forward(request, response, "/index.jsp");
                     }
 
