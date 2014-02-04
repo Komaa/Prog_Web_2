@@ -524,7 +524,7 @@ public class Controller extends HttpServlet {
    String dirNamee = realPath + "groupsfolder/" + gruppo.getTitolo();
                             String relativName = "groupsfolder/" + gruppo.getTitolo();
                             String[] split = messaggio.split("\\$\\$");
-                            System.out.println("!!!!"+messaggio);
+                         
                             for (int i = 0; i < split.length; i++) {
 
                                 if ((i % 2) == 1) {
@@ -541,9 +541,7 @@ public class Controller extends HttpServlet {
                                     }
                                 }
                             }
-                              System.out.println("!!!!"+messaggio);
-                           
-                              System.out.println("!!!!"+messaggio);
+                            messaggio="";
                             for (int i = 0; i < split.length; i++) {
                                 messaggio += split[i];
                             }
