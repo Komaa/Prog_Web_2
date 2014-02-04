@@ -61,6 +61,15 @@
 
                             </a>
                         </li>
+                        <c:if test="${user.tipo == 1}">
+                            <li>
+                                <a href="Controller?cmd=20">
+
+                                     Moderazione
+
+                                </a>
+                            </li>
+                        </c:if>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -131,7 +140,7 @@
                             
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"><c:out value="${comment.utente.avatar}"/> Autore: <c:out value="${comment.utente.username}"/>  scritto in data: <c:out value="${comment.data}"/>
+                                    <h3 class="panel-title"><img src="./img/${comment.utente.avatar}" style="max-height: 100px; max-width: 100px"> Autore: <c:out value="${comment.utente.username}"/>  scritto in data: <c:out value="${comment.data}"/>
                                 </div>
                                 <div class="panel-body" style="min-height:100px">
 
