@@ -482,6 +482,31 @@ public class Controller extends HttpServlet {
                             afile.delete();
                             Date date = new java.util.Date();
                             originalFilename = "noallegato";
+                            
+                             String dirNamee = realPath + "groupsfolder/" + gruppo.getTitolo();
+                            String relativName = "groupsfolder/" + gruppo.getTitolo();
+                            String[] split = messaggio.split("\\$\\$");
+                               
+        for (int i = 0; i < split.length; i++) {
+
+            if ((i % 2) == 1) {
+
+                String dirNameN = dirNamee + "/" + split[i];
+                String relativNameN = relativName + "/" + split[i];
+
+                File theDir = new File(dirNameN);
+                if (theDir.exists()) {
+                    split[i] =  "<a href=\"" + relativNameN +"\"  target=\"_blank\">" + split[i] + "</a>";          
+                     
+                } else {
+                    split[i] = "<a href=\"http://"+ split[i]+"\"  target=\"_blank\"> " + split[i] + "</a>";
+                }
+            } 
+        }
+        messaggio="";
+        for (int i = 0; i < split.length; i++) {
+            messaggio+=split[i];
+        }
                             Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                             commento.insertComment(dbmanager.con);
                             request.setAttribute("gruppo", gruppo);
