@@ -151,6 +151,15 @@ public class Controller extends HttpServlet {
                         u.setEmail(email);
                         u.setAvatar(originalFilename);
                         u.insertUtente();
+                         u.getidbyusername();
+                          String mg="Caro "+u.getUsername()+"\n\n";
+                        mg+="Si prega di confermare la tua mail prima accedere al forum cliccando sul link qui sotto\n";
+                        mg+="<a href=\"http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"\">http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"</a>";
+                        try {
+                            MailUtility.sendMail(u.getEmail(),"Conferma mail", mg);
+                        } catch (MessagingException ex) {
+                            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         forward(request, response, "/index.jsp");
 
                     } else if ((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg")) && (!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
@@ -197,8 +206,12 @@ public class Controller extends HttpServlet {
                         u.setEmail(email);
                         u.setAvatar(originalFilename);
                         u.insertUtente();
+                        u.getidbyusername();
+                        String mg="Caro "+u.getUsername()+"<br><br>";
+                        mg+="Si prega di confermare la tua mail prima accedere al forum cliccando sul link qui sotto<br>";
+                        mg+="<a href=\"http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"\">http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"</a>";
                         try {
-                            MailUtility.sendMail(u.getEmail(),"Conferma mail", "Conferma la tua mail stronzo!");
+                            MailUtility.sendMail(u.getEmail(),"Conferma mail", mg);
                         } catch (MessagingException ex) {
                             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -532,6 +545,12 @@ public class Controller extends HttpServlet {
                 request.setAttribute("listagruppi", u.listaGruppi());
                 request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
                 forward(request, response, "/moderazione.jsp");
+                break;
+             case 21:                    //CONFERMA MAIL
+                cod_utente = Integer.parseInt(request.getParameter("cod"));
+                u = Utente.loadUtente(cod_utente,dbmanager.con);
+                u.confermamail();
+                forward(request, response, "/index.jsp");
                 break;
         }
     }

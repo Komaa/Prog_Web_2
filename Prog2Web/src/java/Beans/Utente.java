@@ -346,4 +346,26 @@ public class Utente {
         return listagg;
         }
 
+    public void confermamail() throws SQLException {
+        PreparedStatement stm = con.prepareStatement("UPDATE utenti SET confermato=? WHERE id_utenti=?");
+        stm.setInt(1, 1);
+        stm.setInt(2, cod);
+
+        int rs = stm.executeUpdate(); }
+
+    public void getidbyusername() throws SQLException{
+      
+        PreparedStatement stm = con.prepareStatement("select id_utenti from utenti where username=?");
+        stm.setString(1, username);
+
+        ResultSet rs = stm.executeQuery();
+        try {
+            while (rs.next()) {
+                cod = rs.getInt("id_utenti");
+               
+            }
+        } finally {
+            rs.close();  
+    }
+}
 }
