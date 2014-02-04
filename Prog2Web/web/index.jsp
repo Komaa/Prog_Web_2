@@ -46,8 +46,8 @@
                                     <div class="col-sm-offset-3 col-sm-9">  
                                         <button type="submit" class="btn btn-success btn-sm">  
                                             Sign in</button>  
-                                        <button type="reset" class="btn btn-default btn-sm">  
-                                            Reset</button>  
+                                        <button ahref="Controller?cmd=22" type="reset" class="btn btn-default btn-sm">  
+                                            Recupero password</button>  
                                     </div>  
                                 </div>  
                             </form>  

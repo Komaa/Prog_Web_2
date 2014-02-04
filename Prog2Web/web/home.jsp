@@ -130,6 +130,26 @@
                 </c:forEach>
                 </table>
             </div>
+                        
+            
+            <div class="container span4 offset4">
+                <h1>
+
+                    Quick display
+
+                </h1>
+                <hr>
+                <table class="table table-striped"> 
+                    <tr><th>Accetta / Rifiuta</th> <th>Nome gruppo</th><th>Entra nel forum!</th></tr>
+                <c:forEach var="lista_gruppi" items="${listaaggruppi}">
+                <tr> 
+                    <td><c:out value="${lista_gruppi.key}"/></td>
+                    <td><c:out value="${lista_gruppi.value}"/></td>
+                    <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${lista_gruppi.key}"/>" class="btn btn-success" role="button">Entra!</a></td>               
+                </tr>
+                </c:forEach>
+                </table>
+        </div>
         </body>
     </html>
 
