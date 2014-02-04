@@ -28,7 +28,7 @@ public class Gruppo {
     private String titolo; //0 per pubblico, 1 per privato
     private int id_amministratore;
     private int tipo, aperto;
-    private ArrayList<String> componenti;
+    private int sizecomponenti;
     private ArrayList<Comment> messaggi;
     public transient Connection con;
     private int id_gruppo;
@@ -299,7 +299,7 @@ public class Gruppo {
         } finally {
             stm.close();
         }
-        componenti=listautenti;
+        setSizecomponenti(listautenti.size());
         return listautenti;
 
     }
@@ -430,4 +430,21 @@ public class Gruppo {
        
         return listagruppi;
      }
+
+    /**
+     * @return the sizecomponenti
+     */
+    public int getSizecomponenti() {
+        return sizecomponenti;
+    }
+
+    /**
+     * @param sizecomponenti the sizecomponenti to set
+     */
+    public void setSizecomponenti(int sizecomponenti) {
+        this.sizecomponenti = sizecomponenti;
+    }
+     
+     
+     
 }
