@@ -28,7 +28,7 @@ public class Gruppo {
     private String titolo; //0 per pubblico, 1 per privato
     private int id_amministratore;
     private int tipo, aperto;
-    private HashSet<Integer> componenti;
+    private ArrayList<String> componenti;
     private ArrayList<Comment> messaggi;
     public transient Connection con;
     private int id_gruppo;
@@ -208,7 +208,7 @@ public class Gruppo {
         } finally {
             stm.close();
         }
-
+        messaggi=listaCommenti;
         return listaCommenti;
 
     }
@@ -283,7 +283,7 @@ public class Gruppo {
     public ArrayList<String> listaUtentiGruppo() throws SQLException {
         String tmp;
         ArrayList<String> listautenti = new ArrayList<String>();
-        PreparedStatement stm = con.prepareStatement("select gruppi_utenti.utente FROM gruppi_utenti WHERE gruppo=? && stato = ?");
+        PreparedStatement stm = con.prepareStatement("select gruppi_utenti.id_utente FROM gruppi_utenti WHERE id_gruppo=? && stato = ?");
         stm.setInt(1, getId_gruppo());
         stm.setString(2, "2");
 
@@ -291,7 +291,7 @@ public class Gruppo {
             ResultSet rs = stm.executeQuery();
             try {
                 while (rs.next()) {
-                    listautenti.add(rs.getString("utente"));
+                    listautenti.add(rs.getString("id_utente"));
                 }
             } finally {
                 rs.close();
@@ -299,7 +299,7 @@ public class Gruppo {
         } finally {
             stm.close();
         }
-
+        componenti=listautenti;
         return listautenti;
 
     }
@@ -376,19 +376,7 @@ public class Gruppo {
         this.aperto = aperto;
     }
 
-    /**
-     * @return the componenti
-     */
-    public HashSet<Integer> getComponenti() {
-        return componenti;
-    }
 
-    /**
-     * @param componenti the componenti to set
-     */
-    public void setComponenti(HashSet<Integer> componenti) {
-        this.componenti = componenti;
-    }
 
     /**
      * @return the messaggi
@@ -418,4 +406,28 @@ public class Gruppo {
         this.id_gruppo = id_gruppo;
     }
 
+    
+     public static ArrayList<Gruppo> getallgroups(Connection con) throws SQLException {
+        Gruppo tmp;
+        ArrayList<Gruppo> listagruppi = new ArrayList<Gruppo>();
+        PreparedStatement stm = con.prepareStatement("select * FROM gruppi");
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    tmp=loadGruppo(rs.getInt("id_gruppo"), con);
+                    tmp.listaCommenti();
+                    tmp.listaUtentiGruppo();
+                    listagruppi.add(tmp);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+       
+        return listagruppi;
+     }
 }

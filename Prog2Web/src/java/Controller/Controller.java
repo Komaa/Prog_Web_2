@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -542,9 +543,9 @@ public class Controller extends HttpServlet {
             case 20:                    //PAGINA MODERAZIONE
                 u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
                 request.setAttribute("user", u);
-                request.setAttribute("listagruppi", u.listaGruppi());
-                request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
-                forward(request, response, "/moderazione.jsp");
+                ArrayList<Gruppo> listagruppimoderatore = Gruppo.getallgroups(dbmanager.con);
+                request.setAttribute("listagruppimoderatore", listagruppimoderatore);
+                    forward(request, response, "/moderazione.jsp");
                 break;
              case 21:                    //CONFERMA MAIL
                 cod_utente = Integer.parseInt(request.getParameter("cod"));

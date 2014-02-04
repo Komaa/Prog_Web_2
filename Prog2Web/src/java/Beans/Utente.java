@@ -358,7 +358,7 @@ public class Utente {
       
         PreparedStatement stm = con.prepareStatement("select id_utenti from utenti where username=? OR email=?");
         stm.setString(1, username);
-        stm.setString(1, email);
+        stm.setString(2, username);
 
         ResultSet rs = stm.executeQuery();
         try {
