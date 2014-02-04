@@ -325,6 +325,21 @@ public class Gruppo {
         }
 
     }
+    
+    public static void closegroup(int cod,Connection con) throws SQLException{
+          PreparedStatement stm = con.prepareStatement("UPDATE gruppi SET aperto=? WHERE id_gruppo=?");
+        try {
+
+            stm.setInt(1, 1);
+            stm.setInt(2, cod);
+         
+
+            //executeUpdate è per le query di inserimento!
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    }
 
     public int contaCommenti() throws SQLException {
 

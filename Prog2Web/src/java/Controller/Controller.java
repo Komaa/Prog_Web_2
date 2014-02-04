@@ -572,6 +572,13 @@ public class Controller extends HttpServlet {
                         }
                  forward(request, response, "/index.jsp");
                 break;
+                case 24:                //CHIUDI_GRUPPO
+                     cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                     Gruppo.closegroup(cod_gruppo,dbmanager.con);
+                    listagruppimoderatore = Gruppo.getallgroups(dbmanager.con);
+                request.setAttribute("listagruppimoderatore", listagruppimoderatore);
+                    forward(request, response, "/moderazione.jsp");
+                    break;
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
