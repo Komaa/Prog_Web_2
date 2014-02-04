@@ -103,7 +103,7 @@
     </form>
     </br>
 
-    <form action="GeneraPdf" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>
+    <form action="Controller?cmd=25" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>
     
     <br>
 

@@ -20,7 +20,7 @@ public class Database implements Serializable {
     public Database() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance(); //carica i driver per connettersi al database
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root"); //creo connessione al database   
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3036/test", "root", "root"); //creo connessione al database   
             this.con = con;
         } catch (Exception e) {
             System.out.println("Errore nella connessione al server");

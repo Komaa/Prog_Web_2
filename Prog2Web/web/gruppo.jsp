@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-
+<%@ taglib prefix="x" uri="http://java.sun.com/jstl/xml" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -145,14 +145,14 @@
                                 <div class="panel-body" style="min-height:100px">
 
                                     <h4>
-                                       <c:out value="${comment.text}"/>
+                                       <c:out value="${comment.text}" escapeXml="false"/>
 
                                     </h4>
                                 </div>
                                 <div class="panel-footer">
                                     <c:choose>
                                         <c:when test="${comment.allegato == 'noallegato'}">Allegato: no allegato</c:when>
-                                        <c:otherwise>Allegato: <a href="groupsfolder/<c:out value="${gruppo.titolo}"/>/<c:out value="${comment.allegato}"/>"><c:out value="${comment.allegato}"/></a></c:otherwise>
+                                        <c:otherwise>Allegato: <a href="groupsfolder/<c:out value="${gruppo.titolo}"/>/<c:out value="${comment.allegato}"/>" target="_Blank"><c:out value="${comment.allegato}"/></a></c:otherwise>
                                     </c:choose>
                                     
                                     <br><br>
