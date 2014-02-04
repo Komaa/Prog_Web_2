@@ -122,16 +122,20 @@
                 <c:forEach var="lista_gruppi" items="${listagruppimoderatore}">
 
                     <tr> 
-                <form class="form-horizontal" name="input" action="Controller?cmd=21" method="post">
+                <form class="form-horizontal" name="input" action="Controller?cmd=24" method="post">
                     <td><a href="Controller?cmd=14&cod_gruppo=<c:out value="${lista_gruppi.id_gruppo}"/>&user_id=<c:out value="${user.cod}"/>"><c:out value="${lista_gruppi.titolo}"/></a></td>
-                    <td><c:out value="${lista_gruppi.num_partecipanti}"/></td>
+                    <td><c:out value="${lista_gruppi.sizecomponenti}"/></td>
                     <c:choose>
                         <c:when test="${lista_gruppi.tipo == 0}"><td> Pubblico </td></c:when>
                         <c:otherwise><td> Privato </td> </c:otherwise>
                     </c:choose>
-                    <td><c:out value="${lista_gruppi.num_post}"/></td>  
-                    <td><button type="submit" class="btn btn-danger" >Chiudi il gruppo </button></td>
-                    <input type="hidden" name="id_gruppo" value="<c:out value="${lista_gruppi.id_gruppo}"/>">
+                    <td><c:out value="${lista_gruppi.messaggi.size()}"/></td>  
+                    <td>                    
+                        <c:choose>
+                           <c:when test="${lista_gruppi.aperto == 0}"><button type="submit" class="btn btn-danger" >Chiudi il gruppo </button></td>
+                    <input type="hidden" name="cod_gruppo" value="<c:out value="${lista_gruppi.id_gruppo}"/>"></c:when>
+                        <c:otherwise><button type="submit" class="btn btn-danger disabled" >Chiudi il gruppo </button></c:otherwise>
+                    </c:choose>
                 </form>
             </tr>
 
