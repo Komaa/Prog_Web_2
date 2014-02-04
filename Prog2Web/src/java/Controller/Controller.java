@@ -59,7 +59,7 @@ public class Controller extends HttpServlet {
 
         realPath = getServletContext().getRealPath("/");
         int cmd = Integer.parseInt(request.getParameter("cmd"));
-        HashMap<Integer, String> listainviti,listaagggruppi;
+        HashMap<Integer, String> listainviti, listaagggruppi;
         Utente u = null;
         Gruppo gruppo = null;
         String stringapp, dirName = realPath + "tmp";
@@ -77,12 +77,12 @@ public class Controller extends HttpServlet {
                 u.setUsername(username);
                 u.setPassword(password);
                 id = u.check_user();
-               
+
                 if (id > -1) {
 
                     u.setCod(id);
                     u = Utente.loadUtente(id, dbmanager.con);
-                    listaagggruppi=u.getaggiornamentigruppi();
+                    listaagggruppi = u.getaggiornamentigruppi();
                     u.aggiornadatalogin();
                     session.setAttribute("user_id", u.getCod());
                     listainviti = u.loadInviti();
@@ -152,12 +152,12 @@ public class Controller extends HttpServlet {
                         u.setEmail(email);
                         u.setAvatar(originalFilename);
                         u.insertUtente();
-                         u.getidbyusername();
-                          String mg="Caro "+u.getUsername()+"\n\n";
-                        mg+="Si prega di confermare la tua mail prima accedere al forum cliccando sul link qui sotto\n";
-                        mg+="<a href=\"http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"\">http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"</a>";
+                        u.getidbyusername();
+                        String mg = "Caro " + u.getUsername() + "\n\n";
+                        mg += "Si prega di confermare la tua mail prima accedere al forum cliccando sul link qui sotto\n";
+                        mg += "<a href=\"http://localhost:8084/Prog2Web/Controller?cmd=21&cod=" + u.getCod() + "\">http://localhost:8084/Prog2Web/Controller?cmd=21&cod=" + u.getCod() + "</a>";
                         try {
-                            MailUtility.sendMail(u.getEmail(),"Conferma mail", mg);
+                            MailUtility.sendMail(u.getEmail(), "Conferma mail", mg);
                         } catch (MessagingException ex) {
                             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -208,15 +208,15 @@ public class Controller extends HttpServlet {
                         u.setAvatar(originalFilename);
                         u.insertUtente();
                         u.getidbyusername();
-                        String mg="Caro "+u.getUsername()+"<br><br>";
-                        mg+="Si prega di confermare la tua mail prima accedere al forum cliccando sul link qui sotto<br>";
-                        mg+="<a href=\"http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"\">http://localhost:8084/Prog2Web/Controller?cmd=21&cod="+u.getCod()+"</a>";
+                        String mg = "Caro " + u.getUsername() + "<br><br>";
+                        mg += "Si prega di confermare la tua mail prima accedere al forum cliccando sul link qui sotto<br>";
+                        mg += "<a href=\"http://localhost:8084/Prog2Web/Controller?cmd=21&cod=" + u.getCod() + "\">http://localhost:8084/Prog2Web/Controller?cmd=21&cod=" + u.getCod() + "</a>";
                         try {
-                            MailUtility.sendMail(u.getEmail(),"Conferma mail", mg);
+                            MailUtility.sendMail(u.getEmail(), "Conferma mail", mg);
                         } catch (MessagingException ex) {
                             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        
+
                         forward(request, response, "/index.jsp");
                     }
 
@@ -276,7 +276,7 @@ public class Controller extends HttpServlet {
 //                System.out.println("f.length(): " + f.length());
                     }
                 }
-                   //System.out.println(originalFilename+"!!!!"+originalFilename.substring(originalFilename.lastIndexOf("."))+"!!!!");
+                //System.out.println(originalFilename+"!!!!"+originalFilename.substring(originalFilename.lastIndexOf("."))+"!!!!");
 
                 if (originalFilename == null) {
                     forward(request, response, "/gestione.jsp");
@@ -482,31 +482,34 @@ public class Controller extends HttpServlet {
                             afile.delete();
                             Date date = new java.util.Date();
                             originalFilename = "noallegato";
-                            
-                             String dirNamee = realPath + "groupsfolder/" + gruppo.getTitolo();
+
+                            String dirNamee = realPath + "groupsfolder/" + gruppo.getTitolo();
                             String relativName = "groupsfolder/" + gruppo.getTitolo();
                             String[] split = messaggio.split("\\$\\$");
-                               
-        for (int i = 0; i < split.length; i++) {
+                            System.out.println("!!!!"+messaggio);
+                            for (int i = 0; i < split.length; i++) {
 
-            if ((i % 2) == 1) {
+                                if ((i % 2) == 1) {
 
-                String dirNameN = dirNamee + "/" + split[i];
-                String relativNameN = relativName + "/" + split[i];
+                                    String dirNameN = dirNamee + "/" + split[i];
+                                    String relativNameN = relativName + "/" + split[i];
 
-                File theDir = new File(dirNameN);
-                if (theDir.exists()) {
-                    split[i] =  "<a href=\"" + relativNameN +"\"  target=\"_blank\">" + split[i] + "</a>";          
-                     
-                } else {
-                    split[i] = "<a href=\"http://"+ split[i]+"\"  target=\"_blank\"> " + split[i] + "</a>";
-                }
-            } 
-        }
-        messaggio="";
-        for (int i = 0; i < split.length; i++) {
-            messaggio+=split[i];
-        }
+                                    File theDir = new File(dirNameN);
+                                    if (theDir.exists()) {
+                                        split[i] = "<a href=\"" + relativNameN + "\"  target=\"_blank\">" + split[i] + "</a>";
+
+                                    } else {
+                                        split[i] = "<a href=\"http://" + split[i] + "\"  target=\"_blank\"> " + split[i] + "</a>";
+                                    }
+                                }
+                            }
+                              System.out.println("!!!!"+messaggio);
+                            messaggio = "";
+                              System.out.println("!!!!"+messaggio);
+                            for (int i = 0; i < split.length; i++) {
+                                messaggio += split[i];
+                            }
+                            
                             Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                             commento.insertComment(dbmanager.con);
                             request.setAttribute("gruppo", gruppo);
@@ -518,7 +521,33 @@ public class Controller extends HttpServlet {
                         originalFilename = "noallegato";
                     }
                     Date date = new java.util.Date();
+   String dirNamee = realPath + "groupsfolder/" + gruppo.getTitolo();
+                            String relativName = "groupsfolder/" + gruppo.getTitolo();
+                            String[] split = messaggio.split("\\$\\$");
+                            System.out.println("!!!!"+messaggio);
+                            for (int i = 0; i < split.length; i++) {
 
+                                if ((i % 2) == 1) {
+
+                                    String dirNameN = dirNamee + "/" + split[i];
+                                    String relativNameN = relativName + "/" + split[i];
+
+                                    File theDir = new File(dirNameN);
+                                    if (theDir.exists()) {
+                                        split[i] = "<a href=\"" + relativNameN + "\"  target=\"_blank\">" + split[i] + "</a>";
+
+                                    } else {
+                                        split[i] = "<a href=\"http://" + split[i] + "\"  target=\"_blank\"> " + split[i] + "</a>";
+                                    }
+                                }
+                            }
+                              System.out.println("!!!!"+messaggio);
+                           
+                              System.out.println("!!!!"+messaggio);
+                            for (int i = 0; i < split.length; i++) {
+                                messaggio += split[i];
+                            }
+                            
                     Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                     commento.insertComment(dbmanager.con);
                     request.setAttribute("user", u);
@@ -570,40 +599,41 @@ public class Controller extends HttpServlet {
                 request.setAttribute("user", u);
                 ArrayList<Gruppo> listagruppimoderatore = Gruppo.getallgroups(dbmanager.con);
                 request.setAttribute("listagruppimoderatore", listagruppimoderatore);
-                    forward(request, response, "/moderazione.jsp");
+                forward(request, response, "/moderazione.jsp");
                 break;
-             case 21:                    //CONFERMA MAIL
+            case 21:                    //CONFERMA MAIL
                 cod_utente = Integer.parseInt(request.getParameter("cod"));
-                u = Utente.loadUtente(cod_utente,dbmanager.con);
+                u = Utente.loadUtente(cod_utente, dbmanager.con);
                 u.confermamail();
                 forward(request, response, "/index.jsp");
                 break;
-                 case 22:                     //TASTO_RECUPERO_PASSWORD
+            case 22:                     //TASTO_RECUPERO_PASSWORD
                 forward(request, response, "/recupero_password.jsp");
-                     break;
-                case 23:                     //RECUPERO_PASSWORD
-                 stringapp= request.getParameter("cambio");   
-                 u = new Utente(dbmanager.con);
-                 u.setUsername(stringapp);
-                 u.getidbyusername();
-                 u = Utente.loadUtente(u.getCod(), dbmanager.con);
-                  String mg="Caro "+u.getUsername()+"<br><br>";
-                        mg+="La tua password e': <br>";
-                        mg+=u.getPassword();
-                        try {
-                            MailUtility.sendMail(u.getEmail(),"Recupero Password", mg);
-                        } catch (MessagingException ex) {
-                            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                 forward(request, response, "/index.jsp");
                 break;
-                case 24:                //CHIUDI_GRUPPO
-                     cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
-                     Gruppo.closegroup(cod_gruppo,dbmanager.con);
-                    listagruppimoderatore = Gruppo.getallgroups(dbmanager.con);
+            case 23:                     //RECUPERO_PASSWORD
+                stringapp = request.getParameter("cambio");
+                u = new Utente(dbmanager.con);
+                u.setUsername(stringapp);
+                u.getidbyusername();
+                u = Utente.loadUtente(u.getCod(), dbmanager.con);
+                String mg = "Caro " + u.getUsername() + "<br><br>";
+                mg += "La tua password e': <br>";
+                mg += u.getPassword();
+                try {
+                    MailUtility.sendMail(u.getEmail(), "Recupero Password", mg);
+                } catch (MessagingException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                forward(request, response, "/index.jsp");
+                break;
+            case 24:                //CHIUDI_GRUPPO
+                cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+                Gruppo.closegroup(cod_gruppo, dbmanager.con);
+                listagruppimoderatore = Gruppo.getallgroups(dbmanager.con);
                 request.setAttribute("listagruppimoderatore", listagruppimoderatore);
-                    forward(request, response, "/moderazione.jsp");
-                    break;
+                forward(request, response, "/moderazione.jsp");
+                break;
+            case 25:                //
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
