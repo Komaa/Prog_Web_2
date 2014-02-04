@@ -552,6 +552,25 @@ public class Controller extends HttpServlet {
                 u.confermamail();
                 forward(request, response, "/index.jsp");
                 break;
+                 case 22:                     //TASTO_RECUPERO_PASSWORD
+                forward(request, response, "/recupero_password.jsp");
+                     break;
+                case 23:                     //RECUPERO_PASSWORD
+                 stringapp= request.getParameter("cambio");   
+                 u = new Utente(dbmanager.con);
+                 u.setUsername(stringapp);
+                 u.getidbyusername();
+                 u = Utente.loadUtente(u.getCod(), dbmanager.con);
+                  String mg="Caro "+u.getUsername()+"<br><br>";
+                        mg+="La tua password e': <br>";
+                        mg+=u.getPassword();
+                        try {
+                            MailUtility.sendMail(u.getEmail(),"Recupero Password", mg);
+                        } catch (MessagingException ex) {
+                            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                 forward(request, response, "/index.jsp");
+                break;
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

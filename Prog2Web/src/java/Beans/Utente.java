@@ -355,8 +355,9 @@ public class Utente {
 
     public void getidbyusername() throws SQLException{
       
-        PreparedStatement stm = con.prepareStatement("select id_utenti from utenti where username=?");
+        PreparedStatement stm = con.prepareStatement("select id_utenti from utenti where username=? OR email=?");
         stm.setString(1, username);
+        stm.setString(1, email);
 
         ResultSet rs = stm.executeQuery();
         try {
