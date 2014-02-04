@@ -631,7 +631,14 @@ public class Controller extends HttpServlet {
                 request.setAttribute("listagruppimoderatore", listagruppimoderatore);
                 forward(request, response, "/moderazione.jsp");
                 break;
-            case 25:                //
+//            case 25:                //GENERA_PDF
+//                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
+//                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+//                 request.setAttribute("gruppo", gruppo);
+//                  gruppo.listaCommenti();
+//                  gruppo.listaUtentiGruppo();
+//                 forward(request, response, "/GeneraPDF.java");
+//                break;
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
