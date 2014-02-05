@@ -4,6 +4,8 @@
     Author     : HaoIlMito
 --%>
 
+<!-- filtro = 0 hai chiuso il gruppo con successo -->
+
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>

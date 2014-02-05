@@ -3,6 +3,14 @@
     Created on : Jan 30, 2014, 2:16:23 PM
     Author     : HaoIlMito
 --%>
+
+<!-- filtro 0 = gruppo creato con successo
+            1 = titolo cambiato con successo
+            2 = inserisci un titolo del gruppo 
+            3 = tipo del gruppo cambiato con successo 
+            4 = utente invitato con successo 
+            -->
+
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
@@ -103,7 +111,7 @@
     </form>
     </br>
 
-    <form action="Controller?cmd=25" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>
+    <form action="Controller?cmd=25" method="post"><button type="submit" class="btn btn-success" >Genera pdf</button></form>
     
     <br>
 

@@ -3,6 +3,10 @@
     Created on : Jan 30, 2014, 3:38:42 PM
     Author     : HaoIlMito
 --%>
+<!-- filtro = 0 inserisci un commento
+              1 file già presente nel gruppo
+              2 hai inserito il commento con successo -->
+
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
@@ -93,9 +97,11 @@
             </div>          
         </div>       
     </div>
-
+    <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Inserisci un commento!</strong></div></c:if>
+    <c:if test="${filtro == 1}"><div class="alert alert-danger"><strong>Il file è già presente nel gruppo</strong></div></c:if>
+    <c:if test="${filtro == 2}"><div class="alert alert-success"><strong>Hai inserito il commento con successo</strong></div></c:if>
     <br><br>
-
+    
     <div class="row" style="padding-top: 50px">
         <div class="container .col-md-6 .col-md-offset-3">
             <div class="panel panel-primary">

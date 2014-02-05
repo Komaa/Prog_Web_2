@@ -3,6 +3,12 @@
     Created on : Jan 29, 2014, 4:08:57 PM
     Author     : HaoIlMito
 --%>
+<!-- filtro = 0 password non corretta
+              1 le due password non coincidono
+              2 password modificare con successo 
+              3 non hai caricato un file
+              4 estensione file non valida 
+              5 hai cambiato l'avatar con successo -->
 
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -104,6 +110,14 @@
                 </div>
             </div>
         </div>
+                    
+        <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Password non corretta!</strong></div></c:if>
+        <c:if test="${filtro == 1}"><div class="alert alert-warning"><strong>Le due password non coincidono</strong></div></c:if>
+        <c:if test="${filtro == 2}"><div class="alert alert-success"><strong>Password modificata con successo</strong></div></c:if>
+        <c:if test="${filtro == 3}"><div class="alert alert-alert"><strong>Non hai caricato un file</strong></div></c:if>
+        <c:if test="${filtro == 4}"><div class="alert alert-warning"><strong>Estensione file non valida</strong></div></c:if>
+        <c:if test="${filtro == 5}"><div class="alert alert-success"><strong>Hai cambiato l'avatar con successo</strong></div></c:if>
+      
         <div class="container span4 offset4">
             <h1>
 

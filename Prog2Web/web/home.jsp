@@ -3,6 +3,9 @@
     Created on : Jan 29, 2014, 4:08:57 PM
     Author     : HaoIlMito
 --%>
+<!-- filtro 0 = invito rifiutato con successo 
+            1 = invito accettato con successo
+            -->
 
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
