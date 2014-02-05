@@ -108,7 +108,10 @@
                 <h1>Lista dei gruppi</h1>
                 <div class="section-content clearfix">Qui puoi moderare e gestire i gruppi</div>
             </div>          
-        </div>     
+        </div>  
+        
+        <c:if test="${filtro == 0}"><div class="alert alert-success"><strong>Hai chiuso il gruppo con successo</strong></div></c:if>
+  
         <br><h1>Elenco gruppi</h1> <br>
         <table class="table table-striped" id="moderatore"> 
             <thead>

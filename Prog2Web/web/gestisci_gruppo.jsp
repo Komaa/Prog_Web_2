@@ -102,6 +102,11 @@
         </div>       
     </div>
 
+    <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Gruppo creato con successo</strong></div></c:if>
+    <c:if test="${filtro == 1}"><div class="alert alert-success"><strong>Titolo cambiato con successo</strong></div></c:if>
+    <c:if test="${filtro == 2}"><div class="alert alert-danger"><strong>Inserisci un titolo del gruppo</strong></div></c:if>
+    <c:if test="${filtro == 3}"><div class="alert alert-success"><strong>Tipo del gruppo cambiato con successo </strong></div></c:if>
+    <c:if test="${filtro == 4}"><div class="alert alert-success"><strong>Utente invitato con successo  </strong></div></c:if>
     <br><br>
 
     <form action="Controller?cmd=10" method="post">
