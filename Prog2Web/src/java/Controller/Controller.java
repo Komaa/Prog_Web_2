@@ -361,6 +361,8 @@ public class Controller extends HttpServlet {
                     request.setAttribute("filtro", 2);
                     forward(request, response, "/gestisci_gruppo.jsp");
                  }else if(!Gruppo.checknamegroup(stringapp,dbmanager.con)){
+                       request.setAttribute("gruppo", gruppo);
+                    request.setAttribute("invitabili", gruppo.invitabili());
                     request.setAttribute("filtro", 5);
                      forward(request, response, "/gestisci_gruppo.jsp");
                 }else{
