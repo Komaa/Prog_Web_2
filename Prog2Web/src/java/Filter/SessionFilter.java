@@ -67,8 +67,17 @@ public class SessionFilter implements Filter {
                   Gruppo gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                   if(gruppo.getTipo()==0)
                      chain.doFilter(request, response);
-                  else
-                   res.sendRedirect("/Prog2Web/Controller?cmd=2");
+                  else{
+                   HttpSession session = req.getSession();
+             Integer id = (Integer) session.getAttribute("user_id");
+               
+            if(id==null){
+               res.sendRedirect("/Prog2Web/Controller?cmd=2");
+               return;  
+            }else{
+            chain.doFilter(request, response); 
+        }
+                  }
               }catch(Exception e){}
               
         } else{
@@ -80,8 +89,7 @@ public class SessionFilter implements Filter {
                res.sendRedirect("/Prog2Web/Controller?cmd=2");
                return;  
             }else{
-            chain.doFilter(request, response);
-               
+            chain.doFilter(request, response); 
         }
     }
     }
