@@ -3,6 +3,14 @@
     Created on : Jan 30, 2014, 2:16:23 PM
     Author     : HaoIlMito
 --%>
+
+<!-- filtro 0 = gruppo creato con successo
+            1 = titolo cambiato con successo
+            2 = inserisci un titolo del gruppo 
+            3 = tipo del gruppo cambiato con successo 
+            4 = utente invitato con successo 
+            -->
+
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
@@ -89,11 +97,16 @@
         <div class="section-background">
             <div class="section-title">
                 <h1>Gruppi!</h1>
-                <div class="section-content clearfix">Qui puoi modificare </div>
+                <div class="section-content clearfix">Qui puoi modificare le informazioni che riguardano il gruppo <c:out value="${gruppo.titolo}"/> </div>
             </div>          
         </div>       
     </div>
 
+    <c:if test="${filtro == 0}"><div class="alert alert-success"><strong>Gruppo creato con successo</strong></div></c:if>
+    <c:if test="${filtro == 1}"><div class="alert alert-success"><strong>Titolo cambiato con successo</strong></div></c:if>
+    <c:if test="${filtro == 2}"><div class="alert alert-danger"><strong>Inserisci un titolo del gruppo</strong></div></c:if>
+    <c:if test="${filtro == 3}"><div class="alert alert-success"><strong>Tipo del gruppo cambiato con successo </strong></div></c:if>
+    <c:if test="${filtro == 4}"><div class="alert alert-success"><strong>Utente invitato con successo  </strong></div></c:if>
     <br><br>
 
     <form action="Controller?cmd=10" method="post">
@@ -101,9 +114,6 @@
         <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> </br>
         <button type="submit" class="btn btn-success">Cambia titolo</button>
     </form>
-    </br>
-
-    <form action="Controller?cmd=25" method="post"><button type="submit" class="btn btn-success">Genera pdf</button></form>
     
     <br>
 

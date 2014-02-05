@@ -4,7 +4,13 @@
     Author     : pietro-alex
 --%>
 
+<!-- filtro = 0 nome utente/email non presenti --> 
+
+<%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+
 <!DOCTYPE html>
 
 <html>  
@@ -18,6 +24,7 @@
               rel="stylesheet">  
     </head>  
     <body class="body_login">  
+        <c:if test="${filtro == 0}"><div class="alert alert-warning"><strong>Nome utente e/o email non presenti</strong></div></c:if>
         <div class="container">  
             <div class="row">  
                 <div class="col-md-4 col-md-offset-7">  

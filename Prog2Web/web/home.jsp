@@ -3,6 +3,9 @@
     Created on : Jan 29, 2014, 4:08:57 PM
     Author     : HaoIlMito
 --%>
+<!-- filtro 0 = invito rifiutato con successo 
+            1 = invito accettato con successo
+            -->
 
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -100,16 +103,20 @@
                     </h1>
                     <div class="section-content clearfix">
 
-                        Qui puoi trovare informazioni sui gruppi che ti ha…
+                        Qui puoi trovare informazioni sui gruppi che ti hanno invitato
 
                     </div>
                     <div class="section-content clearfix">
 
-                        Clicca su Creazione gruppo o gruppi per utilizzare…
+                        Clicca su Creazione gruppo o gruppi per creare/gestire un gruppo oppure quick display per vedere gli ultimi aggiornamenti
 
                     </div>
                 </div>
             </div>
+                        
+            <c:if test="${filtro == 0}"><div class="alert alert-success"><strong>Invito rifiutato con successo</strong></div></c:if>
+            <c:if test="${filtro == 1}"><div class="alert alert-success"><strong>Invito accettato con successo</strong></div></c:if>
+            
             <div class="container span4 offset4">
                 <h1>
 

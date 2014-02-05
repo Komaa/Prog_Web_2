@@ -3,6 +3,10 @@
     Created on : Jan 30, 2014, 12:31:30 AM
     Author     : HaoIlMito
 --%>
+
+<!-- test 0 = devi inserire un titolo!
+          1 = titolo gruppo già presente -->
+
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
@@ -94,9 +98,13 @@
                 </div>          
             </div>       
 </div>
-<div class="row" style="padding-top: 50px">
 
-    <div class="container .col-md-6 .col-md-offset-3">
+ <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Devi inserire un titolo!</strong></div></c:if>
+ <c:if test="${filtro == 0}"><div class="alert alert-warning"><strong>Il titolo del gruppo è già presente!</strong></div></c:if>
+
+ <div class="row" style="padding-top: 50px">
+
+    <div class="container col-md-6 col-md-offset-3">
 
         <div class="panel panel-primary">
 
