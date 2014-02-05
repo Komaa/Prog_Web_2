@@ -403,6 +403,24 @@ public class Utente {
     }
         return val;
      }
+     
+      public boolean checkIntoGroup(int id_gruppo) throws SQLException {
+       boolean val=false;
+        PreparedStatement stm = con.prepareStatement("select * from gruppi_utenti where id_gruppo=? AND id_utente=?");
+        stm.setInt(1, id_gruppo);
+        stm.setInt(2, cod);
+
+        ResultSet rs = stm.executeQuery();
+        try {
+            while (rs.next()) {
+                val=true;
+               
+            }
+        } finally {
+            rs.close();  
+    }
+        return val;
+     }
 
 }
 
