@@ -124,7 +124,10 @@ public class Controller extends HttpServlet {
                 if ((username.equals("")) || (password.equals("")) || (password1.equals("")) || (email.equals(""))) {
                 
                     forward(request, response, "/index.jsp");
-                } else if (!password.equals(password1)) {
+                } else if(!Utente.checkname(username,dbmanager.con)){
+                    request.setAttribute("filtro", 9);
+                    forward(request, response, "/index.jsp");
+                }else if (!password.equals(password1)) {
                    request.setAttribute("filtro", 4);
                     forward(request, response, "/index.jsp");
                 } else if (!email.matches(emailPattern)) {
@@ -330,7 +333,10 @@ public class Controller extends HttpServlet {
                 if (titolo.equals("")) {
                     request.setAttribute("filtro", 0);
                     forward(request, response, "/creazione_gruppo.jsp");
-                } else {
+                } else if(!Gruppo.checknamegroup(titolo,dbmanager.con)){
+                    request.setAttribute("filtro", 1);
+                     forward(request, response, "/creazione_gruppo.jsp");
+                }else {
 
                     int tipo = Integer.parseInt(request.getParameter("tipo"));
                     gruppo = new Gruppo(dbmanager.con);
@@ -606,6 +612,10 @@ public class Controller extends HttpServlet {
                 u = new Utente(dbmanager.con);
                 u.setUsername(stringapp);
                 u.getidbyusername();
+                if(u.getCod()==-1){
+                 request.setAttribute("filtro", 0);
+                 forward(request, response, "/recupero_password.jsp");
+                }else{
                 u = Utente.loadUtente(u.getCod(), dbmanager.con);
                 String mg = "Caro " + u.getUsername() + "<br><br>";
                 mg += "La tua password e': <br>";
@@ -617,6 +627,8 @@ public class Controller extends HttpServlet {
                 }
                 request.setAttribute("filtro", 8);
                 forward(request, response, "/index.jsp");
+                }
+                
                 break;
             case 24:                //CHIUDI_GRUPPO
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));

@@ -460,6 +460,23 @@ public class Gruppo {
         this.sizecomponenti = sizecomponenti;
     }
      
+    
+    public static boolean checknamegroup(String titolo, Connection con) throws SQLException {
+       boolean val=true;
+        PreparedStatement stm = con.prepareStatement("select id_gruppo from gruppi where nome_gruppo=?");
+        stm.setString(1, titolo);
+
+        ResultSet rs = stm.executeQuery();
+        try {
+            while (rs.next()) {
+                val=false;
+               
+            }
+        } finally {
+            rs.close();  
+    }
+        return val;
+     }
      
      
 }

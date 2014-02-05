@@ -25,6 +25,7 @@ import java.util.Set;
  */
 public class Utente {
 
+   
     private String username; //0 normale, 1 moderatore
     private String password;
     private String email;
@@ -356,7 +357,7 @@ public class Utente {
         int rs = stm.executeUpdate(); }
 
     public void getidbyusername() throws SQLException{
-      
+      cod=-1;
         PreparedStatement stm = con.prepareStatement("select id_utenti from utenti where username=? OR email=?");
         stm.setString(1, username);
         stm.setString(2, username);
@@ -385,6 +386,24 @@ public class Utente {
     public void setConfermato(int confermato) {
         this.confermato = confermato;
     }
+    
+     public static boolean checkname(String username,Connection con) throws SQLException {
+       boolean val=true;
+        PreparedStatement stm = con.prepareStatement("select id_utenti from utenti where username=?");
+        stm.setString(1, username);
+
+        ResultSet rs = stm.executeQuery();
+        try {
+            while (rs.next()) {
+                val=false;
+               
+            }
+        } finally {
+            rs.close();  
+    }
+        return val;
+     }
+
 }
 
 
