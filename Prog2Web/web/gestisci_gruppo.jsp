@@ -9,7 +9,7 @@
             2 = inserisci un titolo del gruppo 
             3 = tipo del gruppo cambiato con successo 
             4 = utente invitato con successo 
-            -->
+            5 = nome gruppo già presente -->
 
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -107,6 +107,7 @@
     <c:if test="${filtro == 2}"><div class="alert alert-danger"><strong>Inserisci un titolo del gruppo</strong></div></c:if>
     <c:if test="${filtro == 3}"><div class="alert alert-success"><strong>Tipo del gruppo cambiato con successo </strong></div></c:if>
     <c:if test="${filtro == 4}"><div class="alert alert-success"><strong>Utente invitato con successo  </strong></div></c:if>
+    <c:if test="${filtro == 5}"><div class="alert alert-danger"><strong>Nome gruppo già presente  </strong></div></c:if>
     <br><br>
 
     <form action="Controller?cmd=10" method="post">
