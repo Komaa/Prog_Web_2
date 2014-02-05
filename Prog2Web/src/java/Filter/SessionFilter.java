@@ -71,9 +71,6 @@ public class SessionFilter implements Filter {
                    res.sendRedirect("/Prog2Web/Controller?cmd=2");
               }catch(Exception e){}
               
-            // int cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
-             // Gruppo gruppo = Gruppo.loadGruppo(cod_gruppo);
-             chain.doFilter(request, response);
         } else{
              //recupero la sessione del client che ha effettuato la richiesta
              HttpSession session = req.getSession();
