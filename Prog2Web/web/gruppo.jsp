@@ -102,7 +102,7 @@
     <c:if test="${filtro == 2}"><div class="alert alert-success"><strong>Hai inserito il commento con successo</strong></div></c:if>
     <c:if test="${gruppo.aperto == 1}"><div class="alert alert-warning"><strong>Il gruppo è chiuso, nessuno ci può scrivere</strong></div></c:if>
     <br><br>
-    <c:choose> <c:when test="${gruppo.aperto == 1 || user.cod == null}"></c:when>
+    <c:choose> <c:when test="${gruppo.aperto == 1 || user.cod == null || !user.checkIntoGroup(gruppo.id_gruppo)}"></c:when>
         <c:otherwise>
         <div class="row" style="padding-top: 50px">
         <div class="container .col-md-6 .col-md-offset-3">
