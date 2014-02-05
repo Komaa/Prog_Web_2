@@ -100,7 +100,7 @@
 </div>
 
  <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Devi inserire un titolo!</strong></div></c:if>
- <c:if test="${filtro == 0}"><div class="alert alert-warning"><strong>Il titolo del gruppo è già presente!</strong></div></c:if>
+ <c:if test="${filtro == 1}"><div class="alert alert-warning"><strong>Il titolo del gruppo è già presente!</strong></div></c:if>
 
  <div class="row" style="padding-top: 50px">
 
