@@ -70,7 +70,7 @@ public class SessionFilter implements Filter {
              Integer id = (Integer) session.getAttribute("user_id");
                
             if(id==null){
-               res.sendRedirect("/Prog2Web/Controller?cmd=2&filtro=1");
+               res.sendRedirect("/Prog2Web/Controller?cmd=3");
                return;  
             }else{
             chain.doFilter(request, response);
