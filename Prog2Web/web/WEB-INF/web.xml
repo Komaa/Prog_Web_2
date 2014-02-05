@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <filter>
+        <filter-name>JSPPageFilter</filter-name>
+        <filter-class>Filter.JSPPageFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>Filter.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <servlet-name>Controller</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>JSPPageFilter</filter-name>
+        <url-pattern>/creazione_gruppo.jsp</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Controller</servlet-name>
         <servlet-class>Controller.Controller</servlet-class>
