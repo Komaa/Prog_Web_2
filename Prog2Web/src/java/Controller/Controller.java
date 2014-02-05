@@ -11,6 +11,7 @@ import Beans.Utente;
 import static Controller.Controller.realPath;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -104,9 +105,13 @@ public class Controller extends HttpServlet {
             case 2:                     //LOGOUT 
                 session.invalidate();
                 request.setAttribute("filtro", 2);
+                int filtro = 0;
+                filtro= Integer.parseInt(request.getParameter("filtro"));
+                if (filtro == 1) {request.setAttribute("filtro", 10);} else {request.setAttribute("filtro", 2);}
                 forward(request, response, "/index.jsp");
                 break;
-            case 3:                     //TASTO_REGISTRAZIONE
+            case 3:                     //FILTRO SESSIONE
+                session.invalidate();
                 request.setAttribute("filtro", 10);
                 forward(request, response, "/index.jsp");
                 break;
@@ -642,7 +647,13 @@ public class Controller extends HttpServlet {
                 request.setAttribute("listagruppimoderatore", listagruppimoderatore);
                 request.setAttribute("filtro", 0);
                 forward(request, response, "/moderazione.jsp");
-                break;       
+                break;    
+                
+            case 25:                     //LOGOUT 
+                session.invalidate();
+                request.setAttribute("filtro", 2);
+                forward(request, response, "/index.jsp");
+                break;
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
