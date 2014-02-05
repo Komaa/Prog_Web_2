@@ -28,7 +28,7 @@ public class Utente {
     private String username; //0 normale, 1 moderatore
     private String password;
     private String email;
-    private int tipo, cod;
+    private int tipo, cod,confermato;
     private String avatar;
     private HashMap<Integer, String> inviti = new HashMap<Integer, String>();
     public transient Connection con;
@@ -178,6 +178,7 @@ public class Utente {
                 utente.email = rs.getString("email");
                 utente.tipo = rs.getInt("tipo");
                 utente.avatar = rs.getString("avatar");
+                utente.confermato = rs.getInt("confermato");
                 loginutente = rs.getTimestamp("data_accesso");
                 utente.data = new Date(loginutente.getTime());
             }
@@ -370,4 +371,20 @@ public class Utente {
             rs.close();  
     }
 }
+
+    /**
+     * @return the confermato
+     */
+    public int getConfermato() {
+        return confermato;
+    }
+
+    /**
+     * @param confermato the confermato to set
+     */
+    public void setConfermato(int confermato) {
+        this.confermato = confermato;
+    }
 }
+
+

@@ -79,9 +79,10 @@ public class Controller extends HttpServlet {
                 id = u.check_user();
 
                 if (id > -1) {
-
+                    
                     u.setCod(id);
                     u = Utente.loadUtente(id, dbmanager.con);
+                    if(u.getConfermato()==1){
                     listaagggruppi = u.getaggiornamentigruppi();
                     u.aggiornadatalogin();
                     session.setAttribute("user_id", u.getCod());
@@ -90,7 +91,12 @@ public class Controller extends HttpServlet {
                     request.setAttribute("listaaggruppi", listaagggruppi);
                     request.setAttribute("user", u);
                     forward(request, response, "/home.jsp");
+                    }else{
+                     request.setAttribute("filtro", 1);
+                    forward(request, response, "/index.jsp");   
+                    }
                 } else {
+                    request.setAttribute("filtro", 0);
                     forward(request, response, "/index.jsp");
                 }
 
@@ -98,6 +104,7 @@ public class Controller extends HttpServlet {
             case 2:                     //LOGOUT 
 
                 session.invalidate();
+                request.setAttribute("filtro", 2);
                 forward(request, response, "/index.jsp");
                 break;
             case 3:                     //TASTO_REGISTRAZIONE
@@ -115,37 +122,25 @@ public class Controller extends HttpServlet {
                 String password1 = multi.getParameter("password1");
                 String email = multi.getParameter("email");
                 if ((username.equals("")) || (password.equals("")) || (password1.equals("")) || (email.equals(""))) {
-                    //    System.out.println("||||||||||||||||1|||||||||||||||");
+                
                     forward(request, response, "/index.jsp");
                 } else if (!password.equals(password1)) {
-                    //  System.out.println("|||||||||||||||||2||||||||||||||||");
+                   request.setAttribute("filtro", 4);
                     forward(request, response, "/index.jsp");
                 } else if (!email.matches(emailPattern)) {
-                    //    System.out.println("|||||||||||||||3||||||||||||||||");
+                    request.setAttribute("filtro", 5);
                     forward(request, response, "/index.jsp");
                 } else {
-                    // System.out.println("||||||||||||||4|||||||||||");
-//             System.out.println("FILES:");
+                 
                     Enumeration files = multi.getFileNames();
                     while (files.hasMoreElements()) {
                         String namepi = (String) files.nextElement();
                         String filename = multi.getFilesystemName(namepi);
                         originalFilename = multi.getOriginalFileName(namepi);
                         String type = multi.getContentType(namepi);
-                        File f = multi.getFile(namepi);
-//                System.out.println("name: " + namepi);
-//                System.out.println("filename: " + filename);
-//                System.out.println("originalFilename: " + originalFilename);
-//                System.out.println("type: " + type);
-                        if (f != null) {
-//                System.out.println("f.toString(): " + f.toString());
-//                System.out.println("f.getName(): " + f.getName());
-//                System.out.println("f.exists(): " + f.exists());
-//                System.out.println("f.length(): " + f.length());
-                        }
+                        File f = multi.getFile(namepi);              
                     }
-                    //     System.out.println("!!!!!!!!!"+originalFilename.substring(originalFilename.lastIndexOf(".")));
-                    if (originalFilename == null) {
+                     if (originalFilename == null) {
                         originalFilename = "noimage.jpg";
                         u.setUsername(username);
                         u.setPassword(password);
@@ -161,6 +156,7 @@ public class Controller extends HttpServlet {
                         } catch (MessagingException ex) {
                             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        request.setAttribute("filtro", 3);
                         forward(request, response, "/index.jsp");
 
                     } else if ((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg")) && (!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
@@ -168,6 +164,7 @@ public class Controller extends HttpServlet {
                         String source = realPath + "tmp/" + originalFilename;
                         File afile = new File(source);
                         afile.delete();
+                        request.setAttribute("filtro", 6);
                         forward(request, response, "/index.jsp");
                     } else {
                         // System.out.println("||||||||||||||5|||||||||||");
@@ -216,7 +213,7 @@ public class Controller extends HttpServlet {
                         } catch (MessagingException ex) {
                             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
+                        request.setAttribute("filtro", 3);
                         forward(request, response, "/index.jsp");
                     }
 
@@ -239,13 +236,16 @@ public class Controller extends HttpServlet {
                     if (pass1.equals(pass2)) {
                         u.setPassword(pass1);
                         u.updateUtente();
+                        request.setAttribute("filtro", 2);
                         request.setAttribute("user", u);
                         forward(request, response, "/gestione.jsp");
                     } else {
+                        request.setAttribute("filtro", 1);
                         request.setAttribute("user", u);
                         forward(request, response, "/gestione.jsp");
                     }
                 } else {
+                    request.setAttribute("filtro", 0);
                     request.setAttribute("user", u);
                     forward(request, response, "/gestione.jsp");
                 }
@@ -256,8 +256,6 @@ public class Controller extends HttpServlet {
 
                 originalFilename = null;
                 multi = new MultipartRequest(request, dirName, 10 * 1024 * 1024, "ISO-8859-1", new DefaultFileRenamePolicy());
-
-//             System.out.println("FILES:");
                 Enumeration files = multi.getFileNames();
                 while (files.hasMoreElements()) {
                     String namepi = (String) files.nextElement();
@@ -265,20 +263,10 @@ public class Controller extends HttpServlet {
                     originalFilename = multi.getOriginalFileName(namepi);
                     String type = multi.getContentType(namepi);
                     File f = multi.getFile(namepi);
-//                System.out.println("name: " + namepi);
-//                System.out.println("filename: " + filename);
-//                System.out.println("originalFilename: " + originalFilename);
-//                System.out.println("type: " + type);
-                    if (f != null) {
-//                System.out.println("f.toString(): " + f.toString());
-//                System.out.println("f.getName(): " + f.getName());
-//                System.out.println("f.exists(): " + f.exists());
-//                System.out.println("f.length(): " + f.length());
-                    }
                 }
-                //System.out.println(originalFilename+"!!!!"+originalFilename.substring(originalFilename.lastIndexOf("."))+"!!!!");
-
+              
                 if (originalFilename == null) {
+                    request.setAttribute("filtro", 3);
                     forward(request, response, "/gestione.jsp");
 
                 } else if ((!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".jpg")) && (!originalFilename.substring(originalFilename.lastIndexOf(".")).equals(".png"))) {
@@ -286,6 +274,7 @@ public class Controller extends HttpServlet {
                     String source = realPath + "tmp/" + originalFilename;
                     File afile = new File(source);
                     afile.delete();
+                    request.setAttribute("filtro", 4);
                     forward(request, response, "/gestione.jsp");
                 } else {
 
@@ -325,6 +314,7 @@ public class Controller extends HttpServlet {
                     immcancfile.delete();
                     u.setAvatar(originalFilename);
                     u.updateUtente();
+                    request.setAttribute("filtro", 5);
                     forward(request, response, "/gestione.jsp");
                 }
                 break;
@@ -338,6 +328,7 @@ public class Controller extends HttpServlet {
             case 9:                     //CREA_GRUPPO    
                 String titolo = request.getParameter("titolo");
                 if (titolo.equals("")) {
+                    request.setAttribute("filtro", 0);
                     forward(request, response, "/creazione_gruppo.jsp");
                 } else {
 
@@ -350,14 +341,16 @@ public class Controller extends HttpServlet {
                     gruppo.inserisci_admin(gruppo.getId_amministratore());
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("invitabili", gruppo.invitabili());
+                    request.setAttribute("filtro", 0);
                     forward(request, response, "/gestisci_gruppo.jsp");
                 }
                 break;
             case 10:                     //CAMBIA_TITOLO
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
                 stringapp = request.getParameter("titolo");
+                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 if (!stringapp.equals("")) {
-                    gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                   
                     String dirOldName = realPath + "groupsfolder/" + gruppo.getTitolo();
                     String dirNName = realPath + "groupsfolder/" + stringapp;
 
@@ -370,18 +363,24 @@ public class Controller extends HttpServlet {
                     gruppo.updateGruppo();
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("invitabili", gruppo.invitabili());
+                    request.setAttribute("filtro", 1);
+                    forward(request, response, "/gestisci_gruppo.jsp");
+                }else{
+                     request.setAttribute("gruppo", gruppo);
+                    request.setAttribute("invitabili", gruppo.invitabili());
+                    request.setAttribute("filtro", 2);
                     forward(request, response, "/gestisci_gruppo.jsp");
                 }
                 break;
             case 11:                     //CAMBIA_FLAG
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
                 intapp = Integer.parseInt(request.getParameter("tipo"));
-                System.out.println(intapp + "!!!!!!!!!!!!!!!!!!!!!!");
                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
                 gruppo.setTipo(intapp);
                 gruppo.updateGruppo();
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("invitabili", gruppo.invitabili());
+                request.setAttribute("filtro", 3);
                 forward(request, response, "/gestisci_gruppo.jsp");
                 break;
             case 12:                     //INVITA UTENTE
@@ -391,6 +390,7 @@ public class Controller extends HttpServlet {
                 gruppo.invita_utente(intapp);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("invitabili", gruppo.invitabili());
+                request.setAttribute("filtro", 4);
                 forward(request, response, "/gestisci_gruppo.jsp");
                 break;
             case 13:                     //ELENCO GRUPPI
@@ -426,9 +426,9 @@ public class Controller extends HttpServlet {
                 if (messaggio.equals("")) {
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("commenti", gruppo.listaCommenti());
+                    request.setAttribute("filtro", 0);
                     forward(request, response, "/gruppo.jsp");
                 } else {
-//             System.out.println("FILES:");
                     files = multi.getFileNames();
                     while (files.hasMoreElements()) {
                         String namepi = (String) files.nextElement();
@@ -436,22 +436,10 @@ public class Controller extends HttpServlet {
                         originalFilename = multi.getOriginalFileName(namepi);
                         String type = multi.getContentType(namepi);
                         File f = multi.getFile(namepi);
-//                System.out.println("name: " + namepi);
-//                System.out.println("filename: " + filename);
-//                System.out.println("originalFilename: " + originalFilename);
-//                System.out.println("type: " + type);
-                        if (f != null) {
-//                System.out.println("f.toString(): " + f.toString());
-//                System.out.println("f.getName(): " + f.getName());
-//                System.out.println("f.exists(): " + f.exists());
-//                System.out.println("f.length(): " + f.length());
-                        }
                     }
                     if (originalFilename != null) {
                         String source = realPath + "tmp/" + originalFilename;
-//                System.out.println("sourEEEEEEEEEEEEEEEEEE:"+ source);
                         String destination = realPath + "groupsfolder/" + gruppo.getTitolo() + "/" + originalFilename;
-//                System.out.println("destinationNNNNNNNNNNNNNNNNNNN:"+ destination);
                         File afile = new File(source);
                         File bfile = new File(destination);
                         if (!(bfile.exists())) {
@@ -486,7 +474,7 @@ public class Controller extends HttpServlet {
                             String dirNamee = realPath + "groupsfolder/" + gruppo.getTitolo();
                             String relativName = "groupsfolder/" + gruppo.getTitolo();
                             String[] split = messaggio.split("\\$\\$");
-                            System.out.println("!!!!"+messaggio);
+                           
                             for (int i = 0; i < split.length; i++) {
 
                                 if ((i % 2) == 1) {
@@ -503,19 +491,20 @@ public class Controller extends HttpServlet {
                                     }
                                 }
                             }
-                              System.out.println("!!!!"+messaggio);
+                            
                             messaggio = "";
-                              System.out.println("!!!!"+messaggio);
+                       
                             for (int i = 0; i < split.length; i++) {
                                 messaggio += split[i];
                             }
                             
                             Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                             commento.insertComment(dbmanager.con);
+                            request.setAttribute("filtro", 1);
                             request.setAttribute("gruppo", gruppo);
                             request.setAttribute("commenti", gruppo.listaCommenti());
                             forward(request, response, "/gruppo.jsp");
-                            forward(request, response, "/gruppo.jsp");
+                            
                         }
                     } else {
                         originalFilename = "noallegato";
@@ -548,6 +537,7 @@ public class Controller extends HttpServlet {
                             
                     Comment commento = new Comment(messaggio, u, cod_gruppo, date, originalFilename);
                     commento.insertComment(dbmanager.con);
+                    request.setAttribute("filtro", 2);
                     request.setAttribute("user", u);
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("commenti", gruppo.listaCommenti());
@@ -571,6 +561,7 @@ public class Controller extends HttpServlet {
                 u = Utente.loadUtente(id, dbmanager.con);
                 u.valuta_invito(cod_gruppo, 3);
                 listainviti = u.loadInviti();
+                request.setAttribute("filtro", 0);
                 request.setAttribute("listainviti", listainviti);
                 request.setAttribute("user", u);
                 forward(request, response, "/home.jsp");
@@ -581,6 +572,7 @@ public class Controller extends HttpServlet {
                 u = Utente.loadUtente(id, dbmanager.con);
                 u.valuta_invito(cod_gruppo, 2);
                 listainviti = u.loadInviti();
+                request.setAttribute("filtro", 1);
                 request.setAttribute("listainviti", listainviti);
                 request.setAttribute("user", u);
                 forward(request, response, "/home.jsp");
@@ -603,6 +595,7 @@ public class Controller extends HttpServlet {
                 cod_utente = Integer.parseInt(request.getParameter("cod"));
                 u = Utente.loadUtente(cod_utente, dbmanager.con);
                 u.confermamail();
+                request.setAttribute("filtro", 7);
                 forward(request, response, "/index.jsp");
                 break;
             case 22:                     //TASTO_RECUPERO_PASSWORD
@@ -622,6 +615,7 @@ public class Controller extends HttpServlet {
                 } catch (MessagingException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                request.setAttribute("filtro", 8);
                 forward(request, response, "/index.jsp");
                 break;
             case 24:                //CHIUDI_GRUPPO
@@ -629,16 +623,9 @@ public class Controller extends HttpServlet {
                 Gruppo.closegroup(cod_gruppo, dbmanager.con);
                 listagruppimoderatore = Gruppo.getallgroups(dbmanager.con);
                 request.setAttribute("listagruppimoderatore", listagruppimoderatore);
+                request.setAttribute("filtro", 0);
                 forward(request, response, "/moderazione.jsp");
-                break;
-//            case 25:                //GENERA_PDF
-//                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
-//                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
-//                 request.setAttribute("gruppo", gruppo);
-//                  gruppo.listaCommenti();
-//                  gruppo.listaUtentiGruppo();
-//                 forward(request, response, "/GeneraPDF.java");
-//                break;
+                break;       
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
