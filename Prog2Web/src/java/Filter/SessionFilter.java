@@ -60,13 +60,13 @@ public class SessionFilter implements Filter {
         if (cmd==1||cmd==2||cmd==4||cmd==21||cmd==22||cmd==23) {
          chain.doFilter(request, response);
            
-        } else if(cmd==14){
+        } else if(cmd==14 && ){
             // int cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
              // Gruppo gruppo = Gruppo.loadGruppo(cod_gruppo);
              chain.doFilter(request, response);
         } else{
              //recupero la sessione del client che ha effettuato la richiesta
-                HttpSession session = req.getSession();
+             HttpSession session = req.getSession();
              Integer id = (Integer) session.getAttribute("user_id");
                
             if(id==null){

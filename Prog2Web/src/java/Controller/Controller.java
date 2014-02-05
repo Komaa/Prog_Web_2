@@ -106,7 +106,7 @@ public class Controller extends HttpServlet {
                 request.setAttribute("filtro", 10);
                 forward(request, response, "/index.jsp");
                 break;
-            case 3:                     //TASTO_REGISTRAZIONE
+            case 3:                     //TASTO_ERRORE_SESSIONE
                 session.invalidate();
                 request.setAttribute("filtro", 2);
                 forward(request, response, "/index.jsp");
@@ -414,9 +414,12 @@ public class Controller extends HttpServlet {
                 forward(request, response, "/gruppi.jsp");
                 break;
             case 14:                     //ENTRA_GRUPPO
+                Integer ide= (Integer) session.getAttribute("user_id");
+                if(ide!=null)
                 u = Utente.loadUtente((Integer) session.getAttribute("user_id"), dbmanager.con);
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
                 gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                if(ide!=null)
                 request.setAttribute("user", u);
                 request.setAttribute("gruppo", gruppo);
                 request.setAttribute("commenti", gruppo.listaCommenti());
