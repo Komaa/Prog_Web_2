@@ -58,7 +58,7 @@ public class SessionFilter implements Filter {
 
          int cmd = Integer.parseInt(req.getParameter("cmd"));
          
-        if (cmd==1||cmd==2||cmd==4||cmd==21||cmd==22||cmd==23) {
+        if (cmd==1||cmd==2||cmd==4||cmd==21||cmd==22||cmd==23||cmd==25) {
          chain.doFilter(request, response);
            
         } else if(cmd==14){

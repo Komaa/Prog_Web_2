@@ -101,12 +101,12 @@ public class Controller extends HttpServlet {
                 }
 
                 break;
-            case 2:                     //LOGOUT 
+            case 2:                     //TASTO_ERRORE_SESSIONE
                 session.invalidate();
                 request.setAttribute("filtro", 10);
                 forward(request, response, "/index.jsp");
                 break;
-            case 3:                     //TASTO_ERRORE_SESSIONE
+            case 3:                     //LOGOUT
                 session.invalidate();
                 request.setAttribute("filtro", 2);
                 forward(request, response, "/index.jsp");
@@ -646,7 +646,15 @@ public class Controller extends HttpServlet {
                 request.setAttribute("listagruppimoderatore", listagruppimoderatore);
                 request.setAttribute("filtro", 0);
                 forward(request, response, "/moderazione.jsp");
-                break;       
+                break;      
+            case 25:
+                request.setAttribute("listagruppipubblici", Gruppo.listaGruppiaperti(dbmanager.con));
+                forward(request, response, "/gruppip.jsp");
+                break;  
+            default: 
+                request.setAttribute("filtro", 10);
+                forward(request, response, "/index.jsp");
+                break;
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
