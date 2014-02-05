@@ -10,7 +10,9 @@
                 4 password registrazione non coincidono
                 5 inserire email valida
                 6 inserire file di jpg o png
-                  -->
+                7 Confermato con successso la email
+                8 Una mail con la password è stata inviata alla sua email
+                9 esiste già il nome utente  -->
                   
                   
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -39,8 +41,9 @@
         <c:if test="${filtro == 4}"><div class="alert alert-warning"><strong>Le password non coincidono!</strong></div></c:if>
         <c:if test="${filtro == 5}"><div class="alert alert-success"><strong>Inserisci una email valida!</strong></div></c:if>
         <c:if test="${filtro == 6}"><div class="alert alert-success"><strong>Inserisci un file jpg oppure png!</strong></div></c:if>
-        <c:if test="${filtro == 7}"><dvi class="alert alert-success"><strong>Confermato con successso la email</strong></div></c:if>
-        <c:if test="${filtro == 8}"><dvi class="alert alert-warning"><strong>Una mail con la password è stata inviata alla sua email</strong></div></c:if> 
+        <c:if test="${filtro == 7}"><div class="alert alert-success"><strong>Confermato con successso la email</strong></div></c:if>
+        <c:if test="${filtro == 8}"><div class="alert alert-warning"><strong>Una mail con la password è stata inviata alla sua email</strong></div></c:if> 
+        <c:if test="${filtro == 9}"><div class="alert alert-warning"><strong>Esiste già questo nome utente</strong></div></c:if> 
             
        <div class="container">  
             <div class="row">  

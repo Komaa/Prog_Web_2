@@ -101,8 +101,9 @@
     <c:if test="${filtro == 1}"><div class="alert alert-danger"><strong>Il file è già presente nel gruppo</strong></div></c:if>
     <c:if test="${filtro == 2}"><div class="alert alert-success"><strong>Hai inserito il commento con successo</strong></div></c:if>
     <br><br>
-    
-    <div class="row" style="padding-top: 50px">
+    <c:choose> <c:when test="${gruppo.aperto == 1}"> <div class="alert alert-warning"><strong>Il gruppo è chiuso, nessuno ci può scrivere</strong></div> </c:when>
+        <c:otherwise>
+        <div class="row" style="padding-top: 50px">
         <div class="container .col-md-6 .col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -131,6 +132,8 @@
             </div>
         </div>
     </div>
+    </c:otherwise>
+    </c:choose>
     <div class="container .col-md-6 .col-md-offset-3">   
         <div class="panel-group">
             <div class="panel panel-primary">

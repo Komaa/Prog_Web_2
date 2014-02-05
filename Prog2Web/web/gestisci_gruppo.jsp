@@ -97,12 +97,12 @@
         <div class="section-background">
             <div class="section-title">
                 <h1>Gruppi!</h1>
-                <div class="section-content clearfix">Qui puoi modificare </div>
+                <div class="section-content clearfix">Qui puoi modificare le informazioni che riguardano il gruppo <c:out value="${gruppo.titolo}"/> </div>
             </div>          
         </div>       
     </div>
 
-    <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Gruppo creato con successo</strong></div></c:if>
+    <c:if test="${filtro == 0}"><div class="alert alert-success"><strong>Gruppo creato con successo</strong></div></c:if>
     <c:if test="${filtro == 1}"><div class="alert alert-success"><strong>Titolo cambiato con successo</strong></div></c:if>
     <c:if test="${filtro == 2}"><div class="alert alert-danger"><strong>Inserisci un titolo del gruppo</strong></div></c:if>
     <c:if test="${filtro == 3}"><div class="alert alert-success"><strong>Tipo del gruppo cambiato con successo </strong></div></c:if>
@@ -114,9 +114,6 @@
         <input type="hidden" name="cod_gruppo" value="<c:out value="${gruppo.id_gruppo}"/>"> </br>
         <button type="submit" class="btn btn-success">Cambia titolo</button>
     </form>
-    </br>
-
-    <form action="Controller?cmd=25" method="post"><button type="submit" class="btn btn-success" >Genera pdf</button></form>
     
     <br>
 

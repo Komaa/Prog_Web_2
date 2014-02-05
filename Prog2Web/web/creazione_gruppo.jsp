@@ -5,7 +5,7 @@
 --%>
 
 <!-- test 0 = devi inserire un titolo!
-          1 = -->
+          1 = titolo gruppo già presente -->
 
 <%@page import="Beans.Utente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -98,10 +98,13 @@
                 </div>          
             </div>       
 </div>
-  <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Devi inserire un titolo!</strong></div></c:if>
-<div class="row" style="padding-top: 50px">
 
-    <div class="container .col-md-6 .col-md-offset-3">
+ <c:if test="${filtro == 0}"><div class="alert alert-danger"><strong>Devi inserire un titolo!</strong></div></c:if>
+ <c:if test="${filtro == 0}"><div class="alert alert-warning"><strong>Il titolo del gruppo è già presente!</strong></div></c:if>
+
+ <div class="row" style="padding-top: 50px">
+
+    <div class="container col-md-6 col-md-offset-3">
 
         <div class="panel panel-primary">
 
