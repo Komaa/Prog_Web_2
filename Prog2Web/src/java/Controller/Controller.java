@@ -355,7 +355,15 @@ public class Controller extends HttpServlet {
                 cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
                 stringapp = request.getParameter("titolo");
                  gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
-                if (!stringapp.equals("")) {
+                 if(stringapp.equals("")){
+                      request.setAttribute("gruppo", gruppo);
+                    request.setAttribute("invitabili", gruppo.invitabili());
+                    request.setAttribute("filtro", 2);
+                    forward(request, response, "/gestisci_gruppo.jsp");
+                 }else if(!Gruppo.checknamegroup(stringapp,dbmanager.con)){
+                    request.setAttribute("filtro", 5);
+                     forward(request, response, "/gestisci_gruppo.jsp");
+                }else{
                    
                     String dirOldName = realPath + "groupsfolder/" + gruppo.getTitolo();
                     String dirNName = realPath + "groupsfolder/" + stringapp;
@@ -370,11 +378,6 @@ public class Controller extends HttpServlet {
                     request.setAttribute("gruppo", gruppo);
                     request.setAttribute("invitabili", gruppo.invitabili());
                     request.setAttribute("filtro", 1);
-                    forward(request, response, "/gestisci_gruppo.jsp");
-                }else{
-                     request.setAttribute("gruppo", gruppo);
-                    request.setAttribute("invitabili", gruppo.invitabili());
-                    request.setAttribute("filtro", 2);
                     forward(request, response, "/gestisci_gruppo.jsp");
                 }
                 break;
