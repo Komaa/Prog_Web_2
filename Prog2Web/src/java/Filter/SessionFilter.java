@@ -7,6 +7,7 @@
 package Filter;
 
 import Beans.Gruppo;
+import Controller.Database;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpSession;
 public class SessionFilter implements Filter {
     
     private static final boolean debug = true;
-
+    Database dbmanager = new Database();
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
@@ -61,6 +62,15 @@ public class SessionFilter implements Filter {
          chain.doFilter(request, response);
            
         } else if(cmd==14){
+             int cod_gruppo = Integer.parseInt(req.getParameter("cod_gruppo"));
+              try{
+                  Gruppo gruppo = Gruppo.loadGruppo(cod_gruppo, dbmanager.con);
+                  if(gruppo.getTipo()==0)
+                     chain.doFilter(request, response);
+                  else
+                   res.sendRedirect("/Prog2Web/Controller?cmd=2");
+              }catch(Exception e){}
+              
             // int cod_gruppo = Integer.parseInt(request.getParameter("cod_gruppo"));
              // Gruppo gruppo = Gruppo.loadGruppo(cod_gruppo);
              chain.doFilter(request, response);
