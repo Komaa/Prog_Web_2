@@ -12,7 +12,8 @@
                 6 inserire file di jpg o png
                 7 Confermato con successso la email
                 8 Una mail con la password è stata inviata alla sua email
-                9 esiste già il nome utente  -->
+                9 esiste già il nome utente 
+               10 Non sei autorizzato, sei stato reindirizzato alla home-->
                   
                   
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -44,6 +45,8 @@
         <c:if test="${filtro == 7}"><div class="alert alert-success"><strong>Confermato con successso la email</strong></div></c:if>
         <c:if test="${filtro == 8}"><div class="alert alert-warning"><strong>Una mail con la password è stata inviata alla sua email</strong></div></c:if> 
         <c:if test="${filtro == 9}"><div class="alert alert-warning"><strong>Esiste già questo nome utente</strong></div></c:if> 
+        <c:if test="${filtro == 10}"><div class="alert alert-danger"><strong>Non sei autorizzato, sei stato reindirizzato alla home</strong></div></c:if> 
+            
             
        <div class="container">  
             <div class="row">  
