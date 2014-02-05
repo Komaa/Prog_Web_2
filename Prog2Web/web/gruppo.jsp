@@ -77,7 +77,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="Controller?cmd=2">
+                            <a href="Controller?cmd=3">
                                 <button class="btn btn-sm btn-danger">
 
                                     Logout

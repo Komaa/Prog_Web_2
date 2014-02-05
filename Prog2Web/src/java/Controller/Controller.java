@@ -103,11 +103,12 @@ public class Controller extends HttpServlet {
                 break;
             case 2:                     //LOGOUT 
                 session.invalidate();
-                request.setAttribute("filtro", 2);
+                request.setAttribute("filtro", 10);
                 forward(request, response, "/index.jsp");
                 break;
             case 3:                     //TASTO_REGISTRAZIONE
-                request.setAttribute("filtro", 10);
+                session.invalidate();
+                request.setAttribute("filtro", 2);
                 forward(request, response, "/index.jsp");
                 break;
             case 4:                     //REGISTRAZIONE
